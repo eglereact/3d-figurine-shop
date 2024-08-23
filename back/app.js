@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require("uuid");
 const fs = require("node:fs");
 const md5 = require("md5");
 const app = express();
-const port = 80;
+const port = 3001;
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -83,6 +83,6 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.listen(port, (_) => {
+app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });
