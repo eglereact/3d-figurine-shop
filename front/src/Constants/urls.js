@@ -9,3 +9,4 @@ export const REDIRECT_AFTER_REGISTER = "#login";
 
 // Server URLs
 export const SERVER_REGISTER = "register";
+export const SERVER_LOGIN = "login";
