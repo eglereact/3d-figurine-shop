@@ -31,6 +31,28 @@ app.use(express.json({ limit: "10mb" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const checkSession = (req, _, next) => {
+  const session = req.cookies["figurine-session"];
+  if (!session) {
+    return next();
+  }
+  const sql = `
+        SELECT id, name, email, role 
+        FROM users
+        WHERE session = ?
+    `;
+  connection.query(sql, [session], (err, rows) => {
+    if (err) throw err;
+    if (!rows.length) {
+      return next();
+    }
+    req.user = rows[0];
+    next();
+  });
+};
+
+app.use(checkSession);
+
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
 
@@ -81,6 +103,98 @@ app.post("/register", (req, res) => {
       });
     }
   });
+});
+
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  const session = md5(uuidv4());
+
+  const sql = `
+            UPDATE users
+            SET session = ?
+            WHERE email = ? AND password = ?
+        `;
+
+  connection.query(sql, [session, email, md5(password)], (err, result) => {
+    if (err) throw err;
+    const logged = result.affectedRows;
+    if (!logged) {
+      res
+        .status(401)
+        .json({
+          message: {
+            type: "error",
+            title: "Bad connection",
+            text: `Wrong credentials`,
+          },
+        })
+        .end();
+      return;
+    }
+    const sql = `
+            SELECT id, name, email, role
+            FROM users
+            WHERE email = ? AND password = ?
+        `;
+    connection.query(sql, [email, md5(password)], (err, rows) => {
+      if (err) throw err;
+      res.cookie("figurine-session", session, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+      res
+        .json({
+          message: {
+            type: "success",
+            title: `Hello, ${rows?.[0]?.name}!`,
+            text: `Welcome to back!`,
+          },
+          session,
+          user: rows?.[0],
+        })
+        .end();
+    });
+  });
+});
+
+app.post("/logout", (req, res) => {
+  setTimeout(() => {
+    const session = req.cookies["figurine-session"];
+
+    const sql = `
+                UPDATE users
+                SET session = NULL
+                WHERE session = ?
+            `;
+
+    connection.query(sql, [session], (err, result) => {
+      if (err) throw err;
+      const logged = result.affectedRows;
+      if (!logged) {
+        res
+          .status(401)
+          .json({
+            message: {
+              type: "error",
+              title: "Logout failed",
+              text: `Invalid login data`,
+            },
+          })
+          .end();
+        return;
+      }
+      res.clearCookie("figurine-session");
+      res
+        .json({
+          message: {
+            type: "success",
+            title: `Disconnected`,
+            text: `You have successfully logged out`,
+          },
+        })
+        .end();
+    });
+  }, 1500);
 });
 
 app.listen(port, () => {
