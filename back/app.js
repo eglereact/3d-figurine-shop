@@ -95,8 +95,8 @@ app.post("/register", (req, res) => {
           .json({
             message: {
               type: "success",
-              title: "Hello!",
-              text: `Welcome ${name}`,
+              title: `Hello! ${name}`,
+              text: `Account successfully created. Welcome `,
             },
           })
           .end();

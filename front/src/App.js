@@ -1,3 +1,4 @@
+import Msg from "./Components/Common/Msg";
 import { Auth } from "./Contexts/Auth";
 import { Loader } from "./Contexts/Loader";
 import { Messages } from "./Contexts/Messages";
@@ -8,6 +9,7 @@ function App() {
     <Messages>
       <Loader>
         <Auth>
+          <Msg />
           <Router />
         </Auth>
       </Loader>

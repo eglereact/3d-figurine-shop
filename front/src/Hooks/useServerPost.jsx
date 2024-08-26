@@ -8,7 +8,7 @@ import { AuthContext } from "../Contexts/Auth";
 const useServerPost = (url) => {
   const [response, setResponse] = useState(null);
 
-  // const { messageError, messageSuccess } = useContext(MessagesContext);
+  const { messageError, messageSuccess } = useContext(MessagesContext);
 
   // const { setShow } = useContext(LoaderContext);
   // const { removeUser } = useContext(AuthContext);
@@ -17,14 +17,14 @@ const useServerPost = (url) => {
     axios
       .post(`${l.SERVER_URL}${url}`, data, { withCredentials: true })
       .then((res) => {
-        // messageSuccess(res);
+        messageSuccess(res);
         setResponse({
           type: "success",
           data: res.data,
         });
       })
       .catch((error) => {
-        // messageError(error);
+        messageError(error);
         if (
           error.response &&
           401 === error.response.status &&

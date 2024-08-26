@@ -6,7 +6,7 @@ const Home = () => {
   const { user } = useContext(AuthContext);
   return (
     <div className="flex gap-3 text-2xl flex-col">
-      <h1 className="text-5xl">Welcome to 3d figurine shop!</h1>
+      <h1 className="text-5xl">Welcome to miniature shop!</h1>
 
       {user ? (
         <div>
