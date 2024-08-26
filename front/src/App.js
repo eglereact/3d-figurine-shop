@@ -1,7 +1,9 @@
+import DeleteModal from "./Components/Admin/DeleteModal";
 import Msg from "./Components/Common/Msg";
 import { Auth } from "./Contexts/Auth";
 import { Loader } from "./Contexts/Loader";
 import { Messages } from "./Contexts/Messages";
+import { Modals } from "./Contexts/Modals";
 import { Router } from "./Contexts/Router";
 
 function App() {
@@ -9,8 +11,11 @@ function App() {
     <Messages>
       <Loader>
         <Auth>
-          <Msg />
-          <Router />
+          <Modals>
+            <Msg />
+            <DeleteModal />
+            <Router />
+          </Modals>
         </Auth>
       </Loader>
     </Messages>

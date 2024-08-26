@@ -2,6 +2,7 @@ import useServerGet from "../../Hooks/useServerGet";
 import * as l from "../../Constants/urls";
 import useServerDelete from "../../Hooks/useServerDelete";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { ModalsContext } from "../../Contexts/Modals";
 
 const UsersList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -9,7 +10,7 @@ const UsersList = () => {
   );
   const { doAction: doDelete, serverResponse: serverDeleteResponse } =
     useServerDelete(l.SERVER_DELETE_USER);
-  //   const { setDeleteModal } = useContext(ModalsContext);
+  const { setDeleteModal } = useContext(ModalsContext);
   const [users, setUsers] = useState(null);
 
   const hideUser = (user) => {
@@ -55,6 +56,8 @@ const UsersList = () => {
 
   return (
     <div>
+      <h1 className="text-5xl mb-4">Users List</h1>
+      <h2 className="text-2xl mb-10">Currently users {users?.length}</h2>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -106,12 +109,19 @@ const UsersList = () => {
                     >
                       Edit
                     </a>
-                    <a
-                      href="#"
-                      className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                    <button
+                      type="button"
+                      onClick={(_) =>
+                        setDeleteModal({
+                          data: user,
+                          doDelete,
+                          hideData: hideUser,
+                        })
+                      }
+                      className="inline-flex items-center text-sm rounded-lg border border-transparent font-medium text-red-600 dark:text-red-500 hover:underline disabled:opacity-50 disabled:pointer-events-none"
                     >
                       Delete
-                    </a>
+                    </button>
                   </td>
                 </tr>
               ))}

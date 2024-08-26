@@ -10,8 +10,8 @@ const useServerPost = (url) => {
 
   const { messageError, messageSuccess } = useContext(MessagesContext);
 
-  // const { setShow } = useContext(LoaderContext);
-  // const { removeUser } = useContext(AuthContext);
+  const { setShow } = useContext(LoaderContext);
+  const { removeUser } = useContext(AuthContext);
 
   const doAction = (data = {}) => {
     axios
@@ -30,7 +30,7 @@ const useServerPost = (url) => {
           401 === error.response.status &&
           "not-logged-in" === error.response.data.reason
         ) {
-          // removeUser();
+          removeUser();
           window.location.href = l.SITE_LOGIN;
           return;
         }
@@ -40,7 +40,7 @@ const useServerPost = (url) => {
         });
       })
       .finally(() => {
-        // setShow(false);
+        setShow(false);
       });
   };
 
