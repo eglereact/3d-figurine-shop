@@ -3,6 +3,7 @@ import { FaUsers, FaFile, FaDonate } from "react-icons/fa";
 import * as l from "../../Constants/urls";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/Auth";
+import Logout from "../Common/Logout";
 
 const Sidebar = ({ children }) => {
   const { user } = useContext(AuthContext);
@@ -20,6 +21,7 @@ const Sidebar = ({ children }) => {
               Home
             </a>
           </div>
+          <Logout />
         </div>
         <div className="flex ">
           <div

@@ -23,7 +23,7 @@ export default function Logout() {
 
   return (
     <button
-      className="button-light py-2"
+      className="bg-gray-200 py-2"
       type="button"
       onClick={() => doAction() || setShow(true)}
     >
