@@ -23,6 +23,7 @@ const createUsersTable = () => {
         email VARCHAR(80) NOT NULL UNIQUE,
         role SET('admin', 'user', 'editor') NOT NULL DEFAULT 'user',
         password CHAR(32) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         session CHAR(32) NULL
     )`;
 
