@@ -197,6 +197,25 @@ app.post("/logout", (req, res) => {
   }, 1500);
 });
 
+app.get("/admin/users", (req, res) => {
+  // if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+  //   return;
+  // }
+
+  const sql = `
+        SELECT *
+        FROM users`;
+
+  connection.query(sql, (err, rows) => {
+    if (err) throw err;
+    res
+      .json({
+        users: rows,
+      })
+      .end();
+  });
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });
