@@ -4,6 +4,9 @@ import Register from "../Components/Common/Register";
 import Login from "../Components/Common/Login";
 import * as l from "../Constants/urls";
 import Home from "../Components/Web/Home";
+import Dashboard from "../Components/Admin/Dashboard";
+import UsersList from "../Components/Admin/UsersList";
+import Sidebar from "../Components/Admin/Sidebar";
 
 const RouterContext = createContext([]);
 
@@ -32,9 +35,28 @@ const Router = () => {
   const routes = [
     { path: "", pc: 0, component: null },
     { path: l.SITE_HOME, pc: 0, component: <Home /> },
-
     { path: l.SITE_REGISTER, pc: 0, component: <Register /> },
     { path: l.SITE_LOGIN, pc: 0, component: <Login /> },
+    {
+      path: l.SITE_DASHBOARD,
+      pc: 1,
+      p1: "dashboard",
+      component: (
+        <Sidebar>
+          <Dashboard />
+        </Sidebar>
+      ),
+    },
+    {
+      path: l.USERS_LIST,
+      pc: 1,
+      p1: "users",
+      component: (
+        <Sidebar>
+          <UsersList />
+        </Sidebar>
+      ),
+    },
   ];
 
   const findRoute = () => {
