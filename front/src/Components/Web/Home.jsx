@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/Auth";
 import Logout from "../Common/Logout";
+import * as l from "../../Constants/urls";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
@@ -8,9 +9,18 @@ const Home = () => {
     <div className="flex gap-3 text-2xl flex-col">
       <h1 className="text-5xl">Welcome to miniature shop!</h1>
 
+      {(user?.role === "admin" || user?.role === "editor") && (
+        <a
+          href={l.SITE_DASHBOARD}
+          className="hover:text-red-300 bg-gray-500 w-32"
+        >
+          Dashboard
+        </a>
+      )}
       {user ? (
         <div>
-          <h1 className="text-5xl">{user?.name}</h1>
+          <h1 className="text-5xl">Name: {user?.name}</h1>
+          <h1 className="text-5xl">Role: {user?.role}</h1>
           <Logout />
         </div>
       ) : (
