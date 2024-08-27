@@ -6,8 +6,11 @@ import { Messages } from "./Contexts/Messages";
 import { Modals } from "./Contexts/Modals";
 import { Router } from "./Contexts/Router";
 import LoaderContainer from "./Components/Common/Loader";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function App() {
+  AOS.init();
   return (
     <Messages>
       <Loader>
