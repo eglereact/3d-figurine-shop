@@ -25,7 +25,14 @@ const Login = () => {
     }
     if (response.type === "success") {
       addUser(response.data.user);
-      window.location.href = l.SITE_HOME;
+      if (
+        response.data.user.role === "admin" ||
+        response.data.user.role === "editor"
+      ) {
+        window.location.href = l.SITE_DASHBOARD;
+      } else {
+        window.location.href = l.SITE_HOME;
+      }
     } else {
       removeUser();
     }

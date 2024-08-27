@@ -230,7 +230,7 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/admin/users", (req, res) => {
-  if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+  if (!checkUserIsAuthorized(req, res, ["admin"])) {
     return;
   }
 
@@ -324,7 +324,7 @@ app.get("/admin/edit/user/:id", (req, res) => {
 });
 
 app.put("/admin/update/user/:id", (req, res) => {
-  setTimeout((_) => {
+  setTimeout(() => {
     const { id } = req.params;
     const { name, email, role, password } = req.body;
 
