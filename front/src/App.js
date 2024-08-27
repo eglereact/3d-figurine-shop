@@ -5,6 +5,7 @@ import { Loader } from "./Contexts/Loader";
 import { Messages } from "./Contexts/Messages";
 import { Modals } from "./Contexts/Modals";
 import { Router } from "./Contexts/Router";
+import LoaderContainer from "./Components/Common/Loader";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Auth>
           <Modals>
             <Msg />
+            <LoaderContainer />
             <DeleteModal />
             <Router />
           </Modals>

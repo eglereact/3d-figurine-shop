@@ -7,3 +7,36 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.dice-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.bouncing-dice {
+  font-size: 100px;
+  color: #fff;
+  /* animation: rotate 5s infinite linear; */
+  animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

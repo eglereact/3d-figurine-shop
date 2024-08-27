@@ -11,7 +11,7 @@ const Login = () => {
 
   const { doAction, response } = useServerPost(l.SERVER_LOGIN);
 
-  //   const { setShow } = useContext(LoaderContext);
+  const { setShow } = useContext(LoaderContext);
 
   const { addUser, removeUser } = useContext(AuthContext);
 
@@ -32,7 +32,7 @@ const Login = () => {
   }, [response]);
 
   const submit = () => {
-    // setShow(true);
+    setShow(true);
     doAction(form);
   };
 

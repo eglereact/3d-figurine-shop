@@ -19,6 +19,7 @@ export default function UserEdit() {
 
   const { setShow } = useContext(LoaderContext);
   const [user, setUser] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     doGet("/" + params[1]);
@@ -28,6 +29,7 @@ export default function UserEdit() {
     if (null === serverGetResponse) {
       return;
     }
+    setButtonDisabled(false);
     setUser(serverGetResponse.data.user ?? null);
   }, [serverGetResponse]);
 
@@ -44,9 +46,10 @@ export default function UserEdit() {
     setUser((u) => ({ ...u, [e.target.name]: e.target.value }));
   };
 
-  const submit = (_) => {
+  const submit = () => {
     //TODO: Validation
     setShow(true);
+    setButtonDisabled(true);
     doPut(user);
   };
 
@@ -62,7 +65,6 @@ export default function UserEdit() {
               value={user.name}
               type="text"
               name="name"
-              disabled={true}
             />
             <Input
               onChange={handleForm}
@@ -70,7 +72,6 @@ export default function UserEdit() {
               type="text"
               name="email"
               autoComplete="off"
-              disabled={true}
             />
             <Select
               onChange={handleForm}
@@ -80,22 +81,27 @@ export default function UserEdit() {
               label="Select Role"
             />
 
-            {/* <Input
+            <Input
               onChange={handleForm}
               value={user.password}
               type="password"
               name="password"
               placeholder="Change password"
               autoComplete="new-password"
-            /> */}
+            />
             <ul className="flex items-center gap-4 mt-6">
               <li>
-                <button onClick={submit} type="button" className="button-light">
+                <button
+                  onClick={submit}
+                  type="button"
+                  className="bg-gray-500 p-5"
+                  disabled={buttonDisabled}
+                >
                   Save
                 </button>
               </li>
               <li>
-                <a className="button-empty" href={"/" + l.USERS_LIST}>
+                <a className="bg-gray-500 p-5" href={"/" + l.USERS_LIST}>
                   All users
                 </a>
               </li>
