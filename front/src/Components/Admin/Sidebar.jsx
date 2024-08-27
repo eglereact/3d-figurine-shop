@@ -61,10 +61,10 @@ const Sidebar = ({ children }) => {
         </div>
       </Gate>
       <Gate status="not-logged">
-        <Redirect to={l.SITE_HOME} />
+        <Redirect to="SITE_HOME" />
       </Gate>
       <Gate status="role" role={["user"]}>
-        <Redirect to={l.SITE_HOME} />
+        <Redirect to="SITE_HOME" />
       </Gate>
     </>
   );

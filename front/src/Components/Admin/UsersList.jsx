@@ -132,6 +132,9 @@ const UsersList = () => {
           </table>
         </div>
       </Gate>
+      <Gate status="role" role={["editor"]}>
+        <Redirect to="SITE_DASHBOARD" />
+      </Gate>
     </>
   );
 };
