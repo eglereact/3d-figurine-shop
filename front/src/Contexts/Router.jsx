@@ -7,6 +7,7 @@ import Home from "../Components/Web/Home";
 import Dashboard from "../Components/Admin/Dashboard";
 import UsersList from "../Components/Admin/UsersList";
 import Sidebar from "../Components/Admin/Sidebar";
+import UserEdit from "../Components/Admin/UserEdit";
 
 const RouterContext = createContext([]);
 
@@ -54,6 +55,16 @@ const Router = () => {
       component: (
         <Sidebar>
           <UsersList />
+        </Sidebar>
+      ),
+    },
+    {
+      path: l.USER_EDIT,
+      pc: 2,
+      p1: "user-edit",
+      component: (
+        <Sidebar>
+          <UserEdit />
         </Sidebar>
       ),
     },

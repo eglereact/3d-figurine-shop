@@ -31,6 +31,38 @@ app.use(express.json({ limit: "10mb" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const checkUserIsAuthorized = (req, res, roles) => {
+  if (!req.user) {
+    res
+      .status(401)
+      .json({
+        message: {
+          type: "error",
+          title: "Unauthorized",
+          text: `You must be logged in`,
+        },
+        reason: "not-logged-in",
+      })
+      .end();
+    return false;
+  }
+  if (!roles.includes(req.user.role)) {
+    res
+      .status(401)
+      .json({
+        message: {
+          type: "error",
+          title: "Unauthorized",
+          text: `You are not authorized to view this information`,
+        },
+        reason: "not-authorized",
+      })
+      .end();
+    return false;
+  }
+  return true;
+};
+
 const checkSession = (req, _, next) => {
   const session = req.cookies["figurine-session"];
   if (!session) {
@@ -198,9 +230,9 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/admin/users", (req, res) => {
-  // if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
-  //   return;
-  // }
+  if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+    return;
+  }
 
   const sql = `
         SELECT *
@@ -252,6 +284,121 @@ app.delete("/admin/delete/user/:id", (req, res) => {
         })
         .end();
     });
+  }, 1500);
+});
+
+app.get("/admin/edit/user/:id", (req, res) => {
+  setTimeout(() => {
+    if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+      return;
+    }
+
+    const { id } = req.params;
+    const sql = `
+        SELECT id, name, email, role
+        FROM users
+        WHERE id = ?
+        `;
+    connection.query(sql, [id], (err, rows) => {
+      if (err) throw err;
+      if (!rows.length) {
+        res
+          .status(404)
+          .json({
+            message: {
+              type: "info",
+              title: "Users",
+              text: `User does not exist.`,
+            },
+          })
+          .end();
+        return;
+      }
+      res
+        .json({
+          user: rows[0],
+        })
+        .end();
+    });
+  }, 1500);
+});
+
+app.put("/admin/update/user/:id", (req, res) => {
+  setTimeout((_) => {
+    const { id } = req.params;
+    const { name, email, role, password } = req.body;
+
+    if (!password) {
+      const sql = `
+            UPDATE users
+            SET name = ?, email = ?, role = ?
+            WHERE id = ?
+            `;
+
+      connection.query(sql, [name, email, role, id], (err, result) => {
+        if (err) throw err;
+        const updated = result.affectedRows;
+        if (!updated) {
+          res
+            .status(404)
+            .json({
+              message: {
+                type: "info",
+                title: "Users",
+                text: `User does not exist.`,
+              },
+            })
+            .end();
+          return;
+        }
+        res
+          .json({
+            message: {
+              type: "success",
+              title: "Users",
+              text: `User was updated`,
+            },
+          })
+          .end();
+      });
+    } else {
+      const sql = `
+                UPDATE users
+                SET name = ?, email = ?, role = ?, password = ?
+                WHERE id = ?
+                `;
+
+      connection.query(
+        sql,
+        [name, email, role, md5(password), id],
+        (err, result) => {
+          if (err) throw err;
+          const updated = result.affectedRows;
+          if (!updated) {
+            res
+              .status(404)
+              .json({
+                message: {
+                  type: "info",
+                  title: "Users",
+                  text: `User does not exist.`,
+                },
+              })
+              .end();
+            return;
+          }
+          res
+            .json({
+              message: {
+                type: "success",
+                title: "Users",
+                text: `User was updated`,
+              },
+            })
+            .end();
+        }
+      );
+    }
   }, 1500);
 });
 

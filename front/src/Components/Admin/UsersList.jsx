@@ -104,14 +104,14 @@ const UsersList = () => {
                   </td>
                   <td className="px-6 py-4 flex gap-5">
                     <a
-                      href="#"
+                      href={l.USER_EDIT + "/" + user.id}
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
                       Edit
                     </a>
                     <button
                       type="button"
-                      onClick={(_) =>
+                      onClick={() =>
                         setDeleteModal({
                           data: user,
                           doDelete,

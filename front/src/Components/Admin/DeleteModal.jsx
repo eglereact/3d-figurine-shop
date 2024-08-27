@@ -5,7 +5,7 @@ import { FaTrashAlt } from "react-icons/fa";
 export default function DeleteModal() {
   const { deleteModal, setDeleteModal } = useContext(ModalsContext);
 
-  const submit = (_) => {
+  const submit = () => {
     deleteModal.doDelete(deleteModal.data);
     deleteModal.hideData(deleteModal.data);
     setDeleteModal(null);
