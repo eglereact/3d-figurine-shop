@@ -402,6 +402,89 @@ app.put("/admin/update/user/:id", (req, res) => {
   }, 1500);
 });
 
+const writeImage = (imageBase64) => {
+  if (!imageBase64) {
+    return null;
+  }
+  let type;
+  let image;
+  if (imageBase64.indexOf("data:image/png;base64,") === 0) {
+    type = "png";
+    image = Buffer.from(
+      imageBase64.replace(/^data:image\/png;base64,/, ""),
+      "base64"
+    );
+  } else if (imageBase64.indexOf("data:image/jpeg;base64,") === 0) {
+    type = "jpg";
+    image = Buffer.from(
+      imageBase64.replace(/^data:image\/jpeg;base64,/, ""),
+      "base64"
+    );
+  } else {
+    res.status(500).send("Bad image format");
+    return;
+  }
+  const filename = md5(uuidv4()) + "." + type;
+  fs.writeFileSync("public/img/" + filename, image);
+  return filename;
+};
+
+const deleteImage = (postId) => {
+  let sql = "SELECT photo FROM posts WHERE id = ?";
+  connection.query(sql, [postId], (err, results) => {
+    if (err) {
+      res.status;
+    } else {
+      if (results[0].photo) {
+        fs.unlinkSync("public/img/" + results[0].photo);
+      }
+    }
+  });
+};
+
+app.get("/admin/products", (req, res) => {
+  setTimeout(() => {
+    if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+      return;
+    }
+    const sql = `
+        SELECT *
+        FROM products`;
+    connection.query(sql, (err, rows) => {
+      if (err) throw err;
+      res
+        .json({
+          posts: rows,
+        })
+        .end();
+    });
+  }, 1500);
+});
+
+app.post("/admin/store/product", (req, res) => {
+  setTimeout(() => {
+    const { title, photo, price, info, in_stock } = req.body;
+    const filename = writeImage(photo);
+    const sql = `
+            INSERT INTO products (title, photo, price, info, in_stock)
+            VALUES ( ?, ?, ?, ?, ? )
+            `;
+    connection.query(sql, [title, filename, price, info, in_stock], (err) => {
+      if (err) throw err;
+      res
+        .status(201)
+        .json({
+          message: {
+            type: "success",
+            title: "Products",
+            text: `Product successfully created.`,
+          },
+        })
+        .end();
+    });
+  }, 1500);
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });

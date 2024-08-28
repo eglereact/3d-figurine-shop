@@ -9,6 +9,7 @@ import UsersList from "../Components/Admin/UsersList";
 import Sidebar from "../Components/Admin/Sidebar";
 import UserEdit from "../Components/Admin/UserEdit";
 import ProductsList from "../Components/Admin/ProductsList";
+import ProductCreate from "../Components/Admin/ProductCreate";
 
 const RouterContext = createContext([]);
 
@@ -76,6 +77,16 @@ const Router = () => {
       component: (
         <Sidebar>
           <ProductsList />
+        </Sidebar>
+      ),
+    },
+    {
+      path: l.PRODUCT_ADD,
+      pc: 1,
+      p1: "product-add",
+      component: (
+        <Sidebar>
+          <ProductCreate />
         </Sidebar>
       ),
     },

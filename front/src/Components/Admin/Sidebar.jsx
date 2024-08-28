@@ -61,6 +61,15 @@ const Sidebar = ({ children }) => {
                     <span className="flex">Products</span>
                   </a>
                 </li>
+                <li className="mb-4 h-10">
+                  <a
+                    href={"/" + l.PRODUCT_ADD}
+                    className={`text-xs flex flex-col items-center md:text-lg md:flex-row md:gap-2`}
+                  >
+                    <MdDashboard className="text-lg md:text-xl " />
+                    <span className="flex">New Product</span>
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="flex-1 min-h-screen p-10 bg-gray-100">
