@@ -94,11 +94,11 @@ const seedProductsTable = () => {
         INSERT INTO products
         (title, photo, price, rating, featured, approved, info, in_stock, discount)
         VALUES
-        ('Dragon Warrior', 'no-image.png', 19.99, 5, TRUE, TRUE, 'A fierce dragon warrior miniature perfect for epic battles.', 50, FALSE),
-        ('Elven Archer', 'no-image.png', 14.99, 4, FALSE, TRUE, 'An elegant elven archer, skilled in long-range attacks.', 100, TRUE),
-        ('Dwarven King', 'no-image.png', 24.99, 5, TRUE, TRUE, 'A mighty dwarven king, ruler of the underground kingdoms.', 30, FALSE),
-        ('Orc Brute','no-image.png', 9.99, 3, FALSE, TRUE, 'A savage orc brute, perfect for bolstering your horde.', 75, TRUE),
-        ('Goblin Scout', 'no-image.png', 7.99, 3, FALSE, TRUE, 'A sneaky goblin scout, ideal for ambushes and surprise attacks.', 200, FALSE)
+        ('Dragon Warrior', null, 19.99, 5, TRUE, TRUE, 'A fierce dragon warrior miniature perfect for epic battles.', 50, FALSE),
+        ('Elven Archer', null, 14.99, 4, FALSE, TRUE, 'An elegant elven archer, skilled in long-range attacks.', 100, TRUE),
+        ('Dwarven King', null, 24.99, 5, TRUE, TRUE, 'A mighty dwarven king, ruler of the underground kingdoms.', 30, FALSE),
+        ('Orc Brute', null, 9.99, 3, FALSE, TRUE, 'A savage orc brute, perfect for bolstering your horde.', 75, TRUE),
+        ('Goblin Scout', null, 7.99, 3, FALSE, TRUE, 'A sneaky goblin scout, ideal for ambushes and surprise attacks.', 200, FALSE)
     `;
 
   connection.query(sql, function (err) {

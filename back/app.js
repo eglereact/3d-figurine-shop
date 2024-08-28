@@ -485,6 +485,51 @@ app.post("/admin/store/product", (req, res) => {
   }, 1500);
 });
 
+app.delete("/admin/delete/product/:id", (req, res) => {
+  const { id } = req.params;
+  let filename = null;
+  let sql = "SELECT photo FROM products WHERE id = ?";
+  connection.query(sql, [id], (err, results) => {
+    if (results[0].photo) {
+      filename = results[0].photo;
+      const sql = `
+                    DELETE 
+                    FROM products 
+                    WHERE id = ? 
+                    `;
+      connection.query(sql, [id], (err, result) => {
+        if (err) throw err;
+        const deleted = result.affectedRows;
+        if (!deleted) {
+          res
+            .status(422)
+            .json({
+              message: {
+                type: "info",
+                title: "Products",
+                text: `Product does not exist.`,
+              },
+            })
+            .end();
+          return;
+        }
+        if (filename) {
+          fs.unlinkSync("public/img/" + filename);
+        }
+        res
+          .json({
+            message: {
+              type: "success",
+              title: "Product",
+              text: `Product successfully deleted.`,
+            },
+          })
+          .end();
+      });
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });

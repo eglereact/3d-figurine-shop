@@ -10,8 +10,8 @@ const ProductsList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
     l.SERVER_GET_PRODUCTS
   );
-  //   const { doAction: doDelete, serverResponse: serverDeleteResponse } =
-  //     useServerDelete(l.SERVER_DELETE_POST);
+  const { doAction: doDelete, serverResponse: serverDeleteResponse } =
+    useServerDelete(l.SERVER_DELETE_PRODUCT);
   //   const { doAction: doPut, serverResponse: serverPutResponse } = useServerPut(
   //     l.SERVER_CHANGE_POST_TOP
   //   );
@@ -50,16 +50,16 @@ const ProductsList = () => {
     setProducts(serverGetResponse.data.products ?? null);
   }, [serverGetResponse]);
 
-  //   useEffect(() => {
-  //     if (null === serverDeleteResponse) {
-  //       return;
-  //     }
-  //     if (serverDeleteResponse.type === "error") {
-  //       showPost();
-  //     } else {
-  //       removeHidden();
-  //     }
-  //   }, [serverDeleteResponse, showPost, removeHidden]);
+  useEffect(() => {
+    if (null === serverDeleteResponse) {
+      return;
+    }
+    if (serverDeleteResponse.type === "error") {
+      showProduct();
+    } else {
+      removeHidden();
+    }
+  }, [serverDeleteResponse, showProduct, removeHidden]);
 
   return (
     <>
@@ -169,13 +169,13 @@ const ProductsList = () => {
                       </a>
                       <button
                         type="button"
-                        // onClick={() =>
-                        //   setDeleteModal({
-                        //     data: user,
-                        //     doDelete,
-                        //     hideData: hideUser,
-                        //   })
-                        // }
+                        onClick={() =>
+                          setDeleteModal({
+                            data: product,
+                            doDelete,
+                            hideData: hideProduct,
+                          })
+                        }
                         className="inline-flex items-center text-sm rounded-lg border border-transparent font-medium text-red-600 dark:text-red-500 hover:underline disabled:opacity-50 disabled:pointer-events-none"
                       >
                         Delete

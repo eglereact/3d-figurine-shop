@@ -42,7 +42,7 @@ export default function DeleteModal() {
                       id="modal-title"
                     >
                       {deleteModal.data.title &&
-                        `Delete post "${deleteModal.data.title}"`}
+                        `Delete product "${deleteModal.data.title}"`}
                       {deleteModal.data.name &&
                         `You are about to delete an account`}
                     </h3>
@@ -52,7 +52,7 @@ export default function DeleteModal() {
                         <span className="uppercase text-red-600 font-bold">
                           delete{" "}
                           {deleteModal.data.title &&
-                            `post "${deleteModal.data.title}"`}
+                            `product "${deleteModal.data.title}"`}
                           {deleteModal.data.name &&
                             `${deleteModal.data.name}'s account `}
                         </span>
