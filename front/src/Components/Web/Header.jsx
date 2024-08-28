@@ -1,7 +1,9 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
 import React, { useEffect, useState } from "react";
-import { CiMenuBurger } from "react-icons/ci";
+import { CiMenuBurger, CiSearch } from "react-icons/ci";
+import { CiShoppingCart, CiUser, CiCircleRemove } from "react-icons/ci";
+import * as l from "../../Constants/urls";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,6 +11,13 @@ const Header = () => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
+
+  const links = [
+    { id: 1, link: "/#", name: "Products" },
+    { id: 2, link: "/#", name: "Blog" },
+    { id: 3, link: "/#", name: "Sale" },
+    { id: 4, link: "/#", name: "Contacts" },
+  ];
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -34,10 +43,10 @@ const Header = () => {
 
   return (
     <header>
-      <nav className="bg-white w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
-        <ul className="navigation max-w-[90vw] flex flex-wrap justify-between items-center relative mx-auto py-8">
-          <a className="logo" href="#">
-            <h3 className="font-bold text-2xl">LOGO</h3>
+      <nav className="bg-white w-full z-20 top-0 left-0 max-width p-6">
+        <ul className=" flex flex-wrap justify-between items-center relative mx-auto py-4 text-grey">
+          <a href="/#">
+            <img src="/images/logo.png" className="w-28" />
           </a>
           <input
             type="checkbox"
@@ -47,33 +56,62 @@ const Header = () => {
             style={{ display: "none" }}
           />
           <span
-            className={`menu flex [&>li]:pl-8 [&>li>a]:text-center [&>li>a]:relative [&>li>a]:transition [&>li>a]:duration-200 [&>li>a]:ease-in-out [&>li>a]:font-medium [&>li>a]:text-lg ${
+            className={`menu flex [&>li]:pl-3 [&>li>a]:text-center [&>li>a]:relative [&>li>a]:transition [&>li>a]:duration-200 [&>li>a]:ease-in-out [&>li>a]:font-medium [&>li>a]:text-lg ${
               isMenuOpen ? "open" : ""
             }`}
           >
-            <h1 className="flex sm:hidden">Epic Miniatures</h1>
-            <li data-aos="fade-right">
-              <a href="#">Home</a>
-            </li>
-            <li data-aos="fade-right">
-              <a href="#">About</a>
-            </li>
-            <li data-aos="fade-right">
-              <a href="#">Projects</a>
-            </li>
-            <li data-aos="fade-right">
-              <a href="#">Resources</a>
-            </li>
-            <li data-aos="fade-right">
-              <a href="#">Contact</a>
-            </li>
+            <a className="flex sm:hidden pt-6" href="/#">
+              <img src="/images/logo2.png" className="w-28" />
+            </a>
+            {links.map((l) => (
+              <li data-aos="fade-right" key={l.id}>
+                <a
+                  className="sm:hidden cursor-pointer border-b-2 border-transparent hover:text-gray-400 hover:border-gray-400 py-1 px-0 transition duration-200 ease-in-out"
+                  href={l.link}
+                >
+                  {l.name}
+                </a>
+              </li>
+            ))}
+            <div className="flex gap-3">
+              <li data-aos="fade-right" className="">
+                <a
+                  href="#"
+                  className="flex justify-center items-center transition duration-200 ease-in-out group"
+                >
+                  <CiSearch className="text-3xl transform transition duration-200 ease-in-out group-hover:scale-110" />
+                  <span className="uppercase text-xs">search</span>
+                </a>
+              </li>
+              <li data-aos="fade-right">
+                <a href={l.SITE_LOGIN} className="nav-icons-animation">
+                  <CiUser className="text-3xl" />
+                </a>
+              </li>
+              <li data-aos="fade-right">
+                <a href="#" className="nav-icons-animation">
+                  <CiShoppingCart className="text-3xl" />
+                </a>
+              </li>
+            </div>
             <label htmlFor="check" className="close-menu">
-              X
+              <CiCircleRemove className="text-4xl nav-icons-animation" />
             </label>
           </span>
           <label htmlFor="check" className="open-menu">
-            <CiMenuBurger />
+            <CiMenuBurger className="text-3xl nav-icons-animation" />
           </label>
+        </ul>
+        <ul className="hidden sm:flex gap-8 text-lg uppercase ">
+          {links.map((l) => (
+            <li
+              data-aos="fade-right"
+              key={l.id}
+              className="border-b-2 border-transparent hover:text-gray-400 hover:border-gray-400 p-1 transition duration-200 ease-in-out"
+            >
+              <a href={l.link}>{l.name}</a>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>

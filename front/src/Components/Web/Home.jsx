@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="flex gap-3 text-2xl flex-col">
+      <div className="flex gap-3 text-2xl flex-col bg-gray-400 mt-20">
         <h1 className="text-5xl">Welcome to miniature shop!</h1>
 
         {(user?.role === "admin" || user?.role === "editor") && (

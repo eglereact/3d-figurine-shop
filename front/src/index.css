@@ -12,6 +12,14 @@
   .text-grey {
     @apply text-[#3A3A3E];
   }
+
+  .max-width {
+    @apply max-w-[1200px] m-auto;
+  }
+
+  .nav-icons-animation {
+    @apply flex justify-center items-center hover:scale-110 transform transition duration-200 ease-in-out;
+  }
 }
 
 .dice-container {
@@ -46,12 +54,12 @@
 
 .open-menu {
   top: 50%;
-  right: 20px;
+  right: 0px;
   transform: translateY(-50%);
 }
 
 .close-menu {
-  top: 20px;
+  top: 82px;
   right: 20px;
 }
 
@@ -78,15 +86,16 @@
 
   .menu.open {
     right: 0;
+    padding-left: 30px;
   }
 
   .menu li {
     margin-top: 40px;
   }
 
-  .menu li a {
+  /* .menu li a {
     padding: 10px;
-  }
+  } */
 
   .close-menu,
   .open-menu {
