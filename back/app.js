@@ -454,7 +454,7 @@ app.get("/admin/products", (req, res) => {
       if (err) throw err;
       res
         .json({
-          posts: rows,
+          products: rows,
         })
         .end();
     });
