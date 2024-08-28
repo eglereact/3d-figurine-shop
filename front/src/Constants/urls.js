@@ -11,6 +11,7 @@ export const REDIRECT_AFTER_REGISTER = "#login";
 export const SITE_DASHBOARD = "#admin/dashboard";
 export const USERS_LIST = "#admin/users";
 export const USER_EDIT = "#admin/user-edit";
+export const PRODUCTS_LIST = "#admin/products";
 
 // Server URLs
 export const SERVER_REGISTER = "register";
