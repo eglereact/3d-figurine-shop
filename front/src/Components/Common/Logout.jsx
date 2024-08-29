@@ -4,7 +4,7 @@ import * as l from "../../Constants/urls";
 import useServerPost from "../../Hooks/useServerPost";
 import { LoaderContext } from "../../Contexts/Loader";
 
-export default function Logout() {
+export default function Logout({ className }) {
   const { user, removeUser } = useContext(AuthContext);
 
   const { doAction, response } = useServerPost(l.SERVER_LOGOUT);
@@ -23,7 +23,7 @@ export default function Logout() {
 
   return (
     <button
-      className="bg-gray-200 py-2"
+      className={className}
       type="button"
       onClick={() => doAction() || setShow(true)}
     >

@@ -7,6 +7,7 @@ export const SITE_LOGIN = "#login";
 export const SITE_REGISTER = "#register";
 export const SITE_HOME = "#";
 export const REDIRECT_AFTER_REGISTER = "#login";
+export const USER_PROFILE = "#user-profile";
 
 // Admin URLs
 export const SITE_DASHBOARD = "#admin/dashboard";

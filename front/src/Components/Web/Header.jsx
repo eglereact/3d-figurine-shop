@@ -1,12 +1,16 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CiMenuBurger, CiSearch } from "react-icons/ci";
 import { CiShoppingCart, CiUser, CiCircleRemove } from "react-icons/ci";
 import * as l from "../../Constants/urls";
+import { AuthContext } from "../../Contexts/Auth";
+import Logout from "../Common/Logout";
+import Gate from "../Common/Gate";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -73,7 +77,7 @@ const Header = () => {
                 </a>
               </li>
             ))}
-            <div className="flex gap-3">
+            <div className="flex gap-3 justify-center items-center">
               <li data-aos="fade-right" className="">
                 <a
                   href="#"
@@ -83,16 +87,44 @@ const Header = () => {
                   <span className="uppercase text-xs">search</span>
                 </a>
               </li>
-              <li data-aos="fade-right">
-                <a href={l.SITE_LOGIN} className="nav-icons-animation">
-                  <CiUser className="text-3xl" />
-                </a>
-              </li>
+              {user === null ? (
+                <li data-aos="fade-right">
+                  <a href={l.SITE_LOGIN} className="nav-icons-animation">
+                    <CiUser className="text-3xl" />
+                  </a>
+                </li>
+              ) : (
+                <li data-aos="fade-right" className="">
+                  <a
+                    href={l.USER_PROFILE}
+                    className="flex justify-center items-center transition duration-200 ease-in-out group"
+                  >
+                    <CiUser className="text-3xl transform transition duration-200 ease-in-out group-hover:scale-110" />
+                    <span className="uppercase text-xs">{user?.name}</span>
+                  </a>
+                </li>
+              )}
+
               <li data-aos="fade-right">
                 <a href="#" className="nav-icons-animation">
                   <CiShoppingCart className="text-3xl" />
                 </a>
               </li>
+              <Gate status="logged">
+                <li>
+                  <Logout className="p-2 rounded border-[0.5px] border-[#3A3A3E] button-empty-animation small-screen-btn uppercase text-sm" />
+                </li>
+              </Gate>
+              <Gate status="role" role={["admin", "editor"]}>
+                <li>
+                  <a
+                    href={l.SITE_DASHBOARD}
+                    className="p-2 rounded border-[0.5px] border-[#3A3A3E] button-empty-animation small-screen-btn uppercase text-sm"
+                  >
+                    Dashboard
+                  </a>
+                </li>
+              </Gate>
             </div>
             <label htmlFor="check" className="close-menu">
               <CiCircleRemove className="text-4xl nav-icons-animation" />

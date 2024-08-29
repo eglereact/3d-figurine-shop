@@ -8,6 +8,7 @@ import { RouterContext } from "../../Contexts/Router";
 import useServerGet from "../../Hooks/useServerGet";
 import useServerPut from "../../Hooks/useServerPut";
 import Select from "../Forms/Select";
+import Gate from "../Common/Gate";
 
 export default function ProductEdit() {
   const { params } = useContext(RouterContext);
@@ -98,26 +99,28 @@ export default function ProductEdit() {
             <div className="col-8 col-8-large col-10-medium col-12-small">
               <form>
                 <div className="flex flex-col gap-5 ">
-                  <Select
-                    onChange={handleForm}
-                    value={product.approved}
-                    name="approved"
-                    options={[
-                      { value: 0, label: "not approved" },
-                      { value: 1, label: "approved" },
-                    ]}
-                    label="Select Approved"
-                  />
-                  <Select
-                    onChange={handleForm}
-                    value={product.featured}
-                    name="featured"
-                    options={[
-                      { value: 0, label: "not featured" },
-                      { value: 1, label: "featured" },
-                    ]}
-                    label="Select Featured"
-                  />
+                  <Gate status="role" role={["admin"]}>
+                    <Select
+                      onChange={handleForm}
+                      value={product.approved}
+                      name="approved"
+                      options={[
+                        { value: 0, label: "not approved" },
+                        { value: 1, label: "approved" },
+                      ]}
+                      label="Select Approved"
+                    />
+                    <Select
+                      onChange={handleForm}
+                      value={product.featured}
+                      name="featured"
+                      options={[
+                        { value: 0, label: "not featured" },
+                        { value: 1, label: "featured" },
+                      ]}
+                      label="Select Featured"
+                    />
+                  </Gate>
                   <div className="">
                     <Input
                       onChange={handleForm}

@@ -11,6 +11,7 @@ import UserEdit from "../Components/Admin/UserEdit";
 import ProductsList from "../Components/Admin/ProductsList";
 import ProductCreate from "../Components/Admin/ProductCreate";
 import ProductEdit from "../Components/Admin/ProductEdit";
+import UserProfile from "../Components/Web/UserProfile";
 
 const RouterContext = createContext([]);
 
@@ -101,6 +102,7 @@ const Router = () => {
         </Sidebar>
       ),
     },
+    { path: l.USER_PROFILE, pc: 0, component: <UserProfile /> },
   ];
 
   const findRoute = () => {
