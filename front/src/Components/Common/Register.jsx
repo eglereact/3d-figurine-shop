@@ -3,6 +3,7 @@ import useServerPost from "../../Hooks/useServerPost";
 import * as l from "../../Constants/urls";
 import Input from "../Forms/Input";
 import useRegister from "../../Validations/useRegister";
+import Header from "../Web/Header";
 
 const Register = () => {
   const defaultValues = {
@@ -51,20 +52,21 @@ const Register = () => {
 
   return (
     <>
-      <div className="bg-slate-700 min-h-screen flex items-center justify-center">
-        <div className="max-w-[1600px] m-auto flex flex-col md:flex-row h-[100vh]">
-          <section className="bg-slate-300 w-full lg:w-1/2 p-10 xl:px-44 rounded  flex-1 flex flex-col justify-center">
+      <Header />
+      <div className="bg-white flex items-center justify-center p-6">
+        <div className="max-width  flex flex-col md:flex-row text-grey">
+          <section className="bg-pink w-full lg:w-1/3 p-10 xl:px-20 rounded-lg flex-1 flex flex-col justify-center mt-6">
             <div className="text-center">
-              <h1 className="text-5xl text-light font-bold mb-4">
-                Join Us Today
+              <h1 className="text-5xl text-light font-light mb-4">
+                Create Your Account
               </h1>
-              <h3 className="text-xl text-gray-900  mb-10">
-                Enter your email, name and password to register.
+              <h3 className="text-sm mb-10">
+                View your order history, address book, and more.
               </h3>
             </div>
             <form className="space-y-4">
               <Input
-                label=" Your name"
+                label="NAME"
                 type="text"
                 name="name"
                 onChange={handleForm}
@@ -75,7 +77,7 @@ const Register = () => {
               />
 
               <Input
-                label="Email Address"
+                label="EMAIL"
                 type="email"
                 name="email"
                 onChange={handleForm}
@@ -86,7 +88,7 @@ const Register = () => {
               />
 
               <Input
-                label="Your Password"
+                label="PASSWORD"
                 type="password"
                 name="password"
                 onChange={handleForm}
@@ -97,7 +99,7 @@ const Register = () => {
               />
 
               <Input
-                label=" Repeat Password"
+                label="REPEAT PASSWORD"
                 type="password"
                 name="password2"
                 onChange={handleForm}
@@ -107,26 +109,26 @@ const Register = () => {
                 errors={errors}
               />
 
-              <div>
+              <div className="flex justify-end">
                 <button
                   onClick={handleSubmit}
-                  className="bg-slate-800 text-white p-4 cursor-pointer disabled:bg-gray-400 active:scale-75 transition-transform"
+                  className="button-dark active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
                   type="button"
                   disabled={buttonDisabled}
                 >
-                  register now
+                  create account
                 </button>
               </div>
-              <div className="flex gap-5 text-gray-900 justify-center w-full flex-col">
-                <p>
-                  <a href="/#">Home</a>
-                </p>
-                <p>
+              <div className="flex gap-1 text-grey border-t-2 border-white justify-center w-full flex-col">
+                <h2 className="uppercase p-4 mt-6 text-lg text-center">
+                  Already have an account?
+                </h2>
+                <p className="flex justify-center">
                   <a
-                    href="/#login"
-                    className="hover:underline hover:hover-text-light"
+                    href={l.SITE_LOGIN}
+                    className="active:scale-75 transition-transform bg-transparent text-grey  w-[215px] py-4 border-[0.5px] border-[#3A3A3E]  cursor-pointer uppercase px-10 rounded button-empty-animation"
                   >
-                    Sign in
+                    login
                   </a>
                 </p>
               </div>

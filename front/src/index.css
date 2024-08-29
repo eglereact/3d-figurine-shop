@@ -13,12 +13,28 @@
     @apply text-[#3A3A3E];
   }
 
+  .bg-pink {
+    @apply bg-[#F9F3F1];
+  }
+
+  .bg-grey {
+    @apply bg-[#3A3A3E];
+  }
+
   .max-width {
     @apply max-w-[1200px] m-auto;
   }
 
   .nav-icons-animation {
     @apply flex justify-center items-center hover:scale-110 transform transition duration-200 ease-in-out;
+  }
+
+  .button-animation {
+    @apply flex justify-center items-center hover:scale-105 hover:bg-[#353539] transform transition duration-200 ease-in-out;
+  }
+
+  .button-empty-animation {
+    @apply flex justify-center items-center hover:scale-105  transform transition duration-200 ease-in-out;
   }
 }
 

@@ -3,6 +3,8 @@ import * as l from "../../Constants/urls";
 import useServerPost from "../../Hooks/useServerPost";
 import { LoaderContext } from "../../Contexts/Loader";
 import { AuthContext } from "../../Contexts/Auth";
+import Header from "../Web/Header";
+import Input from "../Forms/Input";
 
 const Login = () => {
   const defaultValues = { email: "", password: "" };
@@ -45,21 +47,21 @@ const Login = () => {
 
   return (
     <>
-      <div className="bg-slate-700 min-h-screen flex items-center justify-center">
-        <div className="max-w-[1600px] m-auto flex flex-col md:flex-row h-[100vh]">
-          <section className="bg-slate-300  w-full lg:w-1/2 p-10 xl:px-44 rounded  flex-1 flex flex-col justify-center">
+      <Header />
+      <div className="bg-white flex items-center justify-center p-6">
+        <div className="max-width flex flex-col md:flex-row text-grey">
+          <section className="bg-pink w-full lg:w-1/3 p-10 xl:px-20 rounded-lg flex-1 flex flex-col justify-center mt-6">
             <div className="text-center">
-              <h1 className="text-5xl text-light font-bold mb-4">Sign In</h1>
-              <h3 className="text-xl text-gray-900  mb-10">
-                Enter your email and password to Sign In.
+              <h1 className="text-5xl text-light font-light mb-4">
+                Login to Your Account
+              </h1>
+              <h3 className="text-sm mb-10">
+                View your order history, address book, and more.
               </h3>
             </div>
             <form className="space-y-4">
               <div className="flex flex-col">
-                <label className="text-dark uppercase text-xs font-bold mb-1">
-                  Email Address
-                </label>
-                <input
+                <Input
                   type="email"
                   name="email"
                   placeholder="jondoe@example.com"
@@ -67,13 +69,11 @@ const Login = () => {
                   className="bg-light-grey rounded outline-none p-2"
                   onChange={handleForm}
                   value={form.email}
+                  label="EMAIL"
                 />
               </div>
               <div className="flex flex-col">
-                <label className="text-dark uppercase text-xs font-bold mb-1">
-                  Your Password
-                </label>
-                <input
+                <Input
                   type="password"
                   name="password"
                   placeholder="**********"
@@ -81,26 +81,26 @@ const Login = () => {
                   className="bg-light-grey rounded outline-none p-2"
                   onChange={handleForm}
                   value={form.password}
+                  label="PASSWORD"
                 />
               </div>
-              <div>
+              <div className="flex justify-end">
                 <button
-                  className="button-dark active:scale-75 transition-transform bg-slate-800 text-white p-4 cursor-pointer"
+                  className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
                   type="button"
                   onClick={submit}
                 >
-                  Sign In
+                  login
                 </button>
               </div>
-              <div className="flex gap-5 text-gray-900 justify-center w-full flex-col">
-                <p>
-                  <a href="/#">Home</a>
-                </p>
-                <p>
-                  <span className="text-gray-400">Not registered? </span>
+              <div className="flex gap-1 text-grey border-t-2 border-white justify-center w-full flex-col">
+                <h2 className="uppercase p-4 mt-6 text-lg text-center">
+                  New to Our Shop?
+                </h2>
+                <p className="flex justify-center">
                   <a
-                    href="/#register"
-                    className="hover:underline hover:hover-text-light"
+                    href={l.SITE_REGISTER}
+                    className="active:scale-75 transition-transform bg-transparent text-grey  w-[215px] py-4 border-[0.5px] border-[#3A3A3E]  cursor-pointer uppercase px-10 rounded button-empty-animation"
                   >
                     Create account
                   </a>
