@@ -430,7 +430,7 @@ const writeImage = (imageBase64) => {
 };
 
 const deleteImage = (postId) => {
-  let sql = "SELECT photo FROM posts WHERE id = ?";
+  let sql = "SELECT photo FROM products WHERE id = ?";
   connection.query(sql, [postId], (err, results) => {
     if (err) {
       res.status;
@@ -528,6 +528,145 @@ app.delete("/admin/delete/product/:id", (req, res) => {
       });
     }
   });
+});
+
+app.get("/admin/edit/product/:id", (req, res) => {
+  setTimeout(() => {
+    if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+      return;
+    }
+    const { id } = req.params;
+    const sql = `
+        SELECT *
+        FROM products
+        WHERE id = ?
+        `;
+    connection.query(sql, [id], (err, rows) => {
+      if (err) throw err;
+      if (!rows.length) {
+        res
+          .status(404)
+          .json({
+            message: {
+              type: "info",
+              title: "Products",
+              text: `Product does not exist.`,
+            },
+          })
+          .end();
+        return;
+      }
+      res
+        .json({
+          product: rows[0],
+        })
+        .end();
+    });
+  }, 1500);
+});
+
+app.put("/admin/update/product/:id", (req, res) => {
+  setTimeout(() => {
+    const { id } = req.params;
+
+    const {
+      title,
+      photo,
+      price,
+      featured,
+      approved,
+      info,
+      in_stock,
+      discount,
+    } = req.body;
+
+    if (photo) {
+      photo.length > 40 && deleteImage(id);
+      const filename = photo.length > 40 ? writeImage(photo) : photo;
+      const sql = `
+            UPDATE products
+            SET title = ?, photo = ?, price = ?, featured = ? , approved = ?, info = ?, in_stock = ?, discount = ?
+            WHERE id = ?
+            `;
+      connection.query(
+        sql,
+        [
+          title,
+          filename,
+          price,
+          featured,
+          approved,
+          info,
+          in_stock,
+          discount,
+          id,
+        ],
+        (err, result) => {
+          if (err) throw err;
+          const updated = result.affectedRows;
+          if (!updated) {
+            res
+              .status(404)
+              .json({
+                message: {
+                  type: "info",
+                  title: "Products",
+                  text: `Product does not exist`,
+                },
+              })
+              .end();
+            return;
+          }
+          res
+            .json({
+              message: {
+                type: "success",
+                title: "Products",
+                text: `Product successfully updated.`,
+              },
+            })
+            .end();
+        }
+      );
+    } else {
+      deleteImage(id);
+      const sql = `
+            UPDATE posts
+            SET title = ?, photo = null, price = ?, featured = ? , approved = ?, info = ?, in_stock = ?, discount = ?
+            WHERE id = ?
+            `;
+      connection.query(
+        sql,
+        [title, photo, price, featured, approved, info, in_stock, discount, id],
+        (err, result) => {
+          if (err) throw err;
+          const updated = result.affectedRows;
+          if (!updated) {
+            res
+              .status(404)
+              .json({
+                message: {
+                  type: "info",
+                  title: "Products",
+                  text: `Product does not exist.`,
+                },
+              })
+              .end();
+            return;
+          }
+          res
+            .json({
+              message: {
+                type: "success",
+                title: "Products",
+                text: `Product successfully updated.`,
+              },
+            })
+            .end();
+        }
+      );
+    }
+  }, 1500);
 });
 
 app.listen(port, () => {

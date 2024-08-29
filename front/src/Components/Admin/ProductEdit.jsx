@@ -1,34 +1,47 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import useServerPost from "../../Hooks/useServerPost";
 import * as l from "../../Constants/urls";
 import Input from "../Forms/Input";
 import Image from "../Forms/Image";
 import Textarea from "../Forms/Textarea";
 import { LoaderContext } from "../../Contexts/Loader";
-// import { rem } from "../../Constants/icons";
+import { RouterContext } from "../../Contexts/Router";
+import useServerGet from "../../Hooks/useServerGet";
+import useServerPut from "../../Hooks/useServerPut";
+import Select from "../Forms/Select";
 
-export default function ProductCreate() {
-  const { doAction: doPost, response: serverPostResponse } = useServerPost(
-    l.SERVER_STORE_PRODUCT
+export default function ProductEdit() {
+  const { params } = useContext(RouterContext);
+  const { doAction: doGet, response: serverGetResponse } = useServerGet(
+    l.SERVER_EDIT_PRODUCT
   );
-  const [product, setProduct] = useState({
-    title: "",
-    price: "",
-    info: "",
-    in_stock: "",
-    photo: null,
-  });
+  const { doAction: doPut, serverResponse: serverPutResponse } = useServerPut(
+    l.SERVER_UPDATE_PRODUCT
+  );
+  const [product, setProduct] = useState(null);
   const { setShow } = useContext(LoaderContext);
-  const [imageName, setImageName] = useState("Image not selected");
+  const [imageName, setImageName] = useState("No image");
 
   useEffect(() => {
-    if (null === serverPostResponse) {
+    doGet("/" + params[1]);
+  }, [doGet, params]);
+
+  useEffect(() => {
+    if (null === serverGetResponse) {
       return;
     }
-    if ("success" === serverPostResponse.type) {
+    console.log(serverGetResponse);
+
+    setProduct(serverGetResponse.data.product ?? null);
+  }, [serverGetResponse]);
+
+  useEffect(() => {
+    if (null === serverPutResponse) {
+      return;
+    }
+    if ("success" === serverPutResponse.type) {
       window.location.hash = l.PRODUCTS_LIST;
     }
-  }, [serverPostResponse]);
+  }, [serverPutResponse]);
 
   const handleForm = (e) => {
     setProduct((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -53,20 +66,20 @@ export default function ProductCreate() {
       })
       .catch(() => {
         setProduct((p) => ({ ...p, photo: null }));
-        setImageName("Image not selected");
+        setImageName("No image");
       });
   };
 
   const clearImage = () => {
     imageInput.current.value = null;
     setProduct((p) => ({ ...p, photo: null }));
-    setImageName("Image not selected");
+    setImageName("No image");
   };
 
   const submit = () => {
     //TODO: Validation
     setShow(true);
-    doPost(product);
+    doPut(product);
   };
 
   return (
@@ -74,7 +87,7 @@ export default function ProductCreate() {
       <section id="banner">
         <div className="content">
           <header>
-            <h1 className="text-5xl mb-4">New Product</h1>
+            <h1 className="text-5xl mb-4">Update Product</h1>
           </header>
         </div>
       </section>
@@ -85,6 +98,26 @@ export default function ProductCreate() {
             <div className="col-8 col-8-large col-10-medium col-12-small">
               <form>
                 <div className="flex flex-col gap-5 ">
+                  <Select
+                    onChange={handleForm}
+                    value={product.approved}
+                    name="approved"
+                    options={[
+                      { value: 0, label: "not approved" },
+                      { value: 1, label: "approved" },
+                    ]}
+                    label="Select Approved"
+                  />
+                  <Select
+                    onChange={handleForm}
+                    value={product.featured}
+                    name="featured"
+                    options={[
+                      { value: 0, label: "not featured" },
+                      { value: 1, label: "featured" },
+                    ]}
+                    label="Select Featured"
+                  />
                   <div className="">
                     <Input
                       onChange={handleForm}

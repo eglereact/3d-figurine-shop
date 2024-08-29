@@ -162,7 +162,7 @@ const ProductsList = () => {
                     </td>
                     <td className="px-6 py-4 flex gap-5">
                       <a
-                        href={l.USER_EDIT + "/" + product.id}
+                        href={l.PRODUCT_EDIT + "/" + product.id}
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
                         Edit

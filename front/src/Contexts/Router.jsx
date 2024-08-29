@@ -10,6 +10,7 @@ import Sidebar from "../Components/Admin/Sidebar";
 import UserEdit from "../Components/Admin/UserEdit";
 import ProductsList from "../Components/Admin/ProductsList";
 import ProductCreate from "../Components/Admin/ProductCreate";
+import ProductEdit from "../Components/Admin/ProductEdit";
 
 const RouterContext = createContext([]);
 
@@ -87,6 +88,16 @@ const Router = () => {
       component: (
         <Sidebar>
           <ProductCreate />
+        </Sidebar>
+      ),
+    },
+    {
+      path: l.PRODUCT_EDIT,
+      pc: 2,
+      p1: "product-edit",
+      component: (
+        <Sidebar>
+          <ProductEdit />
         </Sidebar>
       ),
     },
