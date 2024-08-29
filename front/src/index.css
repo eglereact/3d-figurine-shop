@@ -21,6 +21,10 @@
     @apply bg-[#3A3A3E];
   }
 
+  .text-brown {
+    @apply text-[#984B2C];
+  }
+
   .max-width {
     @apply max-w-[1200px] m-auto;
   }

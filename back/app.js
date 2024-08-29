@@ -179,7 +179,7 @@ app.post("/login", (req, res) => {
           message: {
             type: "success",
             title: `Hello, ${rows?.[0]?.name}!`,
-            text: `Welcome to back!`,
+            text: `Welcome back!`,
           },
           session,
           user: rows?.[0],
