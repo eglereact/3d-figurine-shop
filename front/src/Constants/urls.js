@@ -8,6 +8,7 @@ export const SITE_REGISTER = "#register";
 export const SITE_HOME = "#";
 export const REDIRECT_AFTER_REGISTER = "#login";
 export const USER_PROFILE = "#user-profile";
+export const SITE_PRODUCTS = "#products";
 
 // Admin URLs
 export const SITE_DASHBOARD = "#admin/dashboard";
@@ -30,3 +31,4 @@ export const SERVER_GET_PRODUCTS = "admin/products";
 export const SERVER_DELETE_PRODUCT = "admin/delete/product";
 export const SERVER_EDIT_PRODUCT = "admin/edit/product";
 export const SERVER_UPDATE_PRODUCT = "admin/update/product";
+export const SERVER_GET_WEB_PRODUCTS = "web/products";

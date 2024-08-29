@@ -17,7 +17,7 @@ const Header = () => {
   }, []);
 
   const links = [
-    { id: 1, link: "/#", name: "Products" },
+    { id: 1, link: l.SITE_PRODUCTS, name: "Products" },
     { id: 2, link: "/#", name: "Blog" },
     { id: 3, link: "/#", name: "Sale" },
     { id: 4, link: "/#", name: "Contacts" },
