@@ -158,6 +158,16 @@ export default function ProductEdit() {
                     />
                   </div>
                   <div className="col-12">
+                    <Input
+                      onChange={handleForm}
+                      value={product.discount}
+                      type="text"
+                      name="discount"
+                      label="discount"
+                      placeholder="discount"
+                    />
+                  </div>
+                  <div className="col-12">
                     <Image
                       handleImage={handleImage}
                       imageInput={imageInput}
