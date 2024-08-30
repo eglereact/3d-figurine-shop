@@ -8,6 +8,7 @@ import { Router } from "./Contexts/Router";
 import LoaderContainer from "./Components/Common/Loader";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { CartProvider } from "./Contexts/Cart";
 
 function App() {
   AOS.init();
@@ -16,10 +17,12 @@ function App() {
       <Loader>
         <Auth>
           <Modals>
-            <Msg />
-            <LoaderContainer />
-            <DeleteModal />
-            <Router />
+            <CartProvider>
+              <Msg />
+              <LoaderContainer />
+              <DeleteModal />
+              <Router />
+            </CartProvider>
           </Modals>
         </Auth>
       </Loader>

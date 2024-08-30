@@ -7,10 +7,13 @@ import * as l from "../../Constants/urls";
 import { AuthContext } from "../../Contexts/Auth";
 import Logout from "../Common/Logout";
 import Gate from "../Common/Gate";
+import { CartContext } from "../../Contexts/Cart";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useContext(AuthContext);
+
+  const { cart } = useContext(CartContext);
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -108,6 +111,7 @@ const Header = () => {
               <li data-aos="fade-right">
                 <a href="#" className="nav-icons-animation">
                   <CiShoppingCart className="text-3xl" />
+                  <p>{cart.length}</p>
                 </a>
               </li>
               <Gate status="logged">

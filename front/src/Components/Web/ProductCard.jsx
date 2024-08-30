@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import * as l from "../../Constants/urls";
+import { CartContext } from "../../Contexts/Cart";
 
 const ProductCard = ({ p }) => {
+  const { addToCart } = useContext(CartContext);
+
   return (
     <div className="">
       <a
@@ -21,7 +25,10 @@ const ProductCard = ({ p }) => {
           </div>
 
           <div className="flex justify-center absolute bottom-0 left-0 right-0 bg-pink transform translate-y-full group-hover:translate-y-0 transition duration-300 ease-in-out">
-            <button className="w-1/3 py-2 text-grey text-center bg-pink border-[0.5px] border-[#3A3A3E] mb-2 rounded button-empty-animation ">
+            <button
+              onClick={() => addToCart(p)}
+              className="w-1/3 py-2 text-grey text-center bg-pink border-[0.5px] border-[#3A3A3E] mb-2 rounded button-empty-animation "
+            >
               Add To Cart
             </button>
           </div>

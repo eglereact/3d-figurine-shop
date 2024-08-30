@@ -6,14 +6,18 @@ import Header from "./Header";
 import StarRating from "./StarRating";
 import { GoDotFill } from "react-icons/go";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { CartContext } from "../../Contexts/Cart";
 
 const Product = () => {
   const { params } = useContext(RouterContext);
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
     l.GET_PRODUCT
   );
+  const { addToCart, cart } = useContext(CartContext);
   const [product, setProduct] = useState(null);
   const [count, setCount] = useState(1);
+
+  console.log(cart);
 
   const increase = () => {
     if (count >= product.in_stock) {
@@ -41,6 +45,10 @@ const Product = () => {
 
     setProduct(serverGetResponse.data.product ?? null);
   }, [serverGetResponse]);
+
+  const handleAddToCart = () => {
+    addToCart({ ...product, quantity: count });
+  };
 
   return (
     <>
@@ -93,20 +101,23 @@ const Product = () => {
                 <div className="flex w-40 py-2 text-grey items-center gap-4 border-[0.5px] border-[#3A3A3E] rounded justify-center">
                   <button
                     className="nav-icons-animation text-xl"
-                    onClick={() => decrease()}
+                    onClick={decrease}
                   >
                     <FiMinus />
                   </button>
                   <p className="text-lg">{count}</p>
                   <button
                     className="nav-icons-animation text-xl"
-                    onClick={() => increase()}
+                    onClick={increase}
                   >
                     <FiPlus />
                   </button>
                 </div>
 
-                <button className="uppercase button-empty-animation w-full py-4 text-grey text-center border-[0.5px] border-[#3A3A3E] rounded">
+                <button
+                  onClick={handleAddToCart}
+                  className="uppercase button-empty-animation w-full py-4 text-grey text-center border-[0.5px] border-[#3A3A3E] rounded"
+                >
                   Add to cart
                 </button>
               </div>
