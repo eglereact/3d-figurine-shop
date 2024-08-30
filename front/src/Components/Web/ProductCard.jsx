@@ -1,13 +1,15 @@
 import * as l from "../../Constants/urls";
 
 const ProductCard = ({ p }) => {
+  console.log(p.id);
+
   return (
     <div className="">
       <a
-        href="/#"
-        className="group bg-[#E8E1D8] relative overflow-hidden block rounded-lg transform transition duration-300 ease-in-out hover:scale-105"
+        href={l.SITE_PRODUCT + "/" + p.id}
+        className="group bg-sand relative overflow-hidden block rounded-lg transform transition duration-300 ease-in-out hover:scale-105"
       >
-        <div className="relative p-4">
+        <div className="relative p-6">
           <img
             src={`${l.SERVER_IMAGES_URL}/${p.photo}`}
             alt={p.title}

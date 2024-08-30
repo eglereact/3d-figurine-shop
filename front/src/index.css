@@ -25,6 +25,10 @@
     @apply text-[#984B2C];
   }
 
+  .bg-sand {
+    @apply bg-[#E8E1D8];
+  }
+
   .max-width {
     @apply max-w-[1200px] m-auto;
   }

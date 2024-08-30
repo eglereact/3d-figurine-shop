@@ -671,7 +671,7 @@ app.put("/admin/update/product/:id", (req, res) => {
 
 app.get("/web/products", (req, res) => {
   const sql = `
-   SELECT title, photo, in_stock, price, rating
+   SELECT title, photo, in_stock, price, rating, id
    FROM products 
    WHERE approved = TRUE
    ORDER BY updated_at DESC;
@@ -684,6 +684,38 @@ app.get("/web/products", (req, res) => {
     }
     res.json({ products: rows }).end();
   });
+});
+
+app.get("/web/product/:id", (req, res) => {
+  setTimeout(() => {
+    const { id } = req.params;
+    const sql = `
+    SELECT *
+    FROM products
+    WHERE id = ?
+    `;
+    connection.query(sql, [id], (err, rows) => {
+      if (err) throw err;
+      if (!rows.length) {
+        res
+          .status(404)
+          .json({
+            message: {
+              type: "info",
+              title: "Product",
+              text: `Product does not exist.`,
+            },
+          })
+          .end();
+        return;
+      }
+      res
+        .json({
+          product: rows[0],
+        })
+        .end();
+    });
+  }, 1500);
 });
 
 app.listen(port, () => {

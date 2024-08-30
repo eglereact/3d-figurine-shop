@@ -22,8 +22,6 @@ const Products = () => {
     setProducts(serverGetResponse.data.products ?? null);
   }, [serverGetResponse]);
 
-  console.log(products);
-
   return (
     <>
       <Header />

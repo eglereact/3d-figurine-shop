@@ -13,6 +13,7 @@ import ProductCreate from "../Components/Admin/ProductCreate";
 import ProductEdit from "../Components/Admin/ProductEdit";
 import UserProfile from "../Components/Web/UserProfile";
 import Products from "../Components/Web/Products";
+import Product from "../Components/Web/Product";
 
 const RouterContext = createContext([]);
 
@@ -105,6 +106,11 @@ const Router = () => {
     },
     { path: l.USER_PROFILE, pc: 0, component: <UserProfile /> },
     { path: l.SITE_PRODUCTS, pc: 0, component: <Products /> },
+    {
+      path: l.SITE_PRODUCT,
+      pc: 1,
+      component: <Product />,
+    },
   ];
 
   const findRoute = () => {
