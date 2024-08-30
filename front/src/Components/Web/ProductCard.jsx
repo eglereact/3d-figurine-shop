@@ -1,8 +1,6 @@
 import * as l from "../../Constants/urls";
 
 const ProductCard = ({ p }) => {
-  console.log(p.id);
-
   return (
     <div className="">
       <a
