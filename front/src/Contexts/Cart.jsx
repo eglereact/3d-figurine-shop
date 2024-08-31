@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { MessagesContext } from "./Messages";
 
 export const CartContext = createContext();
 
@@ -8,6 +9,7 @@ export const CartProvider = ({ children }) => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const { addMessage } = useContext(MessagesContext);
 
   // Update localStorage whenever the cart changes
   useEffect(() => {
@@ -29,6 +31,11 @@ export const CartProvider = ({ children }) => {
 
       // Product doesn't exist in the cart, add it
       return [...prevCart, product];
+    });
+    addMessage({
+      type: "success",
+      title: "",
+      text: `${product.title} was added to the cart.`,
     });
   };
 
