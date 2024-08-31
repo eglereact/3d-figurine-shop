@@ -14,6 +14,7 @@ import ProductEdit from "../Components/Admin/ProductEdit";
 import UserProfile from "../Components/Web/UserProfile";
 import Products from "../Components/Web/Products";
 import Product from "../Components/Web/Product";
+import CartPage from "../Components/Web/CartPage";
 
 const RouterContext = createContext([]);
 
@@ -111,6 +112,7 @@ const Router = () => {
       pc: 1,
       component: <Product />,
     },
+    { path: l.SITE_CART, pc: 0, component: <CartPage /> },
   ];
 
   const findRoute = () => {

@@ -109,7 +109,7 @@ const Header = () => {
               )}
 
               <li data-aos="fade-right">
-                <a href="#" className="nav-icons-animation relative">
+                <a href={l.SITE_CART} className="nav-icons-animation relative">
                   <CiShoppingCart className="text-3xl" />
                   {cart.length > 0 && (
                     <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-grey rounded-lg -top-2 -end-2">

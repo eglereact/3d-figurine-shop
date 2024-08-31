@@ -10,6 +10,7 @@ export const REDIRECT_AFTER_REGISTER = "#login";
 export const USER_PROFILE = "#user-profile";
 export const SITE_PRODUCTS = "#products";
 export const SITE_PRODUCT = "#product";
+export const SITE_CART = "#cart";
 
 // Admin URLs
 export const SITE_DASHBOARD = "#admin/dashboard";
