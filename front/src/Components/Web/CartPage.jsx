@@ -5,24 +5,37 @@ import * as l from "../../Constants/urls";
 import { FiMinus, FiPlus } from "react-icons/fi";
 
 const CartPage = () => {
-  const { cart, clearCart, increaseQuantity, decreaseQuantity } =
-    useContext(CartContext);
+  const {
+    cart,
+    clearCart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+  } = useContext(CartContext);
 
   return (
     <>
       <Header />
       <section className="max-width p-6 ">
-        <h1 className="text-3xl uppercase text-grey border-b-[1px] border-gray-200 pb-4">
-          Cart{" "}
-          <span className="text-lg">
-            {cart.length}
-            {cart.length === 1 ? " item" : " items"}
-          </span>
-        </h1>
+        <div className="text-grey border-b-[1px] border-gray-200 pb-4 flex justify-between">
+          <h1 className="text-3xl uppercase ">
+            Cart{" "}
+            <span className="text-lg">
+              {cart.length}
+              {cart.length === 1 ? " item" : " items"}
+            </span>
+          </h1>
+          <button
+            onClick={() => clearCart()}
+            className="uppercase p-2 text-center border-[0.5px] border-[#3A3A3E] mb-2 rounded button-empty-animation "
+          >
+            clear cart
+          </button>
+        </div>
         <div className="flex gap-6">
           <div className="flex flex-col gap-6 my-6 w-2/3">
             {cart.map((item) => (
-              <div className="border-b-[1px] border-gray-200 pb-6 flex gap-6">
+              <div className="border-b-[1px] border-gray-200 pb-6 flex gap-6 text-grey">
                 <img
                   className="w-40 bg-sand p-2 rounded-lg"
                   src={l.SERVER_IMAGES_URL + item.photo}
@@ -31,7 +44,9 @@ const CartPage = () => {
                 <div className="flex justify-between w-full">
                   <h2 className="uppercase">{item.title}</h2>
                   <div>
-                    <p>${item.price.toFixed(2)}</p>
+                    <p className="text-2xl">
+                      ${(item.price.toFixed(2) * item.quantity).toFixed(2)}
+                    </p>
                     <div className="flex gap-4 my-3">
                       <div className="flex w-28 py-1 text-grey items-center gap-2 border-[0.5px] border-[#3A3A3E] rounded justify-center">
                         <button
@@ -50,6 +65,12 @@ const CartPage = () => {
                         </button>
                       </div>
                     </div>
+                    <button
+                      className="uppercase text-xs hover:underline"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      remove
+                    </button>
                   </div>
                 </div>
               </div>
