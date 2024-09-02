@@ -3,6 +3,7 @@ import Header from "./Header";
 import { CartContext } from "../../Contexts/Cart";
 import * as l from "../../Constants/urls";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import Gate from "../Common/Gate";
 
 const CartPage = () => {
   const {
@@ -12,6 +13,21 @@ const CartPage = () => {
     decreaseQuantity,
     removeFromCart,
   } = useContext(CartContext);
+
+  const [shipping, setShipping] = useState(5); // Default shipping cost
+  const taxRate = 0.05; // Example tax rate (10%)
+
+  // Calculate Subtotal
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  // Calculate Tax
+  const tax = subtotal * taxRate;
+
+  // Calculate Total
+  const total = subtotal + tax + shipping;
 
   return (
     <>
@@ -76,8 +92,52 @@ const CartPage = () => {
               </div>
             ))}
           </div>
-          <div className="w-1/3 bg-pink mt-6 h-64">
-            <button onClick={() => clearCart()}>clear cart</button>
+          <div className="flex w-1/3 flex-col gap-6">
+            <div className="bg-pink mt-6 h-64 rounded-lg">
+              <div className="bg-pink mt-6 p-6 rounded-lg">
+                <div className="flex justify-between mb-2">
+                  <span>Subtotal</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span>Shipping</span>
+                  <select
+                    className="bg-transparent p-1 cursor-pointer rounded"
+                    value={shipping}
+                    onChange={(e) => setShipping(Number(e.target.value))}
+                  >
+                    <option value={5}>Standard Shipping - $5.00</option>
+                    <option value={15}>Express Shipping - $15.00</option>
+                  </select>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span>Tax (5%)</span>
+                  <span>${tax.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-xl font-bold mt-4">
+                  <span>Total</span>
+                  <span>${total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+            <Gate status="logged">
+              <a
+                className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
+                type="button"
+                href="/#checkout"
+              >
+                proceed to checkout
+              </a>
+            </Gate>
+            <Gate status="not-logged">
+              <a
+                className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
+                type="button"
+                href={l.SITE_LOGIN}
+              >
+                login
+              </a>
+            </Gate>
           </div>
         </div>
       </section>
