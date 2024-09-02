@@ -21,13 +21,30 @@ const Checkout = () => {
   const { checkoutDetails } = useContext(CartContext);
   const [form, setForm] = useState(defaultValues);
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const { clearCart } = useContext(CartContext);
+  const { clearCart, cart } = useContext(CartContext);
 
   const { doAction, response } = useServerPost(l.STORE_CART);
 
   const { user } = useContext(AuthContext);
   // const { errors, validateForm, setServerErrors } = useCreatePost();
   const { setShow } = useContext(LoaderContext);
+
+  const [cartDetails, setCartDetails] = useState({
+    subtotal: 0,
+    shipping: 5,
+    total: 0,
+  });
+
+  useEffect(() => {
+    // Retrieve data from localStorage
+    const storedCartDetails = localStorage.getItem("cartDetails");
+
+    // Check if data exists and parse it
+    if (storedCartDetails) {
+      const parsedDetails = JSON.parse(storedCartDetails);
+      setCartDetails(parsedDetails);
+    }
+  }, []);
 
   useEffect(() => {
     setForm((f) => ({
@@ -58,15 +75,6 @@ const Checkout = () => {
     setForm((f) => ({ ...f, [e.target.id]: e.target.value }));
   };
 
-  if (!checkoutDetails) {
-    setShow();
-    return (
-      <p>No checkout details available. Please go back to the cart page.</p>
-    );
-  }
-
-  const { cart, shipping, subtotal, tax, total } = checkoutDetails;
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add validation logic here if necessary
@@ -77,7 +85,7 @@ const Checkout = () => {
       ...form,
       user_id: user.id,
       cart: cart,
-      total: total,
+      total: cartDetails.total,
     });
   };
 
@@ -159,19 +167,19 @@ const Checkout = () => {
           <div className="bg-pink p-6 rounded-lg w-1/2">
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>${cartDetails.subtotal}</span>
             </div>
             <div className="flex justify-between mb-2">
               <span>Shipping</span>
-              <span>${shipping.toFixed(2)}</span>
+              <span>${cartDetails.shipping.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-2">
               <span>Tax (10%)</span>
-              <span>${tax.toFixed(2)}</span>
+              <span>$2</span>
             </div>
             <div className="flex justify-between text-xl font-bold mt-4">
               <span>Total</span>
-              <span>${total.toFixed(2)}</span>
+              <span>${cartDetails.total}</span>
             </div>
           </div>
         </div>

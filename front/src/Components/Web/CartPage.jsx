@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "./Header";
 import { CartContext } from "../../Contexts/Cart";
 import * as l from "../../Constants/urls";
@@ -17,6 +17,12 @@ const CartPage = () => {
     shipping,
   } = useContext(CartContext);
 
+  const [cartDetails, setCartDetails] = useState({
+    subtotal: 0,
+    shipping: 5,
+    total: 0,
+  });
+
   const tax = 2; // Example tax rate (10%)
 
   // Calculate Subtotal
@@ -33,6 +39,10 @@ const CartPage = () => {
     // Navigate to the CheckoutPage
     window.location.href = l.SITE_CHECKOUT;
   };
+
+  useEffect(() => {
+    localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
+  }, [cartDetails]);
 
   return (
     <>
@@ -129,7 +139,14 @@ const CartPage = () => {
               <button
                 className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
                 type="button"
-                onClick={handleProceedToCheckout}
+                onClick={() => {
+                  setCartDetails({
+                    subtotal: subtotal.toFixed(2),
+                    shipping: shipping,
+                    total: total.toFixed(2),
+                  });
+                  handleProceedToCheckout();
+                }}
               >
                 proceed to checkout
               </button>
