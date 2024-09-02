@@ -3,7 +3,7 @@ import * as l from "../../Constants/urls";
 import { CartContext } from "../../Contexts/Cart";
 
 const ProductCard = ({ p }) => {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, handleAddToCart } = useContext(CartContext);
 
   return (
     <div className="">

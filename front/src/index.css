@@ -132,3 +132,7 @@
     display: block;
   }
 }
+
+button[disabled] {
+  color: #ccc;
+}

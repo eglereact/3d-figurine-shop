@@ -13,25 +13,24 @@ const Product = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
     l.GET_PRODUCT
   );
-  const { addToCart, cart } = useContext(CartContext);
+
   const [product, setProduct] = useState(null);
+
   const [count, setCount] = useState(1);
+  const { addToCart, increaseQuantity, decreaseQuantity } =
+    useContext(CartContext);
 
-  console.log(cart);
-
-  const increase = () => {
-    if (count >= product.in_stock) {
-      return count;
-    }
-
-    setCount((c) => count + 1);
+  const handleIncrease = () => {
+    setCount((prev) => Math.min(prev + 1, product.in_stock));
   };
 
-  const decrease = () => {
-    if (count === 1) {
-      return;
-    }
-    setCount((c) => count - 1);
+  const handleDecrease = () => {
+    setCount((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleAddToCart = () => {
+    addToCart(product, count);
+    setCount(1); // Reset count to 1 after adding to cart if desired
   };
 
   useEffect(() => {
@@ -45,10 +44,6 @@ const Product = () => {
 
     setProduct(serverGetResponse.data.product ?? null);
   }, [serverGetResponse]);
-
-  const handleAddToCart = () => {
-    addToCart({ ...product, quantity: count });
-  };
 
   return (
     <>
@@ -101,14 +96,14 @@ const Product = () => {
                 <div className="flex w-40 py-2 text-grey items-center gap-4 border-[0.5px] border-[#3A3A3E] rounded justify-center">
                   <button
                     className="nav-icons-animation text-xl"
-                    onClick={decrease}
+                    onClick={handleDecrease}
                   >
                     <FiMinus />
                   </button>
                   <p className="text-lg">{count}</p>
                   <button
                     className="nav-icons-animation text-xl"
-                    onClick={increase}
+                    onClick={handleIncrease}
                   >
                     <FiPlus />
                   </button>

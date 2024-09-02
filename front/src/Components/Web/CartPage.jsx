@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Header from "./Header";
 import { CartContext } from "../../Contexts/Cart";
 import * as l from "../../Constants/urls";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
 const CartPage = () => {
-  const { cart } = useContext(CartContext);
-
-  console.log(cart);
+  const { cart, clearCart, increaseQuantity, decreaseQuantity } =
+    useContext(CartContext);
 
   return (
     <>
@@ -30,12 +30,34 @@ const CartPage = () => {
                 />
                 <div className="flex justify-between w-full">
                   <h2 className="uppercase">{item.title}</h2>
-                  <p>${item.price.toFixed(2)}</p>
+                  <div>
+                    <p>${item.price.toFixed(2)}</p>
+                    <div className="flex gap-4 my-3">
+                      <div className="flex w-28 py-1 text-grey items-center gap-2 border-[0.5px] border-[#3A3A3E] rounded justify-center">
+                        <button
+                          className="nav-icons-animation text-xl"
+                          onClick={() => decreaseQuantity(item.id)}
+                          disabled={item.quantity === 1}
+                        >
+                          <FiMinus />
+                        </button>
+                        <p className="text-lg">{item.quantity}</p>
+                        <button
+                          className="nav-icons-animation text-xl"
+                          onClick={() => increaseQuantity(item.id)}
+                        >
+                          <FiPlus />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="w-1/3 bg-pink mt-6 h-64">aa</div>
+          <div className="w-1/3 bg-pink mt-6 h-64">
+            <button onClick={() => clearCart()}>clear cart</button>
+          </div>
         </div>
       </section>
     </>
