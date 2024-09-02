@@ -21,6 +21,7 @@ const Checkout = () => {
   const { checkoutDetails } = useContext(CartContext);
   const [form, setForm] = useState(defaultValues);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { clearCart } = useContext(CartContext);
 
   const { doAction, response } = useServerPost(l.STORE_CART);
 
@@ -29,10 +30,20 @@ const Checkout = () => {
   const { setShow } = useContext(LoaderContext);
 
   useEffect(() => {
+    setForm((f) => ({
+      ...f,
+      name: user.name || "",
+      email: user.email || "",
+      user_id: user.id || "",
+    }));
+  }, [user]);
+
+  useEffect(() => {
     if (response === null) return;
 
     setButtonDisabled(false);
     if (response.type === "success") {
+      clearCart();
       window.location.hash = l.SITE_HOME;
     }
     // Uncomment and handle server errors if necessary
@@ -48,6 +59,7 @@ const Checkout = () => {
   };
 
   if (!checkoutDetails) {
+    setShow();
     return (
       <p>No checkout details available. Please go back to the cart page.</p>
     );

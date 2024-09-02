@@ -19,8 +19,6 @@ const CartPage = () => {
 
   const tax = 2; // Example tax rate (10%)
 
-  console.log("ship", shipping);
-
   // Calculate Subtotal
   const subtotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,

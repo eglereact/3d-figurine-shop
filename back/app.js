@@ -718,6 +718,69 @@ app.get("/web/product/:id", (req, res) => {
   }, 1500);
 });
 
+app.post("/store/cart", (req, res) => {
+  const { user_id, name, surname, email, phone, address, cart, total } =
+    req.body;
+
+  // Validate required fields
+  if (
+    !user_id ||
+    !name ||
+    !surname ||
+    !email ||
+    !cart ||
+    !total ||
+    !phone ||
+    !address
+  ) {
+    return res.status(422).json({
+      message: {
+        type: "danger",
+        text: "Name, surname, email, cart, user ID, and total are required.",
+      },
+    });
+  }
+
+  const sql = `
+    INSERT INTO cart (user_id, name, surname, email, phone, address, cart, total, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, now())
+  `;
+
+  connection.query(
+    sql,
+    [
+      user_id,
+      name,
+      surname,
+      email,
+      phone,
+      address,
+      JSON.stringify(cart),
+      total,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting cart data:", err);
+        return res.status(500).json({
+          message: {
+            type: "danger",
+            text: "Failed to store cart data.",
+          },
+        });
+      }
+
+      res.json({
+        success: true,
+        id: result.insertId,
+        message: {
+          type: "success",
+          text: "Thank you for shopping!",
+        },
+      });
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });

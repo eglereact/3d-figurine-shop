@@ -79,12 +79,43 @@ const createProductsTable = () => {
   });
 };
 
+const createCartTable = () => {
+  const sql = `CREATE TABLE IF NOT EXISTS cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    address TEXT,
+    phone VARCHAR(20),
+    cart JSON NOT NULL, -- Stores cart details as JSON
+    total DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);`;
+
+  connection.query(sql, function (err) {
+    if (err) throw err;
+    console.log("Products table created");
+  });
+};
+
 const dropProductsTable = () => {
   const sql = "DROP TABLE IF EXISTS products";
 
   connection.query(sql, function (err) {
     if (err) throw err;
     console.log("Products table dropped");
+  });
+};
+
+const dropCartTable = () => {
+  const sql = "DROP TABLE IF EXISTS cart";
+
+  connection.query(sql, function (err) {
+    if (err) throw err;
+    console.log("Cart table dropped");
   });
 };
 
@@ -106,14 +137,15 @@ const seedProductsTable = () => {
   });
 };
 
-dropUsersTable();
-dropProductsTable();
+// dropUsersTable();
+// dropProductsTable();
 
-createUsersTable();
-createProductsTable();
-
-seedUsersTable();
-seedProductsTable();
+// createUsersTable();
+// createProductsTable();
+dropCartTable();
+createCartTable();
+// seedUsersTable();
+// seedProductsTable();
 
 connection.end(function (err) {
   if (err) throw err;
