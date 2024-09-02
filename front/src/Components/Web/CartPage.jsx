@@ -12,10 +12,14 @@ const CartPage = () => {
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
+    updateShipping,
+    prepareCheckout,
+    shipping,
   } = useContext(CartContext);
 
-  const [shipping, setShipping] = useState(5); // Default shipping cost
-  const taxRate = 0.05; // Example tax rate (10%)
+  const tax = 2; // Example tax rate (10%)
+
+  console.log("ship", shipping);
 
   // Calculate Subtotal
   const subtotal = cart.reduce(
@@ -23,11 +27,14 @@ const CartPage = () => {
     0
   );
 
-  // Calculate Tax
-  const tax = subtotal * taxRate;
-
   // Calculate Total
   const total = subtotal + tax + shipping;
+
+  const handleProceedToCheckout = () => {
+    prepareCheckout(); // Prepare checkout details
+    // Navigate to the CheckoutPage
+    window.location.href = l.SITE_CHECKOUT;
+  };
 
   return (
     <>
@@ -104,14 +111,14 @@ const CartPage = () => {
                   <select
                     className="bg-transparent p-1 cursor-pointer rounded"
                     value={shipping}
-                    onChange={(e) => setShipping(Number(e.target.value))}
+                    onChange={(e) => updateShipping(Number(e.target.value))}
                   >
                     <option value={5}>Standard Shipping - $5.00</option>
                     <option value={15}>Express Shipping - $15.00</option>
                   </select>
                 </div>
                 <div className="flex justify-between mb-2">
-                  <span>Tax (5%)</span>
+                  <span>Tax</span>
                   <span>${tax.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-xl font-bold mt-4">
@@ -121,13 +128,13 @@ const CartPage = () => {
               </div>
             </div>
             <Gate status="logged">
-              <a
+              <button
                 className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
                 type="button"
-                href="/#checkout"
+                onClick={handleProceedToCheckout}
               >
                 proceed to checkout
-              </a>
+              </button>
             </Gate>
             <Gate status="not-logged">
               <a

@@ -4,18 +4,30 @@ import { MessagesContext } from "./Messages";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // Initialize cart state with items from localStorage
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [shipping, setShipping] = useState(5); // Default shipping cost
+  const [checkoutDetails, setCheckoutDetails] = useState(null);
 
-  const { addMessage } = useContext(MessagesContext);
-
-  // Update localStorage whenever the cart changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+
+  const { addMessage } = useContext(MessagesContext);
+
+  const tax = 2; // Example tax rate (10%)
+
+  // Calculate subtotal, tax, and total
+  const calculateTotals = () => {
+    const subtotal = cart.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+    const total = subtotal + tax + shipping;
+    return { subtotal, tax, total };
+  };
 
   const addToCart = (product, quantity = 1) => {
     setCart((prevCart) => {
@@ -41,12 +53,12 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
-  };
-
   const clearCart = () => {
     setCart([]);
+  };
+
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
   const increaseQuantity = (productId) => {
@@ -69,6 +81,19 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const updateShipping = (amount) => {
+    setShipping(amount);
+  };
+
+  const prepareCheckout = () => {
+    const totals = calculateTotals();
+    setCheckoutDetails({
+      cart,
+      shipping,
+      ...totals,
+    });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -78,6 +103,10 @@ export const CartProvider = ({ children }) => {
         clearCart,
         increaseQuantity,
         decreaseQuantity,
+        updateShipping,
+        prepareCheckout,
+        checkoutDetails,
+        shipping,
       }}
     >
       {children}
