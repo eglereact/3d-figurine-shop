@@ -61,7 +61,7 @@ const Checkout = () => {
     setButtonDisabled(false);
     if (response.type === "success") {
       clearCart();
-      window.location.hash = l.SITE_HOME;
+      window.location.hash = l.THANKS_FOR_ORDER;
     }
     // Uncomment and handle server errors if necessary
     else {
@@ -98,6 +98,9 @@ const Checkout = () => {
         </div>
         <div className="flex gap-6 my-6 w-full">
           <div className="w-1/2 bg-pink p-6 rounded-lg">
+            <h1 className="pb-4 text-xl uppercase text-grey">
+              shipping information
+            </h1>
             <form className="space-y-4 ">
               <Input
                 label="NAME"
@@ -164,7 +167,7 @@ const Checkout = () => {
               </div>
             </form>
           </div>
-          <div className="bg-pink p-6 rounded-lg w-1/2">
+          <div className="bg-pink p-6 rounded-lg w-1/2 text-grey">
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
               <span>${cartDetails.subtotal}</span>

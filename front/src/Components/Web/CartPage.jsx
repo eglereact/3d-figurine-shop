@@ -63,105 +63,118 @@ const CartPage = () => {
             clear cart
           </button>
         </div>
-        <div className="flex gap-6">
-          <div className="flex flex-col gap-6 my-6 w-2/3">
-            {cart.map((item) => (
-              <div className="border-b-[1px] border-gray-200 pb-6 flex gap-6 text-grey">
-                <img
-                  className="w-40 bg-sand p-2 rounded-lg"
-                  src={l.SERVER_IMAGES_URL + item.photo}
-                  alt={item.title}
-                />
-                <div className="flex justify-between w-full">
-                  <h2 className="uppercase">{item.title}</h2>
-                  <div>
-                    <p className="text-2xl">
-                      ${(item.price.toFixed(2) * item.quantity).toFixed(2)}
-                    </p>
-                    <div className="flex gap-4 my-3">
-                      <div className="flex w-28 py-1 text-grey items-center gap-2 border-[0.5px] border-[#3A3A3E] rounded justify-center">
-                        <button
-                          className="nav-icons-animation text-xl"
-                          onClick={() => decreaseQuantity(item.id)}
-                          disabled={item.quantity === 1}
-                        >
-                          <FiMinus />
-                        </button>
-                        <p className="text-lg">{item.quantity}</p>
-                        <button
-                          className="nav-icons-animation text-xl"
-                          onClick={() => increaseQuantity(item.id)}
-                        >
-                          <FiPlus />
-                        </button>
+
+        {cart.length < 1 ? (
+          <div className="flex items-center flex-col mt-10 gap-6">
+            <h1 className="  text-4xl text-grey">Your cart is empty</h1>
+            <a
+              href={l.SITE_PRODUCTS}
+              className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
+            >
+              fill it
+            </a>
+          </div>
+        ) : (
+          <div className="flex gap-6">
+            <div className="flex flex-col gap-6 my-6 w-2/3">
+              {cart.map((item) => (
+                <div className="border-b-[1px] border-gray-200 pb-6 flex gap-6 text-grey">
+                  <img
+                    className="w-40 bg-sand p-2 rounded-lg"
+                    src={l.SERVER_IMAGES_URL + item.photo}
+                    alt={item.title}
+                  />
+                  <div className="flex justify-between w-full">
+                    <h2 className="uppercase">{item.title}</h2>
+                    <div>
+                      <p className="text-2xl">
+                        ${(item.price.toFixed(2) * item.quantity).toFixed(2)}
+                      </p>
+                      <div className="flex gap-4 my-3">
+                        <div className="flex w-28 py-1 text-grey items-center gap-2 border-[0.5px] border-[#3A3A3E] rounded justify-center">
+                          <button
+                            className="nav-icons-animation text-xl"
+                            onClick={() => decreaseQuantity(item.id)}
+                            disabled={item.quantity === 1}
+                          >
+                            <FiMinus />
+                          </button>
+                          <p className="text-lg">{item.quantity}</p>
+                          <button
+                            className="nav-icons-animation text-xl"
+                            onClick={() => increaseQuantity(item.id)}
+                          >
+                            <FiPlus />
+                          </button>
+                        </div>
                       </div>
+                      <button
+                        className="uppercase text-xs hover:underline"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        remove
+                      </button>
                     </div>
-                    <button
-                      className="uppercase text-xs hover:underline"
-                      onClick={() => removeFromCart(item.id)}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex w-1/3 flex-col gap-6 text-grey">
+              <div className="bg-pink mt-6 h-64 rounded-lg">
+                <div className="bg-pink mt-6 p-6 rounded-lg">
+                  <div className="flex justify-between mb-2">
+                    <span>Subtotal</span>
+                    <span>${subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span>Shipping</span>
+                    <select
+                      className="bg-transparent p-1 cursor-pointer rounded"
+                      value={shipping}
+                      onChange={(e) => updateShipping(Number(e.target.value))}
                     >
-                      remove
-                    </button>
+                      <option value={5}>Standard Shipping - $5.00</option>
+                      <option value={15}>Express Shipping - $15.00</option>
+                    </select>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span>Tax</span>
+                    <span>${tax.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-xl font-bold mt-4">
+                    <span>Total</span>
+                    <span>${total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-          <div className="flex w-1/3 flex-col gap-6">
-            <div className="bg-pink mt-6 h-64 rounded-lg">
-              <div className="bg-pink mt-6 p-6 rounded-lg">
-                <div className="flex justify-between mb-2">
-                  <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Shipping</span>
-                  <select
-                    className="bg-transparent p-1 cursor-pointer rounded"
-                    value={shipping}
-                    onChange={(e) => updateShipping(Number(e.target.value))}
-                  >
-                    <option value={5}>Standard Shipping - $5.00</option>
-                    <option value={15}>Express Shipping - $15.00</option>
-                  </select>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-xl font-bold mt-4">
-                  <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
-                </div>
-              </div>
+              <Gate status="logged">
+                <button
+                  className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
+                  type="button"
+                  onClick={() => {
+                    setCartDetails({
+                      subtotal: subtotal.toFixed(2),
+                      shipping: shipping,
+                      total: total.toFixed(2),
+                    });
+                    handleProceedToCheckout();
+                  }}
+                >
+                  proceed to checkout
+                </button>
+              </Gate>
+              <Gate status="not-logged">
+                <a
+                  className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
+                  type="button"
+                  href={l.SITE_LOGIN}
+                >
+                  login
+                </a>
+              </Gate>
             </div>
-            <Gate status="logged">
-              <button
-                className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
-                type="button"
-                onClick={() => {
-                  setCartDetails({
-                    subtotal: subtotal.toFixed(2),
-                    shipping: shipping,
-                    total: total.toFixed(2),
-                  });
-                  handleProceedToCheckout();
-                }}
-              >
-                proceed to checkout
-              </button>
-            </Gate>
-            <Gate status="not-logged">
-              <a
-                className="active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
-                type="button"
-                href={l.SITE_LOGIN}
-              >
-                login
-              </a>
-            </Gate>
           </div>
-        </div>
+        )}
       </section>
     </>
   );
