@@ -57,7 +57,6 @@ const Checkout = () => {
 
   useEffect(() => {
     if (response === null) return;
-
     setButtonDisabled(false);
     if (response.type === "success") {
       clearCart();
@@ -107,7 +106,7 @@ const Checkout = () => {
                 type="text"
                 name="name"
                 onChange={handleChange}
-                value={user.name}
+                value={user?.name}
                 placeholder="Jon Doe"
                 autoComplete="username"
                 // errors={errors}
@@ -129,7 +128,7 @@ const Checkout = () => {
                 type="email"
                 name="email"
                 onChange={handleChange}
-                value={user.email}
+                value={user?.email}
                 placeholder="jondoe@example.com"
                 autoComplete="email"
                 // errors={errors}

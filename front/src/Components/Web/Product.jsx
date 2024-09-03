@@ -78,7 +78,7 @@ const Product = () => {
                     <MdOutlineDiscount /> on sale
                   </p>
                 ) : (
-                  ""
+                  <p></p>
                 )}
                 <div className="flex flex-col items-end justify-center">
                   <StarRating rating={product.rating} />

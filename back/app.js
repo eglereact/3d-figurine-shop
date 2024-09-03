@@ -781,6 +781,23 @@ app.post("/store/cart", (req, res) => {
   );
 });
 
+app.get("/sale/products", (req, res) => {
+  const sql = `
+   SELECT title, photo, in_stock, price, rating, id, discount
+    FROM products 
+    WHERE approved = TRUE AND discount > 0
+    ORDER BY updated_at DESC;
+  `;
+
+  connection.query(sql, (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: "Database query error" });
+      return;
+    }
+    res.json({ products: rows }).end();
+  });
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });

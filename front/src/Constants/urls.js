@@ -13,6 +13,7 @@ export const SITE_PRODUCT = "#product";
 export const SITE_CART = "#cart";
 export const SITE_CHECKOUT = "#checkout";
 export const THANKS_FOR_ORDER = "#thankyou";
+export const SALE_PAGE = "#sale";
 
 // Admin URLs
 export const SITE_DASHBOARD = "#admin/dashboard";
@@ -36,5 +37,6 @@ export const SERVER_DELETE_PRODUCT = "admin/delete/product";
 export const SERVER_EDIT_PRODUCT = "admin/edit/product";
 export const SERVER_UPDATE_PRODUCT = "admin/update/product";
 export const SERVER_GET_WEB_PRODUCTS = "web/products";
+export const SERVER_GET_SALE_PRODUCTS = "sale/products";
 export const GET_PRODUCT = "web/product";
 export const STORE_CART = "store/cart";
