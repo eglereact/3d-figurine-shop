@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import * as l from "../../Constants/urls";
 import { CartContext } from "../../Contexts/Cart";
+import ProductPrice from "./ProductPrice";
 
 const ProductCard = ({ p }) => {
   const { addToCart } = useContext(CartContext);
@@ -17,11 +18,24 @@ const ProductCard = ({ p }) => {
             />
           </div>
           <div className="bg-pink text-grey pt-4">
-            <h2 className="text-2xl px-4">${p.price.toFixed(2)}</h2>
+            <h2 className="text-2xl px-4">
+              {p.discount ? (
+                <ProductPrice price={p.price} discount={p.discount} />
+              ) : (
+                p.price.toFixed(2)
+              )}
+            </h2>
             <div className="px-4 pb-16">
               <h3 className="text-sm font-medium uppercase">{p.title}</h3>
             </div>
           </div>
+          {p.discount ? (
+            <p className="absolute top-2 right-2 bg-grey text-white rounded p-1">
+              -{p.discount}%
+            </p>
+          ) : (
+            ""
+          )}
         </a>
         <div className="flex justify-center absolute bottom-0 left-0 right-0 bg-pink transform translate-y-full group-hover:translate-y-0 transition duration-300 ease-in-out">
           <button

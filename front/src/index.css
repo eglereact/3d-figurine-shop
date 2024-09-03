@@ -25,6 +25,10 @@
     @apply text-[#984B2C];
   }
 
+  .bg-brown {
+    @apply bg-[#984B2C];
+  }
+
   .bg-sand {
     @apply bg-[#E8E1D8];
   }

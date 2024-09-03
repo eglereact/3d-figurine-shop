@@ -4,6 +4,7 @@ import { CartContext } from "../../Contexts/Cart";
 import * as l from "../../Constants/urls";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import Gate from "../Common/Gate";
+import ProductPrice from "./ProductPrice";
 
 const CartPage = () => {
   const {
@@ -25,11 +26,13 @@ const CartPage = () => {
 
   const tax = 2; // Example tax rate (10%)
 
-  // Calculate Subtotal
-  const subtotal = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  // Calculate Subtotal with Discount
+  const subtotal = cart.reduce((acc, item) => {
+    const itemPrice = item.discount
+      ? item.price - (item.price * item.discount) / 100
+      : item.price;
+    return acc + itemPrice * item.quantity;
+  }, 0);
 
   // Calculate Total
   const total = subtotal + tax + shipping;
@@ -88,7 +91,16 @@ const CartPage = () => {
                     <h2 className="uppercase">{item.title}</h2>
                     <div>
                       <p className="text-2xl">
-                        ${(item.price.toFixed(2) * item.quantity).toFixed(2)}
+                        {item.discount ? (
+                          <ProductPrice
+                            price={item.price * item.quantity}
+                            discount={item.discount}
+                            cartPage={true}
+                          />
+                        ) : (
+                          (item.price.toFixed(2) * item.quantity).toFixed(2)
+                        )}
+                        {/* ${(item.price.toFixed(2) * item.quantity).toFixed(2)} */}
                       </p>
                       <div className="flex gap-4 my-3">
                         <div className="flex w-28 py-1 text-grey items-center gap-2 border-[0.5px] border-[#3A3A3E] rounded justify-center">

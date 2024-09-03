@@ -671,7 +671,7 @@ app.put("/admin/update/product/:id", (req, res) => {
 
 app.get("/web/products", (req, res) => {
   const sql = `
-   SELECT title, photo, in_stock, price, rating, id
+   SELECT title, photo, in_stock, price, rating, id, discount
    FROM products 
    WHERE approved = TRUE
    ORDER BY updated_at DESC;

@@ -7,6 +7,8 @@ import StarRating from "./StarRating";
 import { GoDotFill } from "react-icons/go";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { CartContext } from "../../Contexts/Cart";
+import { MdOutlineDiscount } from "react-icons/md";
+import ProductPrice from "./ProductPrice";
 
 const Product = () => {
   const { params } = useContext(RouterContext);
@@ -15,6 +17,8 @@ const Product = () => {
   );
 
   const [product, setProduct] = useState(null);
+
+  console.log(product);
 
   const [count, setCount] = useState(1);
   const { addToCart, increaseQuantity, decreaseQuantity } =
@@ -68,15 +72,28 @@ const Product = () => {
               )}
             </div>
             <div className="w-full sm:w-1/2 lg:pr-20">
-              <div className="flex flex-col items-end justify-center">
-                <StarRating rating={product.rating} />
-                <span className="text-xs uppercase mr-1">
-                  {product.rating > 0 ? "1" : "0"} Review
-                </span>
+              <div className="flex justify-between">
+                {product.discount ? (
+                  <p className="uppercase text-white bg-brown h-6 text-sm flex gap-1  items-center px-4 rounded">
+                    <MdOutlineDiscount /> on sale
+                  </p>
+                ) : (
+                  ""
+                )}
+                <div className="flex flex-col items-end justify-center">
+                  <StarRating rating={product.rating} />
+                  <span className="text-xs uppercase mr-1">
+                    {product.rating > 0 ? "1" : "0"} Review
+                  </span>
+                </div>
               </div>
               <div className="text-grey flex flex-col gap-3 mt-6">
                 <h1 className="text-3xl uppercase">{product.title}</h1>
-                <h2 className="text-5xl ">${product.price.toFixed(2)}</h2>
+                <ProductPrice
+                  price={product.price}
+                  discount={product.discount}
+                  productPage={true}
+                />
                 <span className="text-xs uppercase mr-1">
                   Tax included. Shipping calculated at checkout.
                 </span>
