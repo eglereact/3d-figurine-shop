@@ -20,10 +20,11 @@ const Header = () => {
   }, []);
 
   const links = [
-    { id: 1, link: l.SITE_PRODUCTS, name: "Products" },
-    { id: 2, link: "/#", name: "Blog" },
-    { id: 3, link: l.SALE_PAGE, name: "Sale" },
-    { id: 4, link: "/#", name: "Contacts" },
+    { id: 1, link: l.SITE_HOME, name: "home" },
+    { id: 2, link: l.SITE_PRODUCTS, name: "Products" },
+    { id: 3, link: "/#", name: "Blog" },
+    { id: 4, link: l.SALE_PAGE, name: "Sale" },
+    { id: 5, link: "/#", name: "Contacts" },
   ];
 
   useEffect(() => {

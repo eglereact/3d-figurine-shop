@@ -82,10 +82,10 @@ export default function ProductCreate() {
         {null === product && <h3>Loading...</h3>}
         {null !== product && (
           <div className="row aln-center">
-            <div className="col-8 col-8-large col-10-medium col-12-small">
-              <form>
-                <div className="flex flex-col gap-5 ">
-                  <div className="">
+            <div className="col-8 col-8-large col-10-medium col-12-small ">
+              <form className="flex flex-col">
+                <div className="flex flex-col sm:flex-row gap-6  mt-6">
+                  <div className="w-full sm:w-1/2 flex flex-col gap-6">
                     <Input
                       onChange={handleForm}
                       value={product.title}
@@ -94,8 +94,7 @@ export default function ProductCreate() {
                       label="Title"
                       placeholder="title"
                     />
-                  </div>
-                  <div className="col-12">
+
                     <Input
                       onChange={handleForm}
                       value={product.price}
@@ -104,17 +103,16 @@ export default function ProductCreate() {
                       label="Price"
                       placeholder="price"
                     />
-                  </div>
-                  <div className="col-12">
+
                     <Textarea
                       onChange={handleForm}
                       value={product.info}
                       type="text"
                       name="info"
                       label="Info"
+                      placeholder="Info"
                     />
-                  </div>
-                  <div className="col-12">
+
                     <Input
                       onChange={handleForm}
                       value={product.in_stock}
@@ -124,28 +122,32 @@ export default function ProductCreate() {
                       placeholder="in stock"
                     />
                   </div>
-                  <div className="col-12">
+                  <div className="w-full sm:w-1/2">
                     <Image
                       handleImage={handleImage}
                       imageInput={imageInput}
                       imageName={imageName}
                       image={product.photo}
                       clearImage={clearImage}
-                      //   rem={rem}
                       name="photo"
                     />
                   </div>
-
-                  <div className="col-12">
-                    <ul className="flex gap-5">
-                      <li className="bg-gray-800 cursor-pointer p-4 text-white">
-                        <input onClick={submit} type="button" value="Save" />
-                      </li>
-                      <li className="bg-gray-800 cursor-pointer p-4 text-white">
-                        <a href={"/" + l.PRODUCTS_LIST}>All products</a>
-                      </li>
-                    </ul>
-                  </div>
+                </div>
+                <div className="col-12">
+                  <ul className="flex gap-5">
+                    <li>
+                      <button
+                        onClick={submit}
+                        type="button "
+                        className="grey-button"
+                      >
+                        save{" "}
+                      </button>
+                    </li>
+                    <li className="grey-button ">
+                      <a href={"/" + l.PRODUCTS_LIST}>All products</a>
+                    </li>
+                  </ul>
                 </div>
               </form>
             </div>

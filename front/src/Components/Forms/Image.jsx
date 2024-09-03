@@ -1,4 +1,5 @@
 import { SERVER_IMAGES_URL } from "../../Constants/urls";
+import { IoClose } from "react-icons/io5";
 
 export default function Image({
   handleImage,
@@ -6,7 +7,6 @@ export default function Image({
   imageInput,
   image,
   clearImage,
-  rem,
   name,
   errors = {},
 }) {
@@ -17,9 +17,9 @@ export default function Image({
       <div className="error-text">
         <span className={errors[name] ? "show" : ""}>{errors[name] ?? ""}</span>
       </div>
-      <label className="img-label" htmlFor={name}>
+      {/* <label className="img-label" htmlFor={name}>
         Add image: {imageName}
-      </label>
+      </label> */}
       <input
         className={errors[name] ? "error" : ""}
         id={name}
@@ -28,14 +28,17 @@ export default function Image({
         type="file"
         name={name}
       />
-      <div className="up-img">
+      <div className="w-96">
         {image ? (
-          <>
+          <div className="bg-sand rounded-lg mt-6 relative p-6">
             <img src={imgPath + image} alt="uploaded" />
-            <span className="cb-svg remove" onClick={clearImage}>
-              x
+            <span
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={clearImage}
+            >
+              <IoClose size={25} />
             </span>
-          </>
+          </div>
         ) : null}
       </div>
     </>

@@ -48,6 +48,10 @@
   .button-empty-animation {
     @apply flex justify-center items-center hover:scale-105  transform transition duration-200 ease-in-out;
   }
+
+  .grey-button {
+    @apply active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation;
+  }
 }
 
 .dice-container {
