@@ -40,3 +40,5 @@ export const SERVER_GET_WEB_PRODUCTS = "web/products";
 export const SERVER_GET_SALE_PRODUCTS = "sale/products";
 export const GET_PRODUCT = "web/product";
 export const STORE_CART = "store/cart";
+
+export const SERVER_GET_CART_BY_USER = "user/cart";

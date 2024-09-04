@@ -82,6 +82,7 @@ const createProductsTable = () => {
 const createCartTable = () => {
   const sql = `CREATE TABLE IF NOT EXISTS cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(10) NOT NULL UNIQUE, -- New column for order ID
     user_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     surname VARCHAR(100) NOT NULL,

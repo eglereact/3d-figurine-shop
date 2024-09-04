@@ -718,6 +718,10 @@ app.get("/web/product/:id", (req, res) => {
   }, 1500);
 });
 
+const generateOrderId = () => {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+};
+
 app.post("/store/cart", (req, res) => {
   const { user_id, name, surname, email, phone, address, cart, total } =
     req.body;
@@ -741,14 +745,17 @@ app.post("/store/cart", (req, res) => {
     });
   }
 
+  const order_id = generateOrderId();
+
   const sql = `
-    INSERT INTO cart (user_id, name, surname, email, phone, address, cart, total, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, now())
+    INSERT INTO cart (order_id, user_id, name, surname, email, phone, address, cart, total, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now())
   `;
 
   connection.query(
     sql,
     [
+      order_id,
       user_id,
       name,
       surname,
@@ -771,7 +778,7 @@ app.post("/store/cart", (req, res) => {
 
       res.json({
         success: true,
-        id: result.insertId,
+        order_id, // Include the generated order ID in the response
         message: {
           type: "success",
           text: "Thank you for shopping!",
@@ -795,6 +802,26 @@ app.get("/sale/products", (req, res) => {
       return;
     }
     res.json({ products: rows }).end();
+  });
+});
+
+app.get("/user/cart/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `
+    SELECT order_id, status, total, created_at, cart
+    FROM cart
+    WHERE user_id = ?
+    ORDER BY created_at DESC
+  `;
+
+  connection.query(sql, [id], (err, rows) => {
+    if (err) throw err;
+
+    res
+      .json({
+        userCart: rows, // Return all cart entries, with the newest on top
+      })
+      .end();
   });
 });
 
