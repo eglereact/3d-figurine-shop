@@ -13,9 +13,9 @@ const Input = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <div class="flex flex-col gap-2">
-        <div class="bg-pink rounded-lg">
-          <div class="relative bg-inherit">
+      <div className="flex flex-col gap-2">
+        <div className="bg-pink rounded-lg">
+          <div className="relative bg-inherit">
             <input
               id={name}
               placeholder={placeholder}
@@ -31,7 +31,7 @@ const Input = ({
         `}
             />
             <label
-              for={name}
+              htmlFor={name}
               className="absolute cursor-text left-0 -top-3 text-sm text-grey bg-inherit mx-2 px-1 pt-0.5 peer-placeholder-shown:text-sm peer-placeholder-shown:text-grey peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-grey peer-focus:text-sm transition-all"
             >
               {label}

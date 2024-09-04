@@ -65,8 +65,10 @@ export default function ProductCreate() {
 
   const submit = () => {
     //TODO: Validation
+
     setShow(true);
     doPost(product);
+    console.log(product);
   };
 
   return (
@@ -136,13 +138,12 @@ export default function ProductCreate() {
                 <div className="col-12">
                   <ul className="flex gap-5">
                     <li>
-                      <button
+                      <input
                         onClick={submit}
-                        type="button "
+                        type="button"
+                        value="Save"
                         className="grey-button"
-                      >
-                        save{" "}
-                      </button>
+                      />
                     </li>
                     <li className="grey-button ">
                       <a href={"/" + l.PRODUCTS_LIST}>All products</a>
