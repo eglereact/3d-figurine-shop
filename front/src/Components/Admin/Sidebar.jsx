@@ -75,6 +75,15 @@ const Sidebar = ({ children }) => {
                     <span className="flex text-center">New Product</span>
                   </a>
                 </li>
+                <li className="mb-4 h-10">
+                  <a
+                    href={"/" + l.ORDERS_LIST}
+                    className={`text-xs flex flex-col items-center md:text-lg md:flex-row md:gap-2`}
+                  >
+                    <MdNoteAdd className="text-lg md:text-xl " />
+                    <span className="flex text-center">Orders</span>
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="flex-1 min-h-screen p-10 bg-pink">{children}</div>

@@ -22,6 +22,7 @@ export const USER_EDIT = "#admin/user-edit";
 export const PRODUCTS_LIST = "#admin/products";
 export const PRODUCT_ADD = "#admin/product-add";
 export const PRODUCT_EDIT = "#admin/product-edit";
+export const ORDERS_LIST = "#admin/orders";
 
 // Server URLs
 export const SERVER_REGISTER = "register";
@@ -42,3 +43,4 @@ export const GET_PRODUCT = "web/product";
 export const STORE_CART = "store/cart";
 
 export const SERVER_GET_CART_BY_USER = "user/cart";
+export const SERVER_GET_ORDERS = "admin/orders";

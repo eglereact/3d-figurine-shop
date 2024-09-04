@@ -18,6 +18,7 @@ import CartPage from "../Components/Web/CartPage";
 import Checkout from "../Components/Web/Checkout";
 import Thanks from "../Components/Web/Thanks";
 import Sale from "../Components/Web/Sale";
+import OrdersList from "../Components/Admin/OrdersList";
 
 const RouterContext = createContext([]);
 
@@ -119,6 +120,16 @@ const Router = () => {
     { path: l.SITE_CHECKOUT, pc: 0, component: <Checkout /> },
     { path: l.THANKS_FOR_ORDER, pc: 0, component: <Thanks /> },
     { path: l.SALE_PAGE, pc: 0, component: <Sale /> },
+    {
+      path: l.ORDERS_LIST,
+      pc: 1,
+      p1: "orders",
+      component: (
+        <Sidebar>
+          <OrdersList />
+        </Sidebar>
+      ),
+    },
   ];
 
   const findRoute = () => {
