@@ -6,6 +6,7 @@ import Input from "../Forms/Input";
 import { AuthContext } from "../../Contexts/Auth";
 import useServerPost from "../../Hooks/useServerPost";
 import { LoaderContext } from "../../Contexts/Loader";
+import useCheckout from "../../Validations/useChechout";
 
 const Checkout = () => {
   const defaultValues = {
@@ -26,7 +27,7 @@ const Checkout = () => {
   const { doAction, response } = useServerPost(l.STORE_CART);
 
   const { user } = useContext(AuthContext);
-  // const { errors, validateForm, setServerErrors } = useCreatePost();
+  const { errors, validate, setServerErrors } = useCheckout();
   const { setShow } = useContext(LoaderContext);
 
   const [cartDetails, setCartDetails] = useState({
@@ -64,9 +65,9 @@ const Checkout = () => {
     }
     // Uncomment and handle server errors if necessary
     else {
-      // if (response.data?.response?.data?.errors) {
-      //   setServerErrors(response.data.response.data.errors);
-      // }
+      if (response.data?.response?.data?.errors) {
+        setServerErrors(response.data.response.data.errors);
+      }
     }
   }, [response]);
 
@@ -77,7 +78,7 @@ const Checkout = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add validation logic here if necessary
-    // if (!validateForm(form, image)) return;
+    if (!validate(form)) return;
     setShow(true);
     setButtonDisabled(true);
     doAction({
@@ -109,7 +110,7 @@ const Checkout = () => {
                 value={user?.name}
                 placeholder="Jon Doe"
                 autoComplete="username"
-                // errors={errors}
+                errors={errors}
               />
 
               <Input
@@ -120,7 +121,7 @@ const Checkout = () => {
                 value={form.surname}
                 placeholder="jondoe@example.com"
                 autoComplete="email"
-                // errors={errors}
+                errors={errors}
               />
 
               <Input
@@ -131,7 +132,7 @@ const Checkout = () => {
                 value={user?.email}
                 placeholder="jondoe@example.com"
                 autoComplete="email"
-                // errors={errors}
+                errors={errors}
               />
               <Input
                 label="ADDRESS"
@@ -141,7 +142,7 @@ const Checkout = () => {
                 value={form.address}
                 placeholder="Fake str.15 Fake City"
                 autoComplete="email"
-                // errors={errors}
+                errors={errors}
               />
               <Input
                 label="PHONE"
@@ -151,7 +152,7 @@ const Checkout = () => {
                 value={form.phone}
                 placeholder="+370 123 45 678"
                 autoComplete="email"
-                // errors={errors}
+                errors={errors}
               />
 
               <div className="flex justify-end">
