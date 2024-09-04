@@ -7,6 +7,7 @@ import Header from "../Web/Header";
 import Input from "../Forms/Input";
 import Gate from "./Gate";
 import Redirect from "./Redirect";
+import useLogin from "../../Validations/useLogin";
 
 const Login = () => {
   const defaultValues = { email: "", password: "" };
@@ -14,6 +15,7 @@ const Login = () => {
   const [form, setForm] = useState(defaultValues);
 
   const { doAction, response } = useServerPost(l.SERVER_LOGIN);
+  const { errors, validate, setServerErrors } = useLogin();
 
   const { setShow } = useContext(LoaderContext);
 
@@ -43,6 +45,9 @@ const Login = () => {
   }, [response]);
 
   const submit = () => {
+    if (!validate(form)) {
+      return;
+    }
     setShow(true);
     doAction(form);
   };
@@ -73,6 +78,7 @@ const Login = () => {
                     onChange={handleForm}
                     value={form.email}
                     label="EMAIL"
+                    errors={errors}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -85,6 +91,7 @@ const Login = () => {
                     onChange={handleForm}
                     value={form.password}
                     label="PASSWORD"
+                    errors={errors}
                   />
                 </div>
                 <div className="flex justify-end">
