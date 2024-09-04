@@ -844,6 +844,69 @@ app.get("/admin/orders", (req, res) => {
   }, 1500);
 });
 
+app.put("/admin/change/order/status/:id", (req, res) => {
+  setTimeout(() => {
+    const { id } = req.params;
+    const { status } = req.body; // Get the new status from the request body
+
+    // Ensure the status is valid and within the allowed values
+    const validStatuses = [
+      "awaiting payment",
+      "pending",
+      "processing",
+      "shipped",
+      "completed",
+      "cancelled",
+    ];
+    if (!validStatuses.includes(status)) {
+      return res
+        .status(400)
+        .json({
+          message: {
+            type: "danger",
+            title: "Order Status",
+            text: "Invalid status value.",
+          },
+        })
+        .end();
+    }
+
+    const sql = `
+      UPDATE cart 
+      SET status = ?
+      WHERE id = ?
+    `;
+
+    connection.query(sql, [status, id], (err, result) => {
+      if (err) throw err;
+      const updated = result.affectedRows;
+      if (!updated) {
+        res
+          .status(404)
+          .json({
+            message: {
+              type: "info",
+              title: "Order Status",
+              text: `Order not found.`,
+            },
+          })
+          .end();
+        return;
+      }
+      res
+        .json({
+          message: {
+            type: "success",
+            title: "Order Status",
+            text: `Order status successfully updated.`,
+          },
+          newId: id,
+        })
+        .end();
+    });
+  }, 1500);
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });

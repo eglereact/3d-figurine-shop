@@ -44,3 +44,4 @@ export const STORE_CART = "store/cart";
 
 export const SERVER_GET_CART_BY_USER = "user/cart";
 export const SERVER_GET_ORDERS = "admin/orders";
+export const SERVER_CHANGE_ORDER_STATUS = "admin/change/order/status";
