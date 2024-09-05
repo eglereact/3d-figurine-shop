@@ -10,7 +10,19 @@ const UserProfile = () => {
   return (
     <>
       <Header />
-      <div className="max-width">{user?.name}</div>
+      <div className="max-width">
+        <div className="text-grey pl-6">
+          <h3 className="uppercase text-3xl ">user profile</h3>
+          <p className="py-2 text-xl">
+            <span className="uppercase pr-2">name:</span>
+            {user?.name}
+          </p>
+          <p className="py-2 text-xl">
+            <span className="uppercase pr-2">email:</span>
+            {user?.email}
+          </p>
+        </div>
+      </div>
       <UserCartList />
       <Footer />
     </>
