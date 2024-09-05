@@ -1,5 +1,6 @@
 import { SERVER_IMAGES_URL } from "../../Constants/urls";
 import { IoClose } from "react-icons/io5";
+import { CiCircleAlert } from "react-icons/ci";
 
 export default function Image({
   handleImage,
@@ -14,9 +15,6 @@ export default function Image({
 
   return (
     <>
-      <div className="error-text">
-        <span className={errors[name] ? "show" : ""}>{errors[name] ?? ""}</span>
-      </div>
       {/* <label className="img-label" htmlFor={name}>
         Add image: {imageName}
       </label> */}
@@ -40,6 +38,13 @@ export default function Image({
             </span>
           </div>
         ) : null}
+      </div>
+      <div className="error-text">
+        {errors[name] && (
+          <span className=" flex items-center text-[#984B2C]">
+            {errors[name]} <CiCircleAlert size={30} />
+          </span>
+        )}
       </div>
     </>
   );

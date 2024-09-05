@@ -7,7 +7,7 @@ import Logout from "../Common/Logout";
 import Gate from "../Common/Gate";
 import Redirect from "../Common/Redirect";
 import { TbDoorEnter } from "react-icons/tb";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaShoppingBag } from "react-icons/fa";
 import { MdNoteAdd } from "react-icons/md";
 
 const Sidebar = ({ children }) => {
@@ -62,7 +62,7 @@ const Sidebar = ({ children }) => {
                     href={l.PRODUCTS_LIST}
                     className={`text-xs flex flex-col items-center md:text-lg md:flex-row md:gap-2`}
                   >
-                    <FaShoppingCart className="text-lg md:text-xl " />
+                    <FaShoppingBag className="text-lg md:text-xl " />
                     <span className="flex">Products</span>
                   </a>
                 </li>
@@ -80,7 +80,7 @@ const Sidebar = ({ children }) => {
                     href={"/" + l.ORDERS_LIST}
                     className={`text-xs flex flex-col items-center md:text-lg md:flex-row md:gap-2`}
                   >
-                    <MdNoteAdd className="text-lg md:text-xl " />
+                    <FaShoppingCart className="text-lg md:text-xl " />
                     <span className="flex text-center">Orders</span>
                   </a>
                 </li>

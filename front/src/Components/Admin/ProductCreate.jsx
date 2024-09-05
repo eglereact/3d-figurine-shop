@@ -5,6 +5,7 @@ import Input from "../Forms/Input";
 import Image from "../Forms/Image";
 import Textarea from "../Forms/Textarea";
 import { LoaderContext } from "../../Contexts/Loader";
+import useCreateProduct from "../../Validations/useCreateProduct";
 // import { rem } from "../../Constants/icons";
 
 export default function ProductCreate() {
@@ -20,6 +21,7 @@ export default function ProductCreate() {
   });
   const { setShow } = useContext(LoaderContext);
   const [imageName, setImageName] = useState("Image not selected");
+  const { errors, validateForm, setServerErrors } = useCreateProduct();
 
   useEffect(() => {
     if (null === serverPostResponse) {
@@ -65,21 +67,14 @@ export default function ProductCreate() {
 
   const submit = () => {
     //TODO: Validation
-
+    if (!validateForm(product, product.photo)) return;
     setShow(true);
     doPost(product);
-    console.log(product);
   };
 
   return (
     <>
-      <section id="banner">
-        <div className="content">
-          <header>
-            <h1 className="text-5xl mb-4">New Product</h1>
-          </header>
-        </div>
-      </section>
+      <h1 className="text-4xl mb-4 uppercase">New Product</h1>
       <section>
         {null === product && <h3>Loading...</h3>}
         {null !== product && (
@@ -95,6 +90,7 @@ export default function ProductCreate() {
                       name="title"
                       label="Title"
                       placeholder="title"
+                      errors={errors}
                     />
 
                     <Input
@@ -104,15 +100,17 @@ export default function ProductCreate() {
                       name="price"
                       label="Price"
                       placeholder="price"
+                      errors={errors}
                     />
 
-                    <Textarea
+                    <Input
                       onChange={handleForm}
                       value={product.info}
                       type="text"
                       name="info"
                       label="Info"
                       placeholder="Info"
+                      errors={errors}
                     />
 
                     <Input
@@ -122,6 +120,7 @@ export default function ProductCreate() {
                       name="in_stock"
                       label="In Stock"
                       placeholder="in stock"
+                      errors={errors}
                     />
                   </div>
                   <div className="w-full sm:w-1/2">
@@ -132,10 +131,11 @@ export default function ProductCreate() {
                       image={product.photo}
                       clearImage={clearImage}
                       name="photo"
+                      errors={errors}
                     />
                   </div>
                 </div>
-                <div className="col-12">
+                <div className="mt-6">
                   <ul className="flex gap-5">
                     <li>
                       <input
