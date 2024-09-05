@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../Contexts/Auth";
 import Header from "./Header";
 import UserCartList from "./UserCartList";
+import Footer from "./Footer";
 
 const UserProfile = () => {
   const { user } = useContext(AuthContext);
@@ -11,6 +12,7 @@ const UserProfile = () => {
       <Header />
       <div className="max-width">{user?.name}</div>
       <UserCartList />
+      <Footer />
     </>
   );
 };

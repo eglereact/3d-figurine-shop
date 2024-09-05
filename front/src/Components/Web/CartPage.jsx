@@ -5,6 +5,7 @@ import * as l from "../../Constants/urls";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import Gate from "../Common/Gate";
 import ProductPrice from "./ProductPrice";
+import Footer from "./Footer";
 
 const CartPage = () => {
   const {
@@ -188,6 +189,7 @@ const CartPage = () => {
           </div>
         )}
       </section>
+      <Footer />
     </>
   );
 };

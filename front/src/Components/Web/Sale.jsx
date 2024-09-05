@@ -3,6 +3,7 @@ import Header from "./Header";
 import * as l from "../../Constants/urls";
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import Footer from "./Footer";
 
 const Sale = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -34,6 +35,7 @@ const Sale = () => {
         {products !== null &&
           products.map((p) => <ProductCard key={p.id} p={p} />)}
       </section>
+      <Footer />
     </>
   );
 };

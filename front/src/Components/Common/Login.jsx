@@ -8,6 +8,7 @@ import Input from "../Forms/Input";
 import Gate from "./Gate";
 import Redirect from "./Redirect";
 import useLogin from "../../Validations/useLogin";
+import Footer from "../Web/Footer";
 
 const Login = () => {
   const defaultValues = { email: "", password: "" };
@@ -124,6 +125,7 @@ const Login = () => {
       <Gate status="logged">
         <Redirect to="SITE_HOME" />
       </Gate>
+      <Footer />
     </>
   );
 };

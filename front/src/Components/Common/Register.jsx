@@ -6,6 +6,7 @@ import useRegister from "../../Validations/useRegister";
 import Header from "../Web/Header";
 import Gate from "./Gate";
 import Redirect from "./Redirect";
+import Footer from "../Web/Footer";
 
 const Register = () => {
   const defaultValues = {
@@ -143,6 +144,7 @@ const Register = () => {
       <Gate status="logged">
         <Redirect to="SITE_HOME" />
       </Gate>
+      <Footer />
     </>
   );
 };

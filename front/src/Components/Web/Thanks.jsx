@@ -1,5 +1,6 @@
 import Header from "./Header";
 import * as l from "../../Constants/urls";
+import Footer from "./Footer";
 
 const Thanks = () => {
   return (
@@ -14,6 +15,7 @@ const Thanks = () => {
           shop again
         </a>
       </div>
+      <Footer />
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { CiInstagram } from "react-icons/ci";
 import { CiFacebook } from "react-icons/ci";
+import * as l from "../../Constants/urls";
 
 const Footer = () => {
   return (
@@ -10,16 +11,16 @@ const Footer = () => {
             <ul className="flex flex-col gap-2">
               <li className="uppercase text-2xl mb-2">Shop</li>
               <li className="footer-links">
-                <a href="/#">Home</a>
+                <a href={l.SITE_HOME}>Home</a>
               </li>
               <li className="footer-links">
-                <a href="/#">Products</a>
+                <a href={l.SITE_PRODUCTS}>Products</a>
               </li>
               <li className="footer-links">
                 <a href="/#">Blog</a>
               </li>
               <li className="footer-links">
-                <a href="/#">Sale</a>
+                <a href={l.SALE_PAGE}>Sale</a>
               </li>
             </ul>
             <ul className="flex flex-col gap-2">

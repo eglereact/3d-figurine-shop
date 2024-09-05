@@ -7,6 +7,7 @@ import { AuthContext } from "../../Contexts/Auth";
 import useServerPost from "../../Hooks/useServerPost";
 import { LoaderContext } from "../../Contexts/Loader";
 import useCheckout from "../../Validations/useChechout";
+import Footer from "./Footer";
 
 const Checkout = () => {
   const defaultValues = {
@@ -187,6 +188,7 @@ const Checkout = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };
