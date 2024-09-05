@@ -3,6 +3,7 @@ import * as l from "../../Constants/urls";
 import { useEffect, useState, useRef } from "react";
 import Gate from "../Common/Gate";
 import useServerPut from "../../Hooks/useServerPut";
+import { IoMdMore } from "react-icons/io";
 
 const OrdersList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -69,11 +70,16 @@ const OrdersList = () => {
   return (
     <>
       <Gate status="role" role={["admin", "editor"]}>
-        <h1 className="text-5xl mb-4">Orders List</h1>
-        <h2 className="text-2xl mb-10">Currently orders {orders?.length}</h2>
+        <div className="text-grey flex flex-col gap-2 mb-6 uppercase">
+          <h1 className="text-4xl">Orders List</h1>
+          <h2 className="text-xl">
+            Currently orders
+            <span className="font-bold"> {orders?.length}</span>
+          </h2>
+        </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-sm text-center rtl:text-right text-grey">
+            <thead className="text-xs text-white uppercase bg-grey">
               <tr>
                 {/* Table Headers */}
                 <th scope="col" className="px-6 py-3">
@@ -127,21 +133,18 @@ const OrdersList = () => {
                 orders.map((order) => (
                   <tr
                     key={order.id}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="odd:bg-white even:bg-pink text-grey"
                   >
                     <td>{order.order_id}</td>
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
+                    <td scope="row" className="px-6 py-4">
                       {order.user_id}
-                    </th>
-                    <td className="px-6 py-4">{order.name}</td>
-                    <td className="px-6 py-4">{order.surname}</td>
+                    </td>
+                    <td className="px-6 py-4 capitalize">{order.name}</td>
+                    <td className="px-6 py-4 capitalize">{order.surname}</td>
                     <td className="px-6 py-4">{order.email}</td>
                     <td className="px-6 py-4">{order.address}</td>
                     <td className="px-6 py-4">{order.phone}</td>
-                    <td className="px-6 py-4">{order.total}</td>
+                    <td className="px-6 py-4">${order.total}</td>
                     <td className="px-6 py-4">
                       {/* Status dropdown */}
                       <select
@@ -149,7 +152,7 @@ const OrdersList = () => {
                         onChange={(e) =>
                           handleStatusChange(order.id, e.target.value)
                         }
-                        className="form-select"
+                        className="bg-grey text-white p-1 rounded"
                       >
                         <option value="awaiting payment">
                           Awaiting Payment
@@ -161,17 +164,22 @@ const OrdersList = () => {
                         <option value="cancelled">Cancelled</option>
                       </select>
                     </td>
-                    <td className="px-6 py-4">{order.cart.substring(0, 25)}</td>
+                    <td className="px-6 py-4 flex justify-center items-center mt-4">
+                      {JSON.parse(order.cart).length}{" "}
+                      <button>
+                        <IoMdMore size={25} />
+                      </button>
+                    </td>
                     <td className="px-6 py-4">
                       {new Date(order.created_at).toISOString().split("T")[0]}
                     </td>
                     <td className="px-6 py-4">
                       {new Date(order.updated_at).toISOString().split("T")[0]}
                     </td>
-                    <td className="px-6 py-4 flex gap-5">
+                    <td className="px-6 py-4 mt-4">
                       <button
                         type="button"
-                        className="inline-flex items-center text-sm rounded-lg border border-transparent font-medium text-red-600 dark:text-red-500 hover:underline disabled:opacity-50 disabled:pointer-events-none"
+                        className="bg-grey text-white py-2 px-4 rounded button-animation w-20"
                       >
                         Delete
                       </button>

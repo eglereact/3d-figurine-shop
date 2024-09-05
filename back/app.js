@@ -826,22 +826,20 @@ app.get("/user/cart/:id", (req, res) => {
 });
 
 app.get("/admin/orders", (req, res) => {
-  setTimeout(() => {
-    if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
-      return;
-    }
-    const sql = `
+  if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+    return;
+  }
+  const sql = `
         SELECT *
         FROM cart`;
-    connection.query(sql, (err, rows) => {
-      if (err) throw err;
-      res
-        .json({
-          orders: rows,
-        })
-        .end();
-    });
-  }, 1500);
+  connection.query(sql, (err, rows) => {
+    if (err) throw err;
+    res
+      .json({
+        orders: rows,
+      })
+      .end();
+  });
 });
 
 app.put("/admin/change/order/status/:id", (req, res) => {

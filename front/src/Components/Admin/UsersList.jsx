@@ -59,11 +59,16 @@ const UsersList = () => {
   return (
     <>
       <Gate status="role" role={["admin"]}>
-        <h1 className="text-5xl mb-4">Users List</h1>
-        <h2 className="text-2xl mb-10">Currently users {users?.length}</h2>
+        <div className="text-grey flex flex-col gap-2 mb-6 uppercase">
+          <h1 className="text-4xl">Users List</h1>
+          <h2 className="text-xl">
+            Currently users
+            <span className="font-bold"> {users?.length}</span>
+          </h2>
+        </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-sm text-center rtl:text-right text-grey">
+            <thead className="text-xs text-white uppercase bg-grey">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   User name
@@ -92,23 +97,20 @@ const UsersList = () => {
                 users.map((user) => (
                   <tr
                     key={user?.id}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="odd:bg-white even:bg-pink text-grey"
                   >
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
+                    <td scope="row" className="px-6 py-4 capitalize">
                       {user?.name}
-                    </th>
+                    </td>
                     <td className="px-6 py-4">{user?.email}</td>
                     <td className="px-6 py-4">{user?.role}</td>
                     <td className="px-6 py-4">
                       {new Date(user?.created_at).toISOString().split("T")[0]}
                     </td>
-                    <td className="px-6 py-4 flex gap-5">
+                    <td className="px-6 py-4 flex justify-center gap-2">
                       <a
                         href={l.USER_EDIT + "/" + user.id}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        className="bg-grey text-white py-2 px-4 rounded button-animation w-20"
                       >
                         Edit
                       </a>
@@ -121,7 +123,7 @@ const UsersList = () => {
                             hideData: hideUser,
                           })
                         }
-                        className="inline-flex items-center text-sm rounded-lg border border-transparent font-medium text-red-600 dark:text-red-500 hover:underline disabled:opacity-50 disabled:pointer-events-none"
+                        className="bg-grey text-white py-2 px-4 rounded button-animation w-20"
                       >
                         Delete
                       </button>
