@@ -5,6 +5,8 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { ModalsContext } from "../../Contexts/Modals";
 import Gate from "../Common/Gate";
 import { LoaderContext } from "../../Contexts/Loader";
+import { FaCheck, FaTimes } from "react-icons/fa";
+import StarRating from "../Web/StarRating";
 
 const ProductsList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -64,13 +66,16 @@ const ProductsList = () => {
   return (
     <>
       <Gate status="role" role={["admin", "editor"]}>
-        <h1 className="text-5xl mb-4">Products List</h1>
-        <h2 className="text-2xl mb-10">
-          Currently products {products?.length}
-        </h2>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="text-grey flex flex-col gap-2 mb-6 uppercase">
+          <h1 className="text-4xl">Products List</h1>
+          <h2 className="text-xl">
+            Currently products{" "}
+            <span className="font-bold">{products?.length}</span>
+          </h2>
+        </div>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
+          <table className="w-full text-sm text-center rtl:text-right text-grey">
+            <thead className="text-xs text-white uppercase bg-grey">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Photo
@@ -107,7 +112,7 @@ const ProductsList = () => {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="">
               {products === null && (
                 <tr>
                   <td>Loading...</td>
@@ -115,37 +120,37 @@ const ProductsList = () => {
               )}
               {products !== null &&
                 products.map((product) => (
-                  <tr
-                    key={product?.id}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                  >
+                  <tr key={product?.id} className="odd:bg-white  even:bg-pink">
                     <td>
                       {product?.photo === null ? (
                         <img
-                          style={{ height: "120px", width: "auto" }}
                           src={l.SERVER_IMAGES_URL + "no-image.png"}
                           alt="nėra nuotraukos"
                         />
                       ) : (
                         <img
-                          style={{ height: "120px", width: "auto" }}
+                          className="w-48 p-1 bg-sand rounded m-4"
                           src={l.SERVER_IMAGES_URL + product.photo}
                           alt={product.title}
                         />
                       )}
                     </td>
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
+                    <th scope="row" className="px-6 py-4">
                       {product?.title}
                     </th>
                     <td className="px-6 py-4">{product?.price}</td>
                     <td className="px-6 py-4">{product?.info}</td>
-                    <td className="px-6 py-4">{product?.featured}</td>
-                    <td className="px-6 py-4">{product?.approved}</td>
-                    <td className="px-6 py-4">{product?.rating}</td>
-                    <td className="px-6 py-4">{product?.discount}</td>
+                    <td className="px-6 py-4">
+                      {product.featured ? <FaCheck /> : <FaTimes />}
+                    </td>
+                    <td className="px-6 py-4">
+                      {" "}
+                      {product.approved ? <FaCheck /> : <FaTimes />}
+                    </td>
+                    <td className="px-6 py-4">
+                      <StarRating rating={product?.rating} size={4} />
+                    </td>
+                    <td className="px-6 py-4">{product?.discount}%</td>
                     <td className="px-6 py-4">
                       {
                         new Date(product?.created_at)
@@ -160,10 +165,10 @@ const ProductsList = () => {
                           .split("T")[0]
                       }
                     </td>
-                    <td className="px-6 py-4 flex gap-5">
+                    <td className="px-6 py-4 flex flex-col mt-4 gap-2">
                       <a
                         href={l.PRODUCT_EDIT + "/" + product.id}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        className="bg-grey text-white py-2 px-4 rounded button-animation"
                       >
                         Edit
                       </a>
@@ -176,7 +181,7 @@ const ProductsList = () => {
                             hideData: hideProduct,
                           })
                         }
-                        className="inline-flex items-center text-sm rounded-lg border border-transparent font-medium text-red-600 dark:text-red-500 hover:underline disabled:opacity-50 disabled:pointer-events-none"
+                        className="bg-grey text-white py-2 px-4 rounded button-animation"
                       >
                         Delete
                       </button>

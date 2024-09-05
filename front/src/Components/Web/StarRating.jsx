@@ -1,4 +1,4 @@
-const StarRating = ({ rating }) => {
+const StarRating = ({ rating, size }) => {
   const totalStars = 5;
 
   return (
@@ -6,7 +6,7 @@ const StarRating = ({ rating }) => {
       {[...Array(totalStars)].map((_, index) => (
         <svg
           key={index}
-          className={`h-6 w-6 ${
+          className={`h-${size} w-${size} ${
             index < rating ? "text-grey" : "text-gray-300"
           }`}
           fill="currentColor"

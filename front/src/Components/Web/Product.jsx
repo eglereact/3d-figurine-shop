@@ -82,7 +82,7 @@ const Product = () => {
                   <p></p>
                 )}
                 <div className="flex flex-col items-end justify-center">
-                  <StarRating rating={product.rating} />
+                  <StarRating rating={product.rating} size={6} />
                   <span className="text-xs uppercase mr-1">
                     {product.rating > 0 ? "1" : "0"} Review
                   </span>

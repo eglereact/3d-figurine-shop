@@ -74,7 +74,7 @@ export default function ProductCreate() {
 
   return (
     <>
-      <h1 className="text-4xl mb-4 uppercase">New Product</h1>
+      <h1 className="text-4xl mb-4 uppercase text-grey">New Product</h1>
       <section>
         {null === product && <h3>Loading...</h3>}
         {null !== product && (

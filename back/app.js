@@ -443,22 +443,22 @@ const deleteImage = (postId) => {
 };
 
 app.get("/admin/products", (req, res) => {
-  setTimeout(() => {
-    if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
-      return;
-    }
-    const sql = `
+  if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+    return;
+  }
+  const sql = `
         SELECT *
-        FROM products`;
-    connection.query(sql, (err, rows) => {
-      if (err) throw err;
-      res
-        .json({
-          products: rows,
-        })
-        .end();
-    });
-  }, 1500);
+        FROM products
+        ORDER BY updated_at DESC;
+        `;
+  connection.query(sql, (err, rows) => {
+    if (err) throw err;
+    res
+      .json({
+        products: rows,
+      })
+      .end();
+  });
 });
 
 app.post("/admin/store/product", (req, res) => {
