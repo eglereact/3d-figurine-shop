@@ -9,6 +9,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { CartContext } from "../../Contexts/Cart";
 import { MdOutlineDiscount } from "react-icons/md";
 import ProductPrice from "./ProductPrice";
+import Footer from "./Footer";
 
 const Product = () => {
   const { params } = useContext(RouterContext);
