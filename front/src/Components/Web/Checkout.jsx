@@ -178,7 +178,7 @@ const Checkout = () => {
               <span>${cartDetails.shipping.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-2">
-              <span>Tax (10%)</span>
+              <span>Tax</span>
               <span>$2</span>
             </div>
             <div className="flex justify-between text-xl font-bold mt-4">

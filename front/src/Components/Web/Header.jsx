@@ -82,7 +82,7 @@ const Header = () => {
               </li>
             ))}
             <div className="flex gap-3 justify-center items-center">
-              <li data-aos="fade-right" className="">
+              {/* <li data-aos="fade-right" className="">
                 <a
                   href="#"
                   className="flex justify-center items-center transition duration-200 ease-in-out group"
@@ -90,7 +90,7 @@ const Header = () => {
                   <CiSearch className="text-3xl transform transition duration-200 ease-in-out group-hover:scale-110" />
                   <span className="uppercase text-xs">search</span>
                 </a>
-              </li>
+              </li> */}
               {user === null ? (
                 <li data-aos="fade-right">
                   <a href={l.SITE_LOGIN} className="nav-icons-animation">

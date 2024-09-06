@@ -29,7 +29,7 @@ const UserCartList = () => {
 
   return (
     <section className="p-6 max-width">
-      <h1 className="text-3xl uppercase text-grey pb-6">Cart History</h1>
+      <h1 className="text-3xl uppercase text-grey pb-6">order History</h1>
       {userCartHistory === null ? (
         // While waiting for data (initially null)
         <p className="text-grey text-lg">Loading...</p>
