@@ -154,10 +154,9 @@ const OrdersList = () => {
                         }
                         className="bg-grey text-white p-1 rounded"
                       >
-                        <option value="awaiting payment">
-                          Awaiting Payment
+                        <option value="waiting for approval">
+                          Waiting for approval
                         </option>
-                        <option value="pending">Pending</option>
                         <option value="processing">Processing</option>
                         <option value="shipped">Shipped</option>
                         <option value="completed">Completed</option>

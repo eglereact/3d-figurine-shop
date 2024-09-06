@@ -91,7 +91,7 @@ const createCartTable = () => {
     phone VARCHAR(20),
     cart JSON NOT NULL, -- Stores cart details as JSON
     total DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    status ENUM('awaiting payment', 'pending', 'processing', 'shipped', 'completed','cancelled') NOT NULL DEFAULT 'awaiting payment', 
+    status ENUM('waiting for approval', 'processing', 'shipped', 'completed','cancelled') NOT NULL DEFAULT 'waiting for approval', 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
