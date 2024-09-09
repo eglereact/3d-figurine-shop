@@ -185,3 +185,29 @@ button[disabled] {
 #custom-dropdown:hover .dropdown-content {
   display: block;
 }
+
+.box {
+  position: relative; /* To position the ::before element inside */
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  --mask: radial-gradient(147.84px at 50% 206.8px, #000 99%, #0000 101%)
+      calc(50% - 176px) 0/352px 100%,
+    radial-gradient(147.84px at 50% -118.8px, #0000 99%, #000 101%) 50% 88px/352px
+      100% repeat-x;
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
+  background-color: #3a3a3e; /* Red background with waves */
+  z-index: -1; /* Ensure the background stays behind the text */
+}
+
+.box div {
+  position: relative; /* To ensure the text is on top of the background */
+  z-index: 1; /* Ensures the text is above the background */
+}
