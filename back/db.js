@@ -139,15 +139,15 @@ const seedProductsTable = () => {
   });
 };
 
-// dropUsersTable();
-// dropProductsTable();
+dropUsersTable();
+dropProductsTable();
 
-// createUsersTable();
-// createProductsTable();
+createUsersTable();
+createProductsTable();
 dropCartTable();
 createCartTable();
-// seedUsersTable();
-// seedProductsTable();
+seedUsersTable();
+seedProductsTable();
 
 connection.end(function (err) {
   if (err) throw err;
