@@ -3,16 +3,20 @@ import React from "react";
 const MapLP = () => {
   return (
     <>
-      <div className="max-width flex  justify-center">
-        <div className="bg-pink p-6 lg:w-2/3 flex gap-10 md:flex-row flex-col">
+      <div className="max-width flex justify-center">
+        <div
+          className="bg-pink p-6 lg:w-2/3 flex gap-10 rounded-lg md:flex-row flex-col"
+          data-aos="fade-down"
+          data-aos-once={true}
+        >
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d18356.484193170072!2d23.88113908434219!3d54.89308343874395!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e72272ce0e6e13%3A0xd99631cc7f3d8811!2sCentras%2C%20Kaunas%2C%20Kauno%20m.%20sav.!5e0!3m2!1slt!2slt!4v1725875636991!5m2!1slt!2slt"
             width="450"
             height="450"
             style={{ border: 0 }}
-            allowfullscreen=""
+            allowFullScreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
           <div className="text-grey">
             <h1 className="text-5xl uppercase mt-10">Visit Us!</h1>

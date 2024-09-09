@@ -55,6 +55,53 @@
   .footer-links {
     @apply hover:text-gray-400 transition duration-200 ease-in-out uppercase text-sm;
   }
+
+  .panel {
+    @apply relative bg-grey rounded-xl text-white mb-3 last:mb-0;
+  }
+
+  .panel__label {
+    @apply relative block w-full bg-transparent border-none text-left px-6 py-6 font-medium text-lg cursor-pointer transition-colors duration-200 ease-linear focus:outline-none;
+  }
+
+  .icon {
+    @apply absolute right-6 top-1/2 transform -translate-y-1/2 w-6 h-6 flex items-center justify-center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .icon::before,
+  .icon::after {
+    content: "";
+    @apply block bg-white absolute;
+  }
+
+  .icon::before {
+    @apply w-3 h-0.5;
+    transition: transform 0.3s ease;
+  }
+
+  .icon::after {
+    @apply w-0.5 h-3;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+}
+
+.icon.closed::before {
+  transform: rotate(0deg);
+}
+
+.icon.closed::after {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+.icon.open::before {
+  transform: rotate(0deg);
+}
+
+.icon.open::after {
+  transform: rotate(90deg);
+  opacity: 0;
 }
 
 .dice-container {

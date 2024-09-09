@@ -50,7 +50,11 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="py-6 flex justify-center">
+        <div
+          className="py-6 flex justify-center"
+          data-aos="fade-up"
+          data-aos-once={true}
+        >
           <img src="/images/logo2.png" alt="logo" className="w-72" />
         </div>
         <p className="text-center py-2 text-sm uppercase">
