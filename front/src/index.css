@@ -84,6 +84,10 @@
     @apply w-0.5 h-3;
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
+
+  .single-box {
+    @apply border-r-2 flex px-4 flex-col md:h-[280px] justify-center;
+  }
 }
 
 .icon.closed::before {
