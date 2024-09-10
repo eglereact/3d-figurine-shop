@@ -11,7 +11,7 @@ function FAQ() {
 
   return (
     <>
-      <div className="max-width flex justify-center my-20">
+      <div className="max-width flex justify-center my-40">
         <div
           className="bg-pink mx-6 lg:mx-0  p-6 lg:w-2/3 flex gap-10 rounded-lg md:flex-row flex-col"
           data-aos="fade-down"

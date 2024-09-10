@@ -3,6 +3,7 @@ const ProductPrice = ({
   discount,
   cartPage = false,
   productPage = false,
+  landingPage = false,
 }) => {
   const discountAmount = (discount / 100) * price;
   const finalPrice = price - discountAmount;
@@ -10,8 +11,30 @@ const ProductPrice = ({
   if (productPage === true) {
     return (
       <div>
-        <h2 className="text-2xl line-through">${price.toFixed(2)}</h2>
-        <h2 className="text-5xl text-brown">${finalPrice.toFixed(2)}</h2>
+        {discount > 0 ? (
+          <>
+            <h2 className="text-2xl line-through">${price.toFixed(2)}</h2>
+            <h2 className="text-5xl text-brown">${finalPrice.toFixed(2)}</h2>
+          </>
+        ) : (
+          <h2 className="text-5xl ">${price.toFixed(2)}</h2>
+        )}
+      </div>
+    );
+  }
+  if (landingPage === true) {
+    return (
+      <div>
+        {discount ? (
+          <>
+            <h2 className="text-2xl line-through text-white">
+              ${price.toFixed(2)}
+            </h2>
+            <h2 className="text-5xl text-brown">${finalPrice.toFixed(2)}</h2>
+          </>
+        ) : (
+          <h2 className="text-5xl text-white">${price.toFixed(2)}</h2>
+        )}
       </div>
     );
   }

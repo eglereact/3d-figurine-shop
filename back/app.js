@@ -905,6 +905,23 @@ app.put("/admin/change/order/status/:id", (req, res) => {
   }, 1500);
 });
 
+app.get("/featured/products", (req, res) => {
+  const sql = `
+  SELECT title, photo, in_stock, price, rating, id, discount, created_at
+  FROM products 
+  WHERE approved = TRUE AND featured = TRUE
+  ORDER BY updated_at DESC;
+`;
+
+  connection.query(sql, (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: "Database query error" });
+      return;
+    }
+    res.json({ products: rows }).end();
+  });
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });

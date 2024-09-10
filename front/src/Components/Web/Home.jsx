@@ -1,4 +1,5 @@
 import FAQ from "./FAQ";
+import FeaturingProducsLP from "./FeaturingProducsLP";
 import Footer from "./Footer";
 import Header from "./Header";
 import MapLP from "./MapLP";
@@ -44,19 +45,7 @@ const Home = () => {
       <div className="max-width">
         <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
       </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
+      <FeaturingProducsLP />
       <TimerCountDown />
       <FAQ />
       <MapLP />

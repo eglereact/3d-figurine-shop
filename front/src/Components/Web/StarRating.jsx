@@ -1,4 +1,4 @@
-const StarRating = ({ rating, size }) => {
+const StarRating = ({ rating, size, dark = false }) => {
   const totalStars = 5;
 
   return (
@@ -7,7 +7,11 @@ const StarRating = ({ rating, size }) => {
         <svg
           key={index}
           className={`h-${size} w-${size} ${
-            index < rating ? "text-grey" : "text-gray-300"
+            index < rating
+              ? dark
+                ? "text-white"
+                : "text-grey"
+              : "text-gray-300"
           }`}
           fill="currentColor"
           viewBox="0 0 24 24"
