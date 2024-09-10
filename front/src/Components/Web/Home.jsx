@@ -1,3 +1,4 @@
+import Carousel from "./Carousel";
 import FAQ from "./FAQ";
 import FeaturingProducsLP from "./FeaturingProducsLP";
 import Footer from "./Footer";
@@ -10,41 +11,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
-      <div className="max-width">
-        <h1 className="text-5xl text-grey mt-10">Welcome to miniature shop!</h1>
-      </div>
+      <Carousel />
       <FeaturingProducsLP />
       <TimerCountDown />
       <FAQ />
