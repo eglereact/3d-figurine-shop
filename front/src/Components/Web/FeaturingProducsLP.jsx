@@ -38,39 +38,37 @@ const FeaturingProducsLP = () => {
   return (
     <section className="max-width my-40 flex justify-center">
       <div className="flex relative justify-center items-center rounded-lg">
-        {/* List of product cards */}
-        <div className="absolute flex flex-col gap-4">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="bg-sand  rounded-lg"
-              onClick={() => handleProductSelect(product)}
-            >
-              <img
-                src={`${l.SERVER_IMAGES_URL}/${product.photo}`}
-                alt={product.title}
-                className="w-20 cursor-pointer shadow-md rounded-lg"
-                onClick={() => handleProductSelect(product)} // Clicking image selects product
-              />
-            </div>
-          ))}
-        </div>
-
         {/* Selected product details */}
         <div className="">
           {selectedProduct && (
-            <div className="flex w-full">
-              <div className="w-1/2">
+            <div className="flex p-6 lg:p-0 w-full flex-col lg:flex-row">
+              <div className="w-full lg:w-1/2">
                 <img
                   src={`${l.SERVER_IMAGES_URL}/${selectedProduct.photo}`}
                   alt={selectedProduct.title}
-                  className="bg-sand p-10 rounded-l-lg"
+                  className="bg-sand p-10 rounded-tl-lg rounded-tr-lg lg:rounded-bl-lg lg:rounded-tr-none"
                 />
               </div>
-              <div className="w-1/2 bg-grey rounded-r-lg p-10 pl-20">
-                <div className="flex justify-between">
+              <div className="w-full lg:w-1/2 bg-grey relative rounded-bl-lg lg:rounded-bl-none lg:rounded-tr-lg rounded-br-lg p-10 pl-20">
+                <div className="absolute flex lg:flex-col gap-4 lg:left-0 -top-10 left-1/2 -translate-x-1/2 lg:top-1/2 transform lg:-translate-y-1/2">
+                  {products.map((product) => (
+                    <div
+                      key={product.id}
+                      className="bg-sand rounded-lg"
+                      onClick={() => handleProductSelect(product)}
+                    >
+                      <img
+                        src={`${l.SERVER_IMAGES_URL}/${product.photo}`}
+                        alt={product.title}
+                        className="w-20 cursor-pointer shadow-md rounded-lg"
+                        onClick={() => handleProductSelect(product)} // Clicking image selects product
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between pt-6 lg:pt-0">
                   {selectedProduct.discount ? (
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <p className="uppercase text-white bg-brown h-6 text-sm flex gap-1  items-center px-4 rounded">
                         <MdOutlineDiscount /> on sale
                       </p>
