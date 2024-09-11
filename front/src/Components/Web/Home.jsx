@@ -6,6 +6,7 @@ import Header from "./Header";
 import MapLP from "./MapLP";
 import ShippingLP from "./ShippingLP";
 import TimerCountDown from "./TimerCountDown";
+import ToTheTop from "./ToTheTop";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <MapLP />
       <ShippingLP />
       <Footer />
+      <ToTheTop />
     </>
   );
 };
