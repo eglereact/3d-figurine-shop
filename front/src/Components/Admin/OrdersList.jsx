@@ -82,43 +82,43 @@ const OrdersList = () => {
             <thead className="text-xs text-white uppercase bg-grey">
               <tr>
                 {/* Table Headers */}
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Order ID
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   User ID
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Surname
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Email
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Address
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Phone
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Total
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Status
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Orders
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Created At
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Updated At
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3">
                   Action
                 </th>
               </tr>
@@ -136,16 +136,16 @@ const OrdersList = () => {
                     className="odd:bg-white even:bg-pink text-grey"
                   >
                     <td>{order.order_id}</td>
-                    <td scope="row" className="px-6 py-4">
+                    <td scope="row" className="px-4 py-4">
                       {order.user_id}
                     </td>
-                    <td className="px-6 py-4 capitalize">{order.name}</td>
-                    <td className="px-6 py-4 capitalize">{order.surname}</td>
-                    <td className="px-6 py-4">{order.email}</td>
-                    <td className="px-6 py-4">{order.address}</td>
-                    <td className="px-6 py-4">{order.phone}</td>
-                    <td className="px-6 py-4">${order.total}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4 capitalize">{order.name}</td>
+                    <td className="px-4 py-4 capitalize">{order.surname}</td>
+                    <td className="px-4 py-4">{order.email}</td>
+                    <td className="px-4 py-4">{order.address}</td>
+                    <td className="px-4 py-4">{order.phone}</td>
+                    <td className="px-4 py-4">${order.total}</td>
+                    <td className="px-4 py-4">
                       {/* Status dropdown */}
                       <select
                         value={order.status}
@@ -169,13 +169,13 @@ const OrdersList = () => {
                         <IoMdMore size={25} />
                       </button>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       {new Date(order.created_at).toISOString().split("T")[0]}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       {new Date(order.updated_at).toISOString().split("T")[0]}
                     </td>
-                    <td className="px-6 py-4 mt-4">
+                    <td className="px-4 py-4 mt-4">
                       <button
                         type="button"
                         className="bg-grey text-white py-2 px-4 rounded button-animation w-20"

@@ -34,7 +34,7 @@ const Sidebar = ({ children }) => {
           </div>
           <div className="flex ">
             <div
-              className={`bg-white w-20 md:w-64 text-gray-400 overflow-hidden p-5 transition-width duration-300 `}
+              className={`bg-white w-20 md:w-44  text-gray-400 overflow-hidden p-5 transition-width duration-300 `}
             >
               <ul className="mt-10 text-grey">
                 <li className="mb-4 h-10">
