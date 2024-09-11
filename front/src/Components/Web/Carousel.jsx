@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import * as l from "../../Constants/urls";
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -9,34 +10,38 @@ const Carousel = () => {
   const images = [
     {
       src: "images/slide.jpg",
-      text: "Slide 1 Text",
+      text: "Explore Our Latest Products – Find Your Perfect Match!",
+      linkText: "shop now",
+      link: l.SITE_PRODUCTS,
     },
     {
       src: "images/slide2.jpg",
-      text: "Slide 2 Text",
+      text: "Don't Miss Out on Exclusive Sales – Shop Now and Save!",
+      linkText: "shop now",
+      link: l.SALE_PAGE,
     },
     {
       src: "images/slide3.jpg",
-      text: "Slide 3 Text",
+      text: "Stay Inspired – Visit Our Blog for Tips, Trends, and More!",
+      linkText: "visit",
+      link: l.SITE_HOME,
     },
   ];
 
   const settings = {
     dots: true,
     infinite: true,
-    speed: 2000, // Slows down the fade transition
+    speed: 3000, // Slow transition speed
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 5000, // Time on each slide
     fade: true,
     beforeChange: (current, next) => setCurrentSlide(next),
   };
 
   return (
-    <div className="w-full  mx-auto overflow-hidden">
-      {" "}
-      {/* Fix for spacing */}
+    <div className="w-full overflow-hidden">
       <Slider {...settings}>
         {images.map((image, index) => (
           <div key={index} className="relative w-full h-[700px]">
@@ -45,17 +50,23 @@ const Carousel = () => {
               alt={`Slide ${index + 1}`}
               className="w-full h-full object-cover"
             />
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 text-center">
-              <h2 className="text-5xl text-white mb-4" data-aos="fade-up">
-                {image.text}
-              </h2>{" "}
-              {/* Visible and centered */}
-              <button
-                className="px-4 py-2 bg-white text-gray-800 rounded-md cursor-pointer"
-                onClick={() => alert(`Button on ${image.text}`)}
+            {/* Adjusted container to avoid overlap with dots */}
+            <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 z-20 pb-10 text-center">
+              {/* Text Animation */}
+              <h2
+                key={currentSlide}
+                className="text-5xl text-white mb-8 bg-black bg-opacity-50 p-4 rounded-md slide-fade-in-text"
               >
-                Button
-              </button>
+                {image.text}
+              </h2>
+              {/* Button Animation */}
+              <a
+                key={currentSlide + "-link"}
+                href={image.link}
+                className="text-white uppercase px-4 text-xl border-2 border-white bg-black bg-opacity-50 p-3 rounded-md inline-block slide-fade-in-link"
+              >
+                {image.linkText}
+              </a>
             </div>
           </div>
         ))}

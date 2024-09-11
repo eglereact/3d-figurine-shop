@@ -262,3 +262,91 @@ button[disabled] {
   position: relative; /* To ensure the text is on top of the background */
   z-index: 1; /* Ensures the text is above the background */
 }
+
+/* Text fades in after a slight delay relative to the image */
+.slide-fade-in-text {
+  opacity: 0;
+  transform: translateY(-50px); /* Start above */
+  animation: slideFadeInText 1.5s ease forwards 0.8s,
+    slideFadeOutText 0.5s ease forwards 6.5s; /* Delayed fade-in after image */
+}
+
+@keyframes slideFadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideFadeOutText {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px); /* Moves up slightly while disappearing */
+  }
+}
+
+/* Link fades in slightly after text */
+.slide-fade-in-link {
+  opacity: 0;
+  transform: translateY(-50px); /* Start above */
+  animation: slideFadeInLink 1.5s ease forwards 1.2s,
+    slideFadeOutLink 0.5s ease forwards 6.5s; /* Delayed fade-in after text */
+}
+
+@keyframes slideFadeInLink {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade out for both text and link */
+@keyframes slideFadeOutText {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px); /* Moves up slightly while disappearing */
+  }
+}
+
+@keyframes slideFadeOutLink {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px); /* Moves up slightly while disappearing */
+  }
+}
+
+/* Style for the dots to ensure visibility */
+.slick-dots li button:before {
+  color: white !important;
+  font-size: 14px !important;
+  opacity: 0.75 !important;
+}
+
+.slick-dots {
+  bottom: 20px !important; /* Adjust position of dots */
+}
+
+.slick-dots li.slick-active button:before {
+  color: #f9f9f9 !important; /* Change the color of the active dot */
+  opacity: 1 !important; /* Make the active dot fully opaque */
+}
