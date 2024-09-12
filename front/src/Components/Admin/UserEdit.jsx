@@ -60,7 +60,7 @@ export default function UserEdit() {
 
   return (
     <>
-      <h1 className="text-4xl mb-10">User Edit</h1>
+      <h1 className="text-4xl mb-10 text-grey">User Edit</h1>
       <section>
         {null === user && <Loading />}
         {null !== user && (
