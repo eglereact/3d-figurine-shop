@@ -5,6 +5,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { ModalsContext } from "../../Contexts/Modals";
 import Gate from "../Common/Gate";
 import Redirect from "../Common/Redirect";
+import Loading from "../Common/Loading";
 
 const UsersList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -88,11 +89,7 @@ const UsersList = () => {
               </tr>
             </thead>
             <tbody>
-              {users === null && (
-                <tr>
-                  <td>Loading...</td>
-                </tr>
-              )}
+              {users === null && <Loading />}
               {users !== null &&
                 users.map((user) => (
                   <tr

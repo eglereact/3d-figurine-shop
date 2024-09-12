@@ -4,6 +4,7 @@ import * as l from "../../Constants/urls";
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import Footer from "./Footer";
+import Loading from "../Common/Loading";
 
 const Sale = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -27,8 +28,8 @@ const Sale = () => {
     <>
       <Header />
       {products === null && (
-        <div>
-          <h1>Loading...</h1>
+        <div className="max-width flex justify-center p-20">
+          <Loading />
         </div>
       )}
       <section className="max-width grid grid-cols-2 md:grid-cols-3 gap-6 p-6 gap-y-20">

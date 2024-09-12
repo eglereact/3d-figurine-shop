@@ -7,6 +7,7 @@ import Gate from "../Common/Gate";
 import { LoaderContext } from "../../Contexts/Loader";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import StarRating from "../Web/StarRating";
+import Loading from "../Common/Loading";
 
 const ProductsList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -113,11 +114,7 @@ const ProductsList = () => {
               </tr>
             </thead>
             <tbody className="">
-              {products === null && (
-                <tr>
-                  <td>Loading...</td>
-                </tr>
-              )}
+              {products === null && <Loading />}
               {products !== null &&
                 products.map((product) => (
                   <tr key={product?.id} className="odd:bg-white  even:bg-pink">

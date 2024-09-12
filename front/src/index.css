@@ -350,3 +350,28 @@ button[disabled] {
   color: #f9f9f9 !important; /* Change the color of the active dot */
   opacity: 1 !important; /* Make the active dot fully opaque */
 }
+
+@keyframes dots {
+  0%,
+  20% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.dot-1 {
+  animation: dots 1.4s infinite steps(1) 0.2s;
+}
+
+.dot-2 {
+  animation: dots 1.4s infinite steps(1) 0.4s;
+}
+
+.dot-3 {
+  animation: dots 1.4s infinite steps(1) 0.6s;
+}

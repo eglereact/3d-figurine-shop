@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Gate from "../Common/Gate";
 import useServerPut from "../../Hooks/useServerPut";
 import { IoMdMore } from "react-icons/io";
+import Loading from "../Common/Loading";
 
 const OrdersList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -124,11 +125,7 @@ const OrdersList = () => {
               </tr>
             </thead>
             <tbody>
-              {orders === null && (
-                <tr>
-                  <td colSpan="13">Loading...</td>
-                </tr>
-              )}
+              {orders === null && <Loading />}
               {orders !== null &&
                 orders.map((order) => (
                   <tr

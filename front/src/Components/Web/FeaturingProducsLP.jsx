@@ -7,6 +7,7 @@ import { IoSparklesSharp } from "react-icons/io5";
 import ProductPrice from "./ProductPrice";
 import { GoDotFill } from "react-icons/go";
 import { CartContext } from "../../Contexts/Cart";
+import Loading from "../Common/Loading";
 
 const FeaturingProducsLP = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -33,7 +34,12 @@ const FeaturingProducsLP = () => {
     setSelectedProduct(product);
   };
 
-  if (!products) return <div>Loading...</div>;
+  if (!products)
+    return (
+      <div className="max-width flex justify-center p-20">
+        <Loading />
+      </div>
+    );
 
   return (
     <section className="max-width my-40 flex justify-center">
