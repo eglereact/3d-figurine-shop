@@ -66,7 +66,6 @@ export default function ProductCreate() {
   };
 
   const submit = () => {
-    //TODO: Validation
     if (!validateForm(product, product.photo)) return;
     setShow(true);
     doPost(product);
@@ -88,7 +87,7 @@ export default function ProductCreate() {
                       value={product.title}
                       type="text"
                       name="title"
-                      label="Title"
+                      label="TITLE"
                       placeholder="title"
                       errors={errors}
                     />
@@ -98,28 +97,26 @@ export default function ProductCreate() {
                       value={product.price}
                       type="text"
                       name="price"
-                      label="Price"
+                      label="PRICE"
                       placeholder="price"
                       errors={errors}
                     />
-
-                    <Input
-                      onChange={handleForm}
-                      value={product.info}
-                      type="text"
-                      name="info"
-                      label="Info"
-                      placeholder="Info"
-                      errors={errors}
-                    />
-
                     <Input
                       onChange={handleForm}
                       value={product.in_stock}
                       type="text"
                       name="in_stock"
-                      label="In Stock"
+                      label="IN STOCK"
                       placeholder="in stock"
+                      errors={errors}
+                    />
+                    <Textarea
+                      onChange={handleForm}
+                      value={product.info}
+                      type="text"
+                      name="info"
+                      label="DESCRIPTION"
+                      placeholder="Info"
                       errors={errors}
                     />
                   </div>
