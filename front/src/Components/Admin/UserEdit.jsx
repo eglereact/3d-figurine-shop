@@ -7,6 +7,8 @@ import roles from "../../Constants/roles";
 import Input from "../Forms/Input";
 import Select from "../Forms/Select";
 import { LoaderContext } from "../../Contexts/Loader";
+import Loading from "../Common/Loading";
+import useEditUser from "../../Validations/useEditUser";
 
 export default function UserEdit() {
   const { params } = useContext(RouterContext);
@@ -20,6 +22,7 @@ export default function UserEdit() {
   const { setShow } = useContext(LoaderContext);
   const [user, setUser] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { errors, validate } = useEditUser();
 
   useEffect(() => {
     doGet("/" + params[1]);
@@ -47,7 +50,9 @@ export default function UserEdit() {
   };
 
   const submit = () => {
-    //TODO: Validation
+    if (!validate(user)) {
+      return;
+    }
     setShow(true);
     setButtonDisabled(true);
     doPut(user);
@@ -57,14 +62,16 @@ export default function UserEdit() {
     <>
       <h1 className="text-4xl mb-10">User Edit</h1>
       <section>
-        {null === user && <h3>Loading...</h3>}
+        {null === user && <Loading />}
         {null !== user && (
-          <form>
+          <form className="flex flex-col gap-6">
             <Input
               onChange={handleForm}
               value={user.name}
               type="text"
               name="name"
+              label="NAME"
+              errors={errors}
             />
             <Input
               onChange={handleForm}
@@ -72,15 +79,9 @@ export default function UserEdit() {
               type="text"
               name="email"
               autoComplete="off"
+              label="EMAIL"
+              errors={errors}
             />
-            <Select
-              onChange={handleForm}
-              value={user.role}
-              name="role"
-              options={roles}
-              label="Select Role"
-            />
-
             <Input
               onChange={handleForm}
               value={user.password}
@@ -88,20 +89,28 @@ export default function UserEdit() {
               name="password"
               placeholder="Change password"
               autoComplete="new-password"
+              label="PASSWORD"
+            />
+            <Select
+              onChange={handleForm}
+              value={user.role}
+              name="role"
+              options={roles}
+              label="SELECT ROLE"
             />
             <ul className="flex items-center gap-4 mt-6">
               <li>
                 <button
                   onClick={submit}
                   type="button"
-                  className="bg-gray-500 p-5"
+                  className="grey-button"
                   disabled={buttonDisabled}
                 >
                   Save
                 </button>
               </li>
               <li>
-                <a className="bg-gray-500 p-5" href={"/" + l.USERS_LIST}>
+                <a className="grey-button" href={"/" + l.USERS_LIST}>
                   All users
                 </a>
               </li>
