@@ -125,7 +125,13 @@ const OrdersList = () => {
               </tr>
             </thead>
             <tbody>
-              {orders === null && <Loading />}
+              {orders === null && (
+                <tr>
+                  <td>
+                    <Loading />
+                  </td>
+                </tr>
+              )}
               {orders !== null &&
                 orders.map((order) => (
                   <tr

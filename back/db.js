@@ -80,7 +80,7 @@ const createProductsTable = () => {
 };
 
 const createCartTable = () => {
-  const sql = `CREATE TABLE IF NOT EXISTS cart (
+  const sql = `CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id VARCHAR(10) NOT NULL UNIQUE, -- New column for order ID
     user_id INT NOT NULL,
@@ -113,11 +113,11 @@ const dropProductsTable = () => {
 };
 
 const dropCartTable = () => {
-  const sql = "DROP TABLE IF EXISTS cart";
+  const sql = "DROP TABLE IF EXISTS orders";
 
   connection.query(sql, function (err) {
     if (err) throw err;
-    console.log("Cart table dropped");
+    console.log("Orders table dropped");
   });
 };
 

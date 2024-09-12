@@ -114,7 +114,13 @@ const ProductsList = () => {
               </tr>
             </thead>
             <tbody className="">
-              {products === null && <Loading />}
+              {products === null && (
+                <tr>
+                  <td>
+                    <Loading />
+                  </td>
+                </tr>
+              )}
               {products !== null &&
                 products.map((product) => (
                   <tr key={product?.id} className="odd:bg-white  even:bg-pink">

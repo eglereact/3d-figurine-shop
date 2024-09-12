@@ -748,7 +748,7 @@ app.post("/store/cart", (req, res) => {
   const order_id = generateOrderId();
 
   const sql = `
-    INSERT INTO cart (order_id, user_id, name, surname, email, phone, address, cart, total, created_at)
+    INSERT INTO orders (order_id, user_id, name, surname, email, phone, address, cart, total, created_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now())
   `;
 
@@ -809,7 +809,7 @@ app.get("/user/cart/:id", (req, res) => {
   const { id } = req.params;
   const sql = `
     SELECT order_id, status, total, created_at, cart
-    FROM cart
+    FROM orders
     WHERE user_id = ?
     ORDER BY created_at DESC
   `;
@@ -831,7 +831,7 @@ app.get("/admin/orders", (req, res) => {
   }
   const sql = `
         SELECT *
-        FROM cart`;
+        FROM orders`;
   connection.query(sql, (err, rows) => {
     if (err) throw err;
     res
@@ -870,7 +870,7 @@ app.put("/admin/change/order/status/:id", (req, res) => {
     }
 
     const sql = `
-      UPDATE cart 
+      UPDATE orders
       SET status = ?
       WHERE id = ?
     `;
@@ -919,6 +919,63 @@ app.get("/featured/products", (req, res) => {
       return;
     }
     res.json({ products: rows }).end();
+  });
+});
+
+app.get("/admin/stats", (req, res) => {
+  const sqlUsers = "SELECT COUNT(*) AS countUsers FROM users";
+  const sqlProducts = "SELECT COUNT(*) AS countProducts FROM products";
+  const sqlOrders = "SELECT COUNT(*) AS countOrders FROM orders";
+  const sqlTotalQuantity = `
+            SELECT SUM(JSON_UNQUOTE(JSON_EXTRACT(cart, CONCAT('$[', idx, '].quantity')))) AS totalQuantity
+            FROM orders
+            JOIN (
+              SELECT 0 AS idx UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+            ) AS indices
+            WHERE JSON_EXTRACT(cart, CONCAT('$[', idx, '].quantity')) IS NOT NULL
+          `;
+  const sqlTotalOrderAmount = `
+          SELECT SUM(total) AS totalOrderAmount 
+              FROM orders
+            `;
+
+  let stats = {};
+
+  connection.query(sqlUsers, (err, results) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    stats.countUsers = results[0].countUsers;
+
+    connection.query(sqlProducts, (err, results) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      stats.countProducts = results[0].countProducts;
+
+      connection.query(sqlOrders, (err, results) => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        stats.countOrders = results[0].countOrders;
+
+        connection.query(sqlTotalQuantity, (err, results) => {
+          if (err) {
+            return res.status(500).send(err);
+          }
+          stats.totalQuantity = results[0].totalQuantity;
+
+          connection.query(sqlTotalOrderAmount, (err, results) => {
+            if (err) {
+              return res.status(500).send(err);
+            }
+            stats.totalOrderAmount = results[0].totalOrderAmount;
+
+            res.json(stats);
+          });
+        });
+      });
+    });
   });
 });
 

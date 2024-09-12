@@ -89,7 +89,13 @@ const UsersList = () => {
               </tr>
             </thead>
             <tbody>
-              {users === null && <Loading />}
+              {users === null && (
+                <tr>
+                  <td>
+                    <Loading />
+                  </td>
+                </tr>
+              )}
               {users !== null &&
                 users.map((user) => (
                   <tr
