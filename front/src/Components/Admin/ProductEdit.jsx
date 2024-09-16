@@ -185,7 +185,7 @@ export default function ProductEdit() {
               />
 
               <a href={"/" + l.PRODUCTS_LIST} className="grey-button">
-                All products
+                cancel
               </a>
             </div>
           </form>

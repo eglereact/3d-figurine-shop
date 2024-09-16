@@ -143,7 +143,7 @@ export default function ProductCreate() {
                       />
                     </li>
                     <li className="grey-button ">
-                      <a href={"/" + l.PRODUCTS_LIST}>All products</a>
+                      <a href={"/" + l.PRODUCTS_LIST}>cancel</a>
                     </li>
                   </ul>
                 </div>

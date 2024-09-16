@@ -111,7 +111,7 @@ export default function UserEdit() {
               </li>
               <li>
                 <a className="grey-button" href={"/" + l.USERS_LIST}>
-                  All users
+                  cancel
                 </a>
               </li>
             </ul>

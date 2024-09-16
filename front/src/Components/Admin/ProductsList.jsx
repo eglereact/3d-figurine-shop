@@ -67,12 +67,20 @@ const ProductsList = () => {
   return (
     <>
       <Gate status="role" role={["admin", "editor"]}>
-        <div className="text-grey flex flex-col gap-2 mb-6 uppercase">
-          <h1 className="text-4xl">Products List</h1>
-          <h2 className="text-xl">
-            Currently products{" "}
-            <span className="font-bold">{products?.length}</span>
-          </h2>
+        <div className="text-grey flex justify-between gap-2 mb-6 uppercase">
+          <div>
+            <h1 className="text-4xl">Products List</h1>
+            <h2 className="text-xl">
+              Currently products{" "}
+              <span className="font-bold">{products?.length}</span>
+            </h2>
+          </div>
+          <a
+            href={l.PRODUCT_ADD}
+            className="button-dark active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
+          >
+            Add product
+          </a>
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
           <table className="w-full text-sm text-center rtl:text-right text-grey">
