@@ -6,7 +6,7 @@ import { IoAlert } from "react-icons/io5";
 import { MdCheck } from "react-icons/md";
 
 const Msg = () => {
-  const { msg, remMessage } = useContext(MessagesContext);
+  const { msg, remMessage, clearAllMessages } = useContext(MessagesContext);
 
   if (msg.length === 0) {
     return null;
@@ -38,7 +38,13 @@ const Msg = () => {
                   <MdCheck size={20} />
                 </span>
               )}
-              <div className="py-1 text-grey capitalize">{m.text}</div>
+              <a
+                href={m.url}
+                onClick={() => clearAllMessages()}
+                className="py-1 text-grey capitalize"
+              >
+                {m.text}
+              </a>
             </div>
             <button
               type="button"

@@ -81,8 +81,11 @@ const CartPage = () => {
         ) : (
           <div className="flex gap-6">
             <div className="flex flex-col gap-6 my-6 w-2/3">
-              {cart.map((item) => (
-                <div className="border-b-[1px] border-gray-200 pb-6 flex gap-6 text-grey">
+              {cart.map((item, index) => (
+                <div
+                  key={index}
+                  className="border-b-[1px] border-gray-200 pb-6 flex gap-6 text-grey"
+                >
                   <img
                     className="w-40 bg-sand p-2 rounded-lg"
                     src={l.SERVER_IMAGES_URL + item.photo}

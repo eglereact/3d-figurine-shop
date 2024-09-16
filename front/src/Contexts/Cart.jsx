@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { MessagesContext } from "./Messages";
+import * as l from "../Constants/urls";
 
 export const CartContext = createContext();
 
@@ -50,6 +51,7 @@ export const CartProvider = ({ children }) => {
       type: "success",
       title: "",
       text: `${product.title} was added to the cart.`,
+      url: l.SITE_CART,
     });
   };
 

@@ -58,9 +58,20 @@ export const Messages = ({ children }) => {
     });
   }, []);
 
+  const clearAllMessages = () => {
+    setMsg([]);
+  };
+
   return (
     <MessagesContext.Provider
-      value={{ remMessage, addMessage, msg, messageError, messageSuccess }}
+      value={{
+        remMessage,
+        addMessage,
+        msg,
+        messageError,
+        messageSuccess,
+        clearAllMessages,
+      }}
     >
       {children}
     </MessagesContext.Provider>
