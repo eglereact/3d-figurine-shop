@@ -51,6 +51,12 @@ const Product = () => {
     setProduct(serverGetResponse.data.product ?? null);
   }, [serverGetResponse]);
 
+  const buyItNow = () => {
+    addToCart(product, count);
+    setCount(1);
+    window.location.href = l.SITE_CART;
+  };
+
   return (
     <>
       <Header />
@@ -136,7 +142,10 @@ const Product = () => {
                 </button>
               </div>
 
-              <button className="w-full active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation">
+              <button
+                onClick={buyItNow}
+                className="w-full active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
+              >
                 Buy it now
               </button>
             </div>
