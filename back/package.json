@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "braintree": "^3.24.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "md5": "^2.3.0",
     "mysql": "^2.18.1",

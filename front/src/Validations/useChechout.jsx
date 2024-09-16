@@ -32,21 +32,21 @@ const useCheckout = () => {
     }
 
     // Card details validations
-    if (cardDetails.cardName.length < 3) {
-      errorsBag.cardName = "Cardholder's name is too short.";
-    }
+    // if (cardDetails.cardName.length < 3) {
+    //   errorsBag.cardName = "Cardholder's name is too short.";
+    // }
 
-    if (!/^\d{16}$/.test(cardDetails.cardNumber)) {
-      errorsBag.cardNumber = "Card number must be 16 digits.";
-    }
+    // if (!/^\d{16}$/.test(cardDetails.cardNumber)) {
+    //   errorsBag.cardNumber = "Card number must be 16 digits.";
+    // }
 
-    if (!/^\d{2}\/\d{2}$/.test(cardDetails.expiryDate)) {
-      errorsBag.expiryDate = "Expiration date must be in MM/YY format.";
-    }
+    // if (!/^\d{2}\/\d{2}$/.test(cardDetails.expiryDate)) {
+    //   errorsBag.expiryDate = "Expiration date must be in MM/YY format.";
+    // }
 
-    if (!/^\d{3}$/.test(cardDetails.cvc)) {
-      errorsBag.cvc = "CVC must be 3 digits.";
-    }
+    // if (!/^\d{3}$/.test(cardDetails.cvc)) {
+    //   errorsBag.cvc = "CVC must be 3 digits.";
+    // }
 
     if (Object.keys(errorsBag).length === 0) {
       setErrors({});

@@ -91,7 +91,8 @@ const createCartTable = () => {
     phone VARCHAR(20),
     cart JSON NOT NULL, -- Stores cart details as JSON
     total DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    status ENUM('waiting for approval', 'processing', 'shipped', 'completed','cancelled') NOT NULL DEFAULT 'waiting for approval', 
+    payment_nonce VARCHAR(255), -- New field to store the payment nonce
+    status ENUM('waiting for approval', 'processing', 'shipped', 'completed', 'cancelled') NOT NULL DEFAULT 'waiting for approval', 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -99,7 +100,7 @@ const createCartTable = () => {
 
   connection.query(sql, function (err) {
     if (err) throw err;
-    console.log("Cart table created");
+    console.log("Orders table created");
   });
 };
 
@@ -139,15 +140,15 @@ const seedProductsTable = () => {
   });
 };
 
-dropUsersTable();
-dropProductsTable();
+// dropUsersTable();
+// dropProductsTable();
 
-createUsersTable();
-createProductsTable();
+// createUsersTable();
+// createProductsTable();
 dropCartTable();
 createCartTable();
-seedUsersTable();
-seedProductsTable();
+// seedUsersTable();
+// seedProductsTable();
 
 connection.end(function (err) {
   if (err) throw err;

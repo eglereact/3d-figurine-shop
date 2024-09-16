@@ -2,11 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const braintree = require("braintree");
 const mysql = require("mysql");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("node:fs");
 const md5 = require("md5");
 const app = express();
+require("dotenv").config();
 const port = 3001;
 
 const connection = mysql.createConnection({
@@ -30,6 +32,52 @@ app.use(express.static("public"));
 app.use(express.json({ limit: "10mb" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BRAINTREE_MERCHANT_ID,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+});
+
+app.get("/clienttoken", async (req, res) => {
+  try {
+    const response = await gateway.clientToken.generate({});
+    res.send({ data: response.clientToken });
+  } catch (err) {
+    console.error("Error generating Braintree token:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Endpoint to process a payment (using the payment nonce)
+app.post("/checkout", async (req, res) => {
+  const { paymentMethodNonce, amount } = req.body;
+
+  try {
+    const result = await gateway.transaction.sale({
+      amount,
+      paymentMethodNonce,
+      options: {
+        submitForSettlement: true,
+      },
+    });
+
+    // Log the full result for debugging
+    console.log("Braintree Transaction Result:", result.transaction.amount);
+    console.log("Braintree Transaction Result:", result.success);
+
+    if (result.success) {
+      res.send({ success: true });
+    } else {
+      // Send the error message from Braintree for better client-side handling
+      res.send({ success: false, error: result.message });
+    }
+  } catch (err) {
+    console.error("Error processing transaction:", err);
+    res.status(500).send(err);
+  }
+});
 
 const checkUserIsAuthorized = (req, res, roles) => {
   if (!req.user) {
@@ -723,10 +771,19 @@ const generateOrderId = () => {
 };
 
 app.post("/store/cart", (req, res) => {
-  const { user_id, name, surname, email, phone, address, cart, total } =
-    req.body;
+  const {
+    user_id,
+    name,
+    surname,
+    email,
+    phone,
+    address,
+    cart,
+    total,
+    payment_nonce, // Add payment_nonce here
+  } = req.body;
 
-  // Validate required fields
+  // Validate required fields, including payment_nonce
   if (
     !user_id ||
     !name ||
@@ -735,21 +792,23 @@ app.post("/store/cart", (req, res) => {
     !cart ||
     !total ||
     !phone ||
-    !address
+    !address ||
+    !payment_nonce // Make sure the nonce is provided
   ) {
     return res.status(422).json({
       message: {
         type: "danger",
-        text: "Name, surname, email, cart, user ID, and total are required.",
+        text: "Name, surname, email, cart, user ID, total, address, phone, and payment nonce are required.",
       },
     });
   }
 
   const order_id = generateOrderId();
 
+  // Update SQL to include payment_nonce
   const sql = `
-    INSERT INTO orders (order_id, user_id, name, surname, email, phone, address, cart, total, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, now())
+    INSERT INTO orders (order_id, user_id, name, surname, email, phone, address, cart, total, payment_nonce, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())
   `;
 
   connection.query(
@@ -764,6 +823,7 @@ app.post("/store/cart", (req, res) => {
       address,
       JSON.stringify(cart),
       total,
+      payment_nonce, // Insert payment_nonce into the database
     ],
     (err, result) => {
       if (err) {

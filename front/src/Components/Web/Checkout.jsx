@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { CartContext } from "../../Contexts/Cart";
 import Header from "./Header";
 import * as l from "../../Constants/urls";
@@ -8,7 +8,8 @@ import useServerPost from "../../Hooks/useServerPost";
 import { LoaderContext } from "../../Contexts/Loader";
 import useCheckout from "../../Validations/useChechout";
 import Footer from "./Footer";
-import { CiCircleAlert } from "react-icons/ci";
+import dropin from "braintree-web-drop-in";
+import useServerGet from "../../Hooks/useServerGet";
 
 const Checkout = () => {
   const defaultValues = {
@@ -20,52 +21,66 @@ const Checkout = () => {
     user_id: "",
     cart: [],
     total: "",
+    payment_nonce: "",
   };
+
   const { checkoutDetails } = useContext(CartContext);
   const [form, setForm] = useState(defaultValues);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { clearCart, cart } = useContext(CartContext);
-
   const { doAction, response } = useServerPost(l.STORE_CART);
-
   const { user } = useContext(AuthContext);
   const { errors, validate, setServerErrors } = useCheckout();
   const { setShow } = useContext(LoaderContext);
-
-  const [cardDetails, setCardDetails] = useState({
-    cardName: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvc: "",
-  });
-
   const [cartDetails, setCartDetails] = useState({
     subtotal: 0,
     shipping: 5,
     total: 0,
   });
-
-  console.log(cart);
+  const [paymentNonce, setPaymentNonce] = useState(null);
+  const [dropinInstance, setDropinInstance] = useState(null);
+  const dropinContainerRef = useRef(null);
+  const { doAction: doGet, response: serverGetResponse } =
+    useServerGet("clienttoken");
+  const [clientToken, setClientToken] = useState(null);
+  const { doAction: doPost, response: serverPostResponse } =
+    useServerPost("checkout");
 
   useEffect(() => {
-    // Retrieve data from localStorage
-    const storedCartDetails = localStorage.getItem("cartDetails");
+    doGet();
+  }, [doGet]);
 
-    // Check if data exists and parse it
-    if (storedCartDetails) {
-      const parsedDetails = JSON.parse(storedCartDetails);
-      setCartDetails(parsedDetails);
+  useEffect(() => {
+    if (serverGetResponse) {
+      setClientToken(serverGetResponse.data.data ?? null);
     }
-  }, []);
+  }, [serverGetResponse]);
 
-  // useEffect(() => {
-  //   setForm((f) => ({
-  //     ...f,
-  //     name: user.name || "",
-  //     email: user.email || "",
-  //     user_id: user.id || "",
-  //   }));
-  // }, [user]);
+  useEffect(() => {
+    if (clientToken) {
+      dropin.create(
+        {
+          authorization: clientToken,
+          container: dropinContainerRef.current,
+        },
+        (err, instance) => {
+          if (err) {
+            console.error("Drop-in creation error:", err);
+            return;
+          }
+          setDropinInstance(instance);
+        }
+      );
+    }
+
+    // return () => {
+    //   if (dropinInstance && typeof dropinInstance.teardown === "function") {
+    //     dropinInstance
+    //       .teardown()
+    //       .catch((err) => console.error("Teardown error:", err));
+    //   }
+    // };
+  }, [clientToken, dropinInstance]);
 
   useEffect(() => {
     if (response === null) return;
@@ -73,30 +88,78 @@ const Checkout = () => {
     if (response.type === "success") {
       clearCart();
       window.location.hash = l.THANKS_FOR_ORDER;
-    }
-    // Uncomment and handle server errors if necessary
-    else {
+    } else {
       if (response.data?.response?.data?.errors) {
         setServerErrors(response.data.response.data.errors);
       }
     }
   }, [response]);
 
+  useEffect(() => {
+    if (serverPostResponse) {
+      setButtonDisabled(false);
+      if (serverPostResponse.type === "success") {
+        console.log("Payment successful");
+      } else {
+        if (serverPostResponse.data?.response?.data?.errors) {
+          setServerErrors(serverPostResponse.data.response.data.errors);
+        }
+      }
+    }
+  }, [serverPostResponse]);
+
+  useEffect(() => {
+    const storedCartDetails = localStorage.getItem("cartDetails");
+    if (storedCartDetails) {
+      setCartDetails(JSON.parse(storedCartDetails));
+    }
+  }, []);
+
   const handleChange = (e) => {
     setForm((f) => ({ ...f, [e.target.id]: e.target.value }));
   };
 
+  const handlePayment = (callback) => {
+    if (!dropinInstance) return;
+
+    dropinInstance.requestPaymentMethod((err, payload) => {
+      if (err) {
+        console.error("Payment method error:", err);
+        return;
+      }
+
+      const paymentData = {
+        paymentMethodNonce: payload.nonce,
+        amount: cartDetails.total, // Ensure this is correctly set
+      };
+
+      // No .then() here, just call the doPost function
+      doPost(paymentData);
+
+      // Pass the nonce to the callback after initiating the payment
+      setPaymentNonce(payload.nonce);
+      callback(payload.nonce); // Pass the nonce to handleSubmit
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add validation logic here if necessary
-    if (!validate(form, cardDetails)) return;
+    if (!validate(form)) return;
+
     setShow(true);
+
     setButtonDisabled(true);
-    doAction({
-      ...form,
-      user_id: user.id,
-      cart: cart,
-      total: cartDetails.total,
+
+    handlePayment((nonce) => {
+      const formData = {
+        ...form,
+        user_id: user.id,
+        cart: cart,
+        total: cartDetails.total,
+        payment_nonce: nonce,
+      };
+
+      doAction(formData);
     });
   };
 
@@ -107,12 +170,13 @@ const Checkout = () => {
         <div className="text-grey border-b-[1px] border-gray-200 pb-4">
           <h1 className="text-3xl uppercase">Checkout</h1>
         </div>
+
         <div className="flex gap-6 my-6 w-full">
           <div className="bg-pink p-6 rounded-lg w-full">
             <h1 className="pb-4 text-xl uppercase text-grey">
-              shipping information
+              Shipping Information
             </h1>
-            <form className="flex w-full gap-10">
+            <form onSubmit={handleSubmit} className="flex w-full gap-10">
               <div className="flex flex-col gap-6 w-1/2">
                 <div className="grid grid-cols-2 gap-6">
                   <Input
@@ -125,19 +189,17 @@ const Checkout = () => {
                     autoComplete="username"
                     errors={errors}
                   />
-
                   <Input
                     label="SURNAME"
                     type="text"
                     name="surname"
                     onChange={handleChange}
                     value={form.surname}
-                    placeholder="jondoe@example.com"
+                    placeholder="Doe"
                     autoComplete="surname"
                     errors={errors}
                   />
                 </div>
-
                 <Input
                   label="EMAIL"
                   type="email"
@@ -168,164 +230,9 @@ const Checkout = () => {
                   autoComplete="phone"
                   errors={errors}
                 />
-
-                <h2 className="text-2xl text-grey uppercase">
-                  Credit Card Information
-                </h2>
-                <div>
-                  <label className="block text-sm font-medium text-grey">
-                    Cardholder's Name
-                  </label>
-                  <div className="relative bg-inherit">
-                    <input
-                      type="text"
-                      value={cardDetails.cardName}
-                      onChange={(e) =>
-                        setCardDetails({
-                          ...cardDetails,
-                          cardName: e.target.value,
-                        })
-                      }
-                      className={`
-                       peer custom-autofill w-full bg-transparent h-10 rounded-lg text-grey placeholder-transparent ring-1 px-2 ring-[#3A3A3E] focus:ring-[#3A3A3E] focus:outline-none focus:border-rose-600
-                      ${
-                        errors.cardName
-                          ? " ring-[#984B2C] shadow-sm"
-                          : "bg-grey"
-                      }
-                      `}
-                      placeholder="John Doe"
-                      required
-                    />
-                    {errors.cardName && (
-                      <span className="absolute inset-y-0 right-2 flex items-center text-[#984B2C]">
-                        <CiCircleAlert size={30} />
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-[#984B2C] text-sm">
-                    <span className={errors.cardName ? "inline-block" : ""}>
-                      {errors.cardName ?? ""}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card Number */}
-                <div>
-                  <label className="block text-sm font-medium text-grey">
-                    Card Number
-                  </label>
-                  <div className="relative bg-inherit">
-                    <input
-                      type="text"
-                      value={cardDetails.cardNumber}
-                      onChange={(e) =>
-                        setCardDetails({
-                          ...cardDetails,
-                          cardNumber: e.target.value,
-                        })
-                      }
-                      className={`
-                      peer custom-autofill w-full bg-transparent h-10 rounded-lg text-grey placeholder-transparent ring-1 px-2 ring-[#3A3A3E] focus:ring-[#3A3A3E] focus:outline-none focus:border-rose-600
-                      ${
-                        errors.cardNumber
-                          ? " ring-[#984B2C] shadow-sm"
-                          : "bg-grey"
-                      }
-                      `}
-                      placeholder="1234 5678 9012 3456"
-                      maxLength="16"
-                      required
-                    />
-                    {errors.cardNumber && (
-                      <span className="absolute inset-y-0 right-2 flex items-center text-[#984B2C]">
-                        <CiCircleAlert size={30} />
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-[#984B2C] text-sm">
-                    <span className={errors.cardNumber ? "inline-block" : ""}>
-                      {errors.cardNumber ?? ""}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Expiration Date & CVC */}
-                <div className="flex gap-4">
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-grey">
-                      Expiration Date
-                    </label>
-                    <div className="relative bg-inherit">
-                      <input
-                        type="text"
-                        value={cardDetails.expiryDate}
-                        onChange={(e) =>
-                          setCardDetails({
-                            ...cardDetails,
-                            expiryDate: e.target.value,
-                          })
-                        }
-                        className={`
-                      peer custom-autofill w-full bg-transparent h-10 rounded-lg text-grey placeholder-transparent ring-1 px-2 ring-[#3A3A3E] focus:ring-[#3A3A3E] focus:outline-none focus:border-rose-600
-                      ${
-                        errors.expiryDate
-                          ? " ring-[#984B2C] shadow-sm"
-                          : "bg-grey"
-                      }
-                      `}
-                        placeholder="MM/YY"
-                        maxLength="5"
-                        required
-                      />
-                      {errors.expiryDate && (
-                        <span className="absolute inset-y-0 right-2 flex items-center text-[#984B2C]">
-                          <CiCircleAlert size={30} />
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-[#984B2C] text-sm">
-                      <span className={errors.expiryDate ? "inline-block" : ""}>
-                        {errors.expiryDate ?? ""}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-grey">
-                      CVC
-                    </label>
-                    <div className="relative bg-inherit">
-                      <input
-                        type="text"
-                        value={cardDetails.cvc}
-                        onChange={(e) =>
-                          setCardDetails({
-                            ...cardDetails,
-                            cvc: e.target.value,
-                          })
-                        }
-                        className={`
-                      peer custom-autofill w-full bg-transparent h-10 rounded-lg text-grey placeholder-transparent ring-1 px-2 ring-[#3A3A3E] focus:ring-[#3A3A3E] focus:outline-none focus:border-rose-600
-                      ${errors.cvc ? " ring-[#984B2C] shadow-sm" : "bg-grey"}
-                      `}
-                        placeholder="123"
-                        maxLength="3"
-                        required
-                      />
-                      {errors.cvc && (
-                        <span className="absolute inset-y-0 right-2 flex items-center text-[#984B2C]">
-                          <CiCircleAlert size={30} />
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-[#984B2C] text-sm">
-                      <span className={errors.cvc ? "inline-block" : ""}>
-                        {errors.cvc ?? ""}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <div ref={dropinContainerRef} id="dropin-container"></div>
               </div>
+
               <div className="bg-pink p-6 pt-0 rounded-lg text-grey w-1/2">
                 <div className="flex flex-col gap-2 mb-6">
                   {cart.map((c, i) => (
@@ -341,7 +248,7 @@ const Checkout = () => {
                       <div>
                         <span>{c.title}</span>
                         <p>${c.price}</p>
-                        <p>quantity:{c.quantity}</p>
+                        <p>quantity: {c.quantity}</p>
                       </div>
                     </div>
                   ))}
@@ -354,22 +261,18 @@ const Checkout = () => {
                   <span>Shipping</span>
                   <span>${cartDetails.shipping.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between mb-2">
-                  <span>Tax</span>
-                  <span>$2</span>
-                </div>
                 <div className="flex justify-between text-xl font-bold mt-4">
                   <span>Total</span>
                   <span>${cartDetails.total}</span>
                 </div>
+
                 <div className="flex justify-end mt-6">
                   <button
-                    onClick={handleSubmit}
+                    type="submit"
                     className="button-dark active:scale-75 transition-transform bg-grey text-white p-4 cursor-pointer uppercase px-10 rounded button-animation"
-                    type="button"
                     disabled={buttonDisabled}
                   >
-                    place your order
+                    Place Your Order
                   </button>
                 </div>
               </div>
@@ -381,4 +284,5 @@ const Checkout = () => {
     </>
   );
 };
+
 export default Checkout;

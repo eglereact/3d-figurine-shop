@@ -40,7 +40,7 @@ const ProductPrice = ({
   }
 
   if (cartPage === true) {
-    return <p className="text-brown"> ${finalPrice.toFixed(2)}</p>;
+    return <span className="text-brown"> ${finalPrice.toFixed(2)}</span>;
   }
 
   return (
