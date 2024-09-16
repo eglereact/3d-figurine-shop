@@ -14,6 +14,7 @@ export const SITE_CART = "#cart";
 export const SITE_CHECKOUT = "#checkout";
 export const THANKS_FOR_ORDER = "#thankyou";
 export const SALE_PAGE = "#sale";
+export const CONTACTS_PAGE = "#contacts";
 
 // Admin URLs
 export const SITE_DASHBOARD = "#admin/dashboard";

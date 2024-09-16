@@ -24,7 +24,7 @@ const Header = () => {
     { id: 2, link: l.SITE_PRODUCTS, name: "Products" },
     // { id: 3, link: "/#", name: "Blog" },
     { id: 4, link: l.SALE_PAGE, name: "Sale" },
-    { id: 5, link: "/#", name: "Contacts" },
+    { id: 5, link: l.CONTACTS_PAGE, name: "Contacts" },
   ];
 
   useEffect(() => {
