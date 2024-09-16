@@ -22,7 +22,7 @@ const ProductCard = ({ p }) => {
               {p.discount ? (
                 <ProductPrice price={p.price} discount={p.discount} />
               ) : (
-                p.price.toFixed(2)
+                <span>€{p.price.toFixed(2)}</span>
               )}
             </h2>
             <div className="px-4 pb-16">

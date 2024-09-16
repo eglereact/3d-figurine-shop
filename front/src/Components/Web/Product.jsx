@@ -10,6 +10,7 @@ import { CartContext } from "../../Contexts/Cart";
 import { MdOutlineDiscount } from "react-icons/md";
 import ProductPrice from "./ProductPrice";
 import Footer from "./Footer";
+import Loading from "../Common/Loading";
 
 const Product = () => {
   const { params } = useContext(RouterContext);
@@ -55,7 +56,7 @@ const Product = () => {
       <Header />
       <section className="max-width p-6">
         {product === null ? (
-          <p>Loading...</p>
+          <Loading />
         ) : (
           <div className="flex flex-col gap-6 sm:flex sm:flex-row w-full">
             <div className="w-full sm:w-1/2 bg-sand p-6 rounded-lg shadow-inner">

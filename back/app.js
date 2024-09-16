@@ -238,43 +238,41 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  setTimeout(() => {
-    const session = req.cookies["figurine-session"];
+  const session = req.cookies["figurine-session"];
 
-    const sql = `
+  const sql = `
                 UPDATE users
                 SET session = NULL
                 WHERE session = ?
             `;
 
-    connection.query(sql, [session], (err, result) => {
-      if (err) throw err;
-      const logged = result.affectedRows;
-      if (!logged) {
-        res
-          .status(401)
-          .json({
-            message: {
-              type: "error",
-              title: "Logout failed",
-              text: `Invalid login data`,
-            },
-          })
-          .end();
-        return;
-      }
-      res.clearCookie("figurine-session");
+  connection.query(sql, [session], (err, result) => {
+    if (err) throw err;
+    const logged = result.affectedRows;
+    if (!logged) {
       res
+        .status(401)
         .json({
           message: {
-            type: "success",
-            title: `Disconnected`,
-            text: `You have successfully logged out`,
+            type: "error",
+            title: "Logout failed",
+            text: `Invalid login data`,
           },
         })
         .end();
-    });
-  }, 1500);
+      return;
+    }
+    res.clearCookie("figurine-session");
+    res
+      .json({
+        message: {
+          type: "success",
+          title: `Disconnected`,
+          text: `You have successfully logged out`,
+        },
+      })
+      .end();
+  });
 });
 
 app.get("/admin/users", (req, res) => {
@@ -297,59 +295,91 @@ app.get("/admin/users", (req, res) => {
 });
 
 app.delete("/admin/delete/user/:id", (req, res) => {
-  setTimeout(() => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const sql = `
+  const sql = `
         DELETE 
         FROM users 
         WHERE id = ? AND role != 'admin'
         `;
 
-    connection.query(sql, [id], (err, result) => {
-      if (err) throw err;
-      const deleted = result.affectedRows;
-      if (!deleted) {
-        res
-          .status(422)
-          .json({
-            message: {
-              type: "info",
-              title: "Users",
-              text: `User is admin or user does not exist.`,
-            },
-          })
-          .end();
-        return;
-      }
+  connection.query(sql, [id], (err, result) => {
+    if (err) throw err;
+    const deleted = result.affectedRows;
+    if (!deleted) {
       res
+        .status(422)
         .json({
           message: {
-            type: "success",
-            title: "User",
-            text: `User was deleted.`,
+            type: "info",
+            title: "Users",
+            text: `User is admin or user does not exist.`,
           },
         })
         .end();
-    });
-  }, 1500);
+      return;
+    }
+    res
+      .json({
+        message: {
+          type: "success",
+          title: "User",
+          text: `User was deleted.`,
+        },
+      })
+      .end();
+  });
 });
 
 app.get("/admin/edit/user/:id", (req, res) => {
-  setTimeout(() => {
-    if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
-      return;
-    }
+  if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+    return;
+  }
 
-    const { id } = req.params;
-    const sql = `
+  const { id } = req.params;
+  const sql = `
         SELECT id, name, email, role
         FROM users
         WHERE id = ?
         `;
-    connection.query(sql, [id], (err, rows) => {
+  connection.query(sql, [id], (err, rows) => {
+    if (err) throw err;
+    if (!rows.length) {
+      res
+        .status(404)
+        .json({
+          message: {
+            type: "info",
+            title: "Users",
+            text: `User does not exist.`,
+          },
+        })
+        .end();
+      return;
+    }
+    res
+      .json({
+        user: rows[0],
+      })
+      .end();
+  });
+});
+
+app.put("/admin/update/user/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, email, role, password } = req.body;
+
+  if (!password) {
+    const sql = `
+            UPDATE users
+            SET name = ?, email = ?, role = ?
+            WHERE id = ?
+            `;
+
+    connection.query(sql, [name, email, role, id], (err, result) => {
       if (err) throw err;
-      if (!rows.length) {
+      const updated = result.affectedRows;
+      if (!updated) {
         res
           .status(404)
           .json({
@@ -364,26 +394,25 @@ app.get("/admin/edit/user/:id", (req, res) => {
       }
       res
         .json({
-          user: rows[0],
+          message: {
+            type: "success",
+            title: "Users",
+            text: `User was updated`,
+          },
         })
         .end();
     });
-  }, 1500);
-});
+  } else {
+    const sql = `
+                UPDATE users
+                SET name = ?, email = ?, role = ?, password = ?
+                WHERE id = ?
+                `;
 
-app.put("/admin/update/user/:id", (req, res) => {
-  setTimeout(() => {
-    const { id } = req.params;
-    const { name, email, role, password } = req.body;
-
-    if (!password) {
-      const sql = `
-            UPDATE users
-            SET name = ?, email = ?, role = ?
-            WHERE id = ?
-            `;
-
-      connection.query(sql, [name, email, role, id], (err, result) => {
+    connection.query(
+      sql,
+      [name, email, role, md5(password), id],
+      (err, result) => {
         if (err) throw err;
         const updated = result.affectedRows;
         if (!updated) {
@@ -408,46 +437,9 @@ app.put("/admin/update/user/:id", (req, res) => {
             },
           })
           .end();
-      });
-    } else {
-      const sql = `
-                UPDATE users
-                SET name = ?, email = ?, role = ?, password = ?
-                WHERE id = ?
-                `;
-
-      connection.query(
-        sql,
-        [name, email, role, md5(password), id],
-        (err, result) => {
-          if (err) throw err;
-          const updated = result.affectedRows;
-          if (!updated) {
-            res
-              .status(404)
-              .json({
-                message: {
-                  type: "info",
-                  title: "Users",
-                  text: `User does not exist.`,
-                },
-              })
-              .end();
-            return;
-          }
-          res
-            .json({
-              message: {
-                type: "success",
-                title: "Users",
-                text: `User was updated`,
-              },
-            })
-            .end();
-        }
-      );
-    }
-  }, 1500);
+      }
+    );
+  }
 });
 
 const writeImage = (imageBase64) => {
@@ -510,27 +502,25 @@ app.get("/admin/products", (req, res) => {
 });
 
 app.post("/admin/store/product", (req, res) => {
-  setTimeout(() => {
-    const { title, photo, price, info, in_stock } = req.body;
-    const filename = writeImage(photo);
-    const sql = `
+  const { title, photo, price, info, in_stock } = req.body;
+  const filename = writeImage(photo);
+  const sql = `
             INSERT INTO products (title, photo, price, info, in_stock)
             VALUES ( ?, ?, ?, ?, ? )
             `;
-    connection.query(sql, [title, filename, price, info, in_stock], (err) => {
-      if (err) throw err;
-      res
-        .status(201)
-        .json({
-          message: {
-            type: "success",
-            title: "Products",
-            text: `Product successfully created.`,
-          },
-        })
-        .end();
-    });
-  }, 1500);
+  connection.query(sql, [title, filename, price, info, in_stock], (err) => {
+    if (err) throw err;
+    res
+      .status(201)
+      .json({
+        message: {
+          type: "success",
+          title: "Products",
+          text: `Product successfully created.`,
+        },
+      })
+      .end();
+  });
 });
 
 app.delete("/admin/delete/product/:id", (req, res) => {
@@ -579,142 +569,130 @@ app.delete("/admin/delete/product/:id", (req, res) => {
 });
 
 app.get("/admin/edit/product/:id", (req, res) => {
-  setTimeout(() => {
-    if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
-      return;
-    }
-    const { id } = req.params;
-    const sql = `
+  if (!checkUserIsAuthorized(req, res, ["admin", "editor"])) {
+    return;
+  }
+  const { id } = req.params;
+  const sql = `
         SELECT *
         FROM products
         WHERE id = ?
         `;
-    connection.query(sql, [id], (err, rows) => {
-      if (err) throw err;
-      if (!rows.length) {
-        res
-          .status(404)
-          .json({
-            message: {
-              type: "info",
-              title: "Products",
-              text: `Product does not exist.`,
-            },
-          })
-          .end();
-        return;
-      }
+  connection.query(sql, [id], (err, rows) => {
+    if (err) throw err;
+    if (!rows.length) {
       res
+        .status(404)
         .json({
-          product: rows[0],
+          message: {
+            type: "info",
+            title: "Products",
+            text: `Product does not exist.`,
+          },
         })
         .end();
-    });
-  }, 1500);
+      return;
+    }
+    res
+      .json({
+        product: rows[0],
+      })
+      .end();
+  });
 });
 
 app.put("/admin/update/product/:id", (req, res) => {
-  setTimeout(() => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const {
-      title,
-      photo,
-      price,
-      featured,
-      approved,
-      info,
-      in_stock,
-      discount,
-    } = req.body;
+  const { title, photo, price, featured, approved, info, in_stock, discount } =
+    req.body;
 
-    if (photo) {
-      photo.length > 40 && deleteImage(id);
-      const filename = photo.length > 40 ? writeImage(photo) : photo;
-      const sql = `
+  if (photo) {
+    photo.length > 40 && deleteImage(id);
+    const filename = photo.length > 40 ? writeImage(photo) : photo;
+    const sql = `
             UPDATE products
             SET title = ?, photo = ?, price = ?, featured = ? , approved = ?, info = ?, in_stock = ?, discount = ?
             WHERE id = ?
             `;
-      connection.query(
-        sql,
-        [
-          title,
-          filename,
-          price,
-          featured,
-          approved,
-          info,
-          in_stock,
-          discount,
-          id,
-        ],
-        (err, result) => {
-          if (err) throw err;
-          const updated = result.affectedRows;
-          if (!updated) {
-            res
-              .status(404)
-              .json({
-                message: {
-                  type: "info",
-                  title: "Products",
-                  text: `Product does not exist`,
-                },
-              })
-              .end();
-            return;
-          }
+    connection.query(
+      sql,
+      [
+        title,
+        filename,
+        price,
+        featured,
+        approved,
+        info,
+        in_stock,
+        discount,
+        id,
+      ],
+      (err, result) => {
+        if (err) throw err;
+        const updated = result.affectedRows;
+        if (!updated) {
           res
+            .status(404)
             .json({
               message: {
-                type: "success",
+                type: "info",
                 title: "Products",
-                text: `Product successfully updated.`,
+                text: `Product does not exist`,
               },
             })
             .end();
+          return;
         }
-      );
-    } else {
-      deleteImage(id);
-      const sql = `
+        res
+          .json({
+            message: {
+              type: "success",
+              title: "Products",
+              text: `Product successfully updated.`,
+            },
+          })
+          .end();
+      }
+    );
+  } else {
+    deleteImage(id);
+    const sql = `
             UPDATE posts
             SET title = ?, photo = null, price = ?, featured = ? , approved = ?, info = ?, in_stock = ?, discount = ?
             WHERE id = ?
             `;
-      connection.query(
-        sql,
-        [title, photo, price, featured, approved, info, in_stock, discount, id],
-        (err, result) => {
-          if (err) throw err;
-          const updated = result.affectedRows;
-          if (!updated) {
-            res
-              .status(404)
-              .json({
-                message: {
-                  type: "info",
-                  title: "Products",
-                  text: `Product does not exist.`,
-                },
-              })
-              .end();
-            return;
-          }
+    connection.query(
+      sql,
+      [title, photo, price, featured, approved, info, in_stock, discount, id],
+      (err, result) => {
+        if (err) throw err;
+        const updated = result.affectedRows;
+        if (!updated) {
           res
+            .status(404)
             .json({
               message: {
-                type: "success",
+                type: "info",
                 title: "Products",
-                text: `Product successfully updated.`,
+                text: `Product does not exist.`,
               },
             })
             .end();
+          return;
         }
-      );
-    }
-  }, 1500);
+        res
+          .json({
+            message: {
+              type: "success",
+              title: "Products",
+              text: `Product successfully updated.`,
+            },
+          })
+          .end();
+      }
+    );
+  }
 });
 
 app.get("/web/products", (req, res) => {
@@ -735,35 +713,33 @@ app.get("/web/products", (req, res) => {
 });
 
 app.get("/web/product/:id", (req, res) => {
-  setTimeout(() => {
-    const { id } = req.params;
-    const sql = `
+  const { id } = req.params;
+  const sql = `
     SELECT *
     FROM products
     WHERE id = ?
     `;
-    connection.query(sql, [id], (err, rows) => {
-      if (err) throw err;
-      if (!rows.length) {
-        res
-          .status(404)
-          .json({
-            message: {
-              type: "info",
-              title: "Product",
-              text: `Product does not exist.`,
-            },
-          })
-          .end();
-        return;
-      }
+  connection.query(sql, [id], (err, rows) => {
+    if (err) throw err;
+    if (!rows.length) {
       res
+        .status(404)
         .json({
-          product: rows[0],
+          message: {
+            type: "info",
+            title: "Product",
+            text: `Product does not exist.`,
+          },
         })
         .end();
-    });
-  }, 1500);
+      return;
+    }
+    res
+      .json({
+        product: rows[0],
+      })
+      .end();
+  });
 });
 
 const generateOrderId = () => {
@@ -903,66 +879,64 @@ app.get("/admin/orders", (req, res) => {
 });
 
 app.put("/admin/change/order/status/:id", (req, res) => {
-  setTimeout(() => {
-    const { id } = req.params;
-    const { status } = req.body; // Get the new status from the request body
+  const { id } = req.params;
+  const { status } = req.body; // Get the new status from the request body
 
-    // Ensure the status is valid and within the allowed values
-    const validStatuses = [
-      "awaiting payment",
-      "pending",
-      "processing",
-      "shipped",
-      "completed",
-      "cancelled",
-    ];
-    if (!validStatuses.includes(status)) {
-      return res
-        .status(400)
-        .json({
-          message: {
-            type: "danger",
-            title: "Order Status",
-            text: "Invalid status value.",
-          },
-        })
-        .end();
-    }
+  // Ensure the status is valid and within the allowed values
+  const validStatuses = [
+    "awaiting payment",
+    "pending",
+    "processing",
+    "shipped",
+    "completed",
+    "cancelled",
+  ];
+  if (!validStatuses.includes(status)) {
+    return res
+      .status(400)
+      .json({
+        message: {
+          type: "danger",
+          title: "Order Status",
+          text: "Invalid status value.",
+        },
+      })
+      .end();
+  }
 
-    const sql = `
+  const sql = `
       UPDATE orders
       SET status = ?
       WHERE id = ?
     `;
 
-    connection.query(sql, [status, id], (err, result) => {
-      if (err) throw err;
-      const updated = result.affectedRows;
-      if (!updated) {
-        res
-          .status(404)
-          .json({
-            message: {
-              type: "info",
-              title: "Order Status",
-              text: `Order not found.`,
-            },
-          })
-          .end();
-        return;
-      }
+  connection.query(sql, [status, id], (err, result) => {
+    if (err) throw err;
+    const updated = result.affectedRows;
+    if (!updated) {
       res
+        .status(404)
         .json({
           message: {
-            type: "success",
+            type: "info",
             title: "Order Status",
-            text: `Order status successfully updated.`,
+            text: `Order not found.`,
           },
-          newId: id,
         })
         .end();
-    });
-  }, 1500);
+      return;
+    }
+    res
+      .json({
+        message: {
+          type: "success",
+          title: "Order Status",
+          text: `Order status successfully updated.`,
+        },
+        newId: id,
+      })
+      .end();
+  });
 });
 
 app.get("/featured/products", (req, res) => {

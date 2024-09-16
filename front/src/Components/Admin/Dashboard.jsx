@@ -55,9 +55,9 @@ const Dashboard = () => {
             <div className="bg-white shadow-sm gap-4 p-10 rounded-lg">
               <div className="flex items-center gap-2 mb-4">
                 <FaMoneyBillWave className="text-light text-5xl" />
-                <h3 className="text-xl uppercase">Profit</h3>
+                <h3 className="text-xl uppercase">Gross Revenue</h3>
               </div>
-              <h2 className="text-3xl font-bold">${stats.totalOrderAmount}</h2>
+              <h2 className="text-3xl font-bold">€{stats.totalOrderAmount}</h2>
             </div>
           </div>
         </section>

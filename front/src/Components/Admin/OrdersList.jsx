@@ -147,7 +147,7 @@ const OrdersList = () => {
                     <td className="px-4 py-4">{order.email}</td>
                     <td className="px-4 py-4">{order.address}</td>
                     <td className="px-4 py-4">{order.phone}</td>
-                    <td className="px-4 py-4">${order.total}</td>
+                    <td className="px-4 py-4">€{order.total}</td>
                     <td className="px-4 py-4">
                       {/* Status dropdown */}
                       <select
