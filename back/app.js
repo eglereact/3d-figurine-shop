@@ -1013,6 +1013,43 @@ app.get("/admin/stats", (req, res) => {
   });
 });
 
+app.delete("/admin/delete/order/:id", (req, res) => {
+  const { id } = req.params;
+
+  const sql = `
+        DELETE 
+        FROM orders 
+        WHERE id = ?
+        `;
+
+  connection.query(sql, [id], (err, result) => {
+    if (err) throw err;
+    const deleted = result.affectedRows;
+    if (!deleted) {
+      res
+        .status(422)
+        .json({
+          message: {
+            type: "info",
+            title: "Oders",
+            text: `Order does not exist.`,
+          },
+        })
+        .end();
+      return;
+    }
+    res
+      .json({
+        message: {
+          type: "success",
+          title: "Order",
+          text: `Order was deleted.`,
+        },
+      })
+      .end();
+  });
+});
+
 app.listen(port, () => {
   console.log(`3d Figurine app listening on port ${port}`);
 });

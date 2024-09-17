@@ -1,10 +1,12 @@
 import useServerGet from "../../Hooks/useServerGet";
 import * as l from "../../Constants/urls";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext, useCallback } from "react";
 import Gate from "../Common/Gate";
 import useServerPut from "../../Hooks/useServerPut";
 import { IoMdMore } from "react-icons/io";
 import Loading from "../Common/Loading";
+import useServerDelete from "../../Hooks/useServerDelete";
+import { ModalsContext } from "../../Contexts/Modals";
 
 const OrdersList = () => {
   const { doAction: doGet, response: serverGetResponse } = useServerGet(
@@ -14,9 +16,31 @@ const OrdersList = () => {
   const { doAction: doPut, response: serverPutResponse } = useServerPut(
     l.SERVER_CHANGE_ORDER_STATUS
   );
+  const { doAction: doDelete, serverResponse: serverDeleteResponse } =
+    useServerDelete(l.SERVER_DELETE_ORDER);
 
   const [orders, setOrders] = useState(null);
   const oldOrderId = useRef(null);
+  const { setDeleteModal } = useContext(ModalsContext);
+
+  const hideOrder = (order) => {
+    setOrders((o) =>
+      o.map((o) => (o.id === order.id ? { ...o, hidden: true } : o))
+    );
+  };
+
+  const showOrder = useCallback(() => {
+    setOrders((o) =>
+      o.map((o) => {
+        delete o.hidden;
+        return o;
+      })
+    );
+  }, []);
+
+  const removeHidden = useCallback((_) => {
+    setOrders((o) => o.filter((o) => !o.hidden));
+  }, []);
 
   // Fetch orders on component mount
   useEffect(() => {
@@ -67,6 +91,17 @@ const OrdersList = () => {
     );
     doPut({ id: orderId, status: newStatus });
   };
+
+  useEffect(() => {
+    if (null === serverDeleteResponse) {
+      return;
+    }
+    if (serverDeleteResponse.type === "error") {
+      showOrder();
+    } else {
+      removeHidden();
+    }
+  }, [serverDeleteResponse, showOrder, removeHidden]);
 
   return (
     <>
@@ -181,6 +216,13 @@ const OrdersList = () => {
                     <td className="px-4 py-4 mt-4">
                       <button
                         type="button"
+                        onClick={() =>
+                          setDeleteModal({
+                            data: order,
+                            doDelete,
+                            hideData: hideOrder,
+                          })
+                        }
                         className="bg-grey text-white py-2 px-4 rounded button-animation w-20"
                       >
                         Delete
