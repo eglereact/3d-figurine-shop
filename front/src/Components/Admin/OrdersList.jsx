@@ -168,9 +168,9 @@ const OrdersList = () => {
                     </td>
                     <td className="px-6 py-4 flex justify-center items-center mt-4">
                       {JSON.parse(order.cart).length}{" "}
-                      <button>
+                      {/* <button>
                         <IoMdMore size={25} />
-                      </button>
+                      </button> */}
                     </td>
                     <td className="px-4 py-4">
                       {new Date(order.created_at).toISOString().split("T")[0]}

@@ -25,18 +25,20 @@ const Filters = ({
           <label className="text-xs">Filter by Price:</label>
           <div className="flex gap-2">
             <input
-              type="text"
+              type="number"
               placeholder="Min"
               value={priceFilter.min}
+              min={0}
               onChange={(e) =>
                 setPriceFilter({ ...priceFilter, min: e.target.value })
               }
               className="border p-2 h-8 w-full outline-none"
             />
             <input
-              type="text"
+              type="number"
               placeholder="Max"
               value={priceFilter.max}
+              min={0}
               onChange={(e) =>
                 setPriceFilter({ ...priceFilter, max: e.target.value })
               }

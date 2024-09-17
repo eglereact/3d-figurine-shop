@@ -95,7 +95,7 @@ export default function ProductCreate() {
                     <Input
                       onChange={handleForm}
                       value={product.price}
-                      type="text"
+                      type="number"
                       name="price"
                       label="PRICE"
                       placeholder="price"
@@ -104,7 +104,7 @@ export default function ProductCreate() {
                     <Input
                       onChange={handleForm}
                       value={product.in_stock}
-                      type="text"
+                      type="number"
                       name="in_stock"
                       label="IN STOCK"
                       placeholder="in stock"
