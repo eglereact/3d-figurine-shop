@@ -11,6 +11,7 @@ import { MdOutlineDiscount } from "react-icons/md";
 import ProductPrice from "./ProductPrice";
 import Footer from "./Footer";
 import Loading from "../Common/Loading";
+import ProductTag from "./ProductTag";
 
 const Product = () => {
   const { params } = useContext(RouterContext);
@@ -65,19 +66,22 @@ const Product = () => {
           <Loading />
         ) : (
           <div className="flex flex-col gap-6 sm:flex sm:flex-row w-full">
-            <div className="w-full sm:w-1/2 bg-sand p-6 rounded-lg shadow-inner">
-              {" "}
-              {product.photo === null ? (
-                <img
-                  src={l.SERVER_IMAGES_URL + "no-image.png"}
-                  alt="no photo"
-                />
-              ) : (
-                <img
-                  src={l.SERVER_IMAGES_URL + product.photo}
-                  alt={product.title}
-                />
-              )}
+            <div className="w-full sm:w-1/2">
+              <div className=" bg-sand p-6 rounded-lg shadow-inner">
+                {" "}
+                {product.photo === null ? (
+                  <img
+                    src={l.SERVER_IMAGES_URL + "no-image.png"}
+                    alt="no photo"
+                  />
+                ) : (
+                  <img
+                    src={l.SERVER_IMAGES_URL + product.photo}
+                    alt={product.title}
+                  />
+                )}
+              </div>
+              <p className="text-grey pt-6">{product.info}</p>
             </div>
             <div className="w-full sm:w-1/2 lg:pr-20">
               <div className="flex justify-between">
@@ -151,6 +155,7 @@ const Product = () => {
             </div>
           </div>
         )}
+        <ProductTag />
       </section>
       <Footer />
     </>

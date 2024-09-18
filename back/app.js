@@ -867,7 +867,8 @@ app.get("/admin/orders", (req, res) => {
   }
   const sql = `
         SELECT *
-        FROM orders`;
+        FROM orders
+        ORDER BY created_at DESC`;
   connection.query(sql, (err, rows) => {
     if (err) throw err;
     res
