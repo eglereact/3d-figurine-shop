@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Loading from "../Common/Loading";
 import { FaUsers, FaFile, FaDonate, FaMoneyBillWave } from "react-icons/fa";
@@ -7,11 +7,25 @@ import { StatsContext } from "../../Contexts/Stats";
 import { TbDoorEnter } from "react-icons/tb";
 import { FaShoppingCart, FaShoppingBag } from "react-icons/fa";
 import { MdNoteAdd } from "react-icons/md";
+import SalesChart from "./SalesChart";
 
 const Dashboard = () => {
   const { stats } = useContext(StatsContext);
+  const [salesData, setSalesData] = useState([]);
 
-  console.log(stats);
+  useEffect(() => {
+    if (stats && stats.salesByDate) {
+      const formattedSalesData = stats.salesByDate.map((item) => {
+        const date = new Date(item.saleDate);
+        const formattedDate = date.toISOString().split("T")[0]; // Format to 'YYYY-MM-DD'
+        return {
+          date: formattedDate,
+          sales: item.salesCount,
+        };
+      });
+      setSalesData(formattedSalesData);
+    }
+  }, [stats]);
 
   return (
     <>
@@ -59,6 +73,10 @@ const Dashboard = () => {
               </div>
               <h2 className="text-3xl font-bold">€{stats.totalOrderAmount}</h2>
             </div>
+          </div>
+          <div>
+            <h2 className="text-grey text-4xl pt-6 text-center">Shop Sales</h2>
+            <SalesChart salesData={salesData} />
           </div>
         </section>
       )}

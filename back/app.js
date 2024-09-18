@@ -973,40 +973,69 @@ app.get("/admin/stats", (req, res) => {
           SELECT SUM(total) AS totalOrderAmount 
               FROM orders
             `;
+  // Query for getting sales count by date
+  const sqlSalesByDate = `
+          SELECT DATE(created_at) AS saleDate, COUNT(*) AS salesCount
+          FROM orders
+          GROUP BY DATE(created_at)
+          ORDER BY saleDate ASC
+          `;
 
   let stats = {};
 
   connection.query(sqlUsers, (err, results) => {
     if (err) {
+      console.error("Error fetching users:", err);
       return res.status(500).send(err);
     }
+    console.log("Fetched user count:", results[0].countUsers);
     stats.countUsers = results[0].countUsers;
 
     connection.query(sqlProducts, (err, results) => {
       if (err) {
+        console.error("Error fetching products:", err);
         return res.status(500).send(err);
       }
+      console.log("Fetched product count:", results[0].countProducts);
       stats.countProducts = results[0].countProducts;
 
       connection.query(sqlOrders, (err, results) => {
         if (err) {
+          console.error("Error fetching orders:", err);
           return res.status(500).send(err);
         }
+        console.log("Fetched order count:", results[0].countOrders);
         stats.countOrders = results[0].countOrders;
 
         connection.query(sqlTotalQuantity, (err, results) => {
           if (err) {
+            console.error("Error fetching total quantity:", err);
             return res.status(500).send(err);
           }
+          console.log("Fetched total quantity:", results[0].totalQuantity);
           stats.totalQuantity = results[0].totalQuantity;
 
           connection.query(sqlTotalOrderAmount, (err, results) => {
             if (err) {
+              console.error("Error fetching total order amount:", err);
               return res.status(500).send(err);
             }
+            console.log(
+              "Fetched total order amount:",
+              results[0].totalOrderAmount
+            );
             stats.totalOrderAmount = results[0].totalOrderAmount;
 
-            res.json(stats);
+            connection.query(sqlSalesByDate, (err, results) => {
+              if (err) {
+                console.error("Error fetching sales by date:", err);
+                return res.status(500).send(err);
+              }
+              console.log("Fetched sales by date:", results);
+              stats.salesByDate = results;
+
+              res.json(stats);
+            });
           });
         });
       });

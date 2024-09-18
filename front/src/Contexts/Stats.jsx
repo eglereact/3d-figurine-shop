@@ -16,11 +16,28 @@ export const Stats = ({ children }) => {
   }, [doGet]);
 
   useEffect(() => {
+    const fetchStats = async () => {
+      doGet();
+    };
+
+    // Poll every 30 seconds
+    const interval = setInterval(() => {
+      fetchStats();
+    }, 10000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(interval);
+  }, [doGet]);
+
+  useEffect(() => {
     if (null === serverGetResponse) {
       return;
     }
 
-    setStats(serverGetResponse.data ?? null);
+    if (serverGetResponse.data) {
+      setStats(serverGetResponse.data);
+    } else {
+    }
   }, [serverGetResponse]);
 
   return (
