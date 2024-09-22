@@ -116,7 +116,15 @@ const Checkout = () => {
   }, []);
 
   const handleChange = (e) => {
-    setForm((f) => ({ ...f, [e.target.id]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+
+    // Clear specific error related to the field being edited
+    if (errors[name]) {
+      const newErrors = { ...errors };
+      delete newErrors[name];
+      setServerErrors(newErrors);
+    }
   };
 
   const handlePayment = (callback) => {
@@ -186,7 +194,7 @@ const Checkout = () => {
                     onChange={handleChange}
                     value={form.name}
                     placeholder="Jon Doe"
-                    autoComplete="username"
+                    autoComplete="given-name"
                     errors={errors}
                   />
                   <Input

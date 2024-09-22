@@ -1,12 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(https://db.onlinewebfonts.com/c/6bcc571e37a851e601fbdcd9401b0b05?family=Stepp+ITC+Std+Bold+Italic);
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+/* .change-font {
+  font-family: "Stepp ITC Std Bold";
+} */
 
 @layer components {
   .text-grey {

@@ -37,7 +37,15 @@ const Register = () => {
   }, [response]);
 
   const handleForm = (e) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+
+    // Clear specific error related to the field being edited
+    if (errors[name]) {
+      const newErrors = { ...errors };
+      delete newErrors[name];
+      setServerErrors(newErrors);
+    }
   };
 
   const handleSubmit = () => {

@@ -23,7 +23,13 @@ const Login = () => {
   const { addUser, removeUser } = useContext(AuthContext);
 
   const handleForm = (e) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+    if (errors[name]) {
+      const newErrors = { ...errors };
+      delete newErrors[name];
+      setServerErrors(newErrors);
+    }
   };
 
   useEffect(() => {

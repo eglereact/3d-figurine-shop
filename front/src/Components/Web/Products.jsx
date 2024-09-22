@@ -21,7 +21,6 @@ const Products = () => {
   const [inStock, setInStock] = useState(false);
   const [outOfStock, setOutOfStock] = useState(false);
   const [ratingFilter, setRatingFilter] = useState("");
-
   // Fetch products on mount
   useEffect(() => {
     doGet();
@@ -33,7 +32,6 @@ const Products = () => {
       setProducts(serverGetResponse.data.products);
     }
   }, [serverGetResponse, products]);
-
   // Apply filtering and sorting when the products, filters, or sort option changes
   useEffect(() => {
     if (!products) return;

@@ -12,6 +12,9 @@ const Contacts = () => {
           <h1 className="text-4xl text-center uppercase text-grey">
             Contact me:
           </h1>
+          <h2 className="text-grey text-3xl mt-6 text-center">
+            jukneviciute185@gmail.com
+          </h2>
           <div className="flex p-6 gap-20 justify-center">
             <div>
               <img src="images/qr-eglereact6.png" alt="eglereact" />
